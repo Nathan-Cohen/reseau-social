@@ -1,0 +1,19 @@
+{
+  "name": "reseausocial",
+  "version": "1.0.0",
+  "description": "Reseau social",
+  "main": "controllers.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nathan-Cohen/reseau-social.git"
+  },
+  "author": "nathan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nathan-Cohen/reseau-social/issues"
+  },
+  "homepage": "https://github.com/Nathan-Cohen/reseau-social#readme"
+}
