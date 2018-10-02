@@ -1,0 +1,131 @@
+<div id="enregistrement" ng-controller="enregistrementCtrl">
+        <div class="container">
+            <div class="row">
+                    <div class="thumbnail center well well-sm text-center">
+                        <h2>Enregistrement</h2>
+                        
+                        <p>Remplissez le formulaire pour vous connectez !</p>
+                        
+                        <form ng-submit="funcEnregistrement()" role="form" class="well form-horizontal">
+                            <fieldset>
+                                    <div class="form-group">
+                                        <div class="col-md-4 inputGroupContainer">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                                <input ng-model="pseudonyme" name="pseudonyme" placeholder="pseudonyme" class="form-control"  type="text"></input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-4 inputGroupContainer">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                                <input ng-model="nom" name="nom" placeholder="Nom" class="form-control"  type="text"></input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-4 inputGroupContainer">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                                <input ng-model="prenom" name="prenom" placeholder="Prenom" class="form-control"  type="text"></input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-4 inputGroupContainer">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                                <input ng-model="mdp" name="password" placeholder="Mot de passe" class="form-control"  type="password"></input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-4 inputGroupContainer">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                                <input ng-model="mail" name="mail" placeholder="Mail" class="form-control"  type="mail"></input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group"> 
+                                        <div class="col-md-4 selectContainer">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
+                                                <select name="genre" class="form-control selectpicker" >
+                                                    <option value=" ">Genre</option>
+                                                    <option>Homme</option>
+                                                    <option>Femme</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-4 inputGroupContainer">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                                <input ng-model="age" name="age" placeholder="Age" class="form-control"  type="text"></input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-4 inputGroupContainer">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fas fa-city"></i></span>
+                                                <input ng-model="ville" name="ville" placeholder="Ville" class="form-control"  type="text"></input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-4 inputGroupContainer">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fas fa-globe-americas"></i></span>
+                                                <input ng-model="pays" name="pays" placeholder="Pays" class="form-control"  type="text"></input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-4 inputGroupContainer">
+                                            <label class="col-md-3 control-label">Photo : </label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fas fa-file-import"></i></span>
+                                                <input ng-model="photo" name="photo" placeholder="Photo" class="form-control"  type="file"></input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-4 inputGroupContainer">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                                <textarea ng-model="presentation" class="form-control" name="presentation" placeholder="Presentation"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-4 inputGroupContainer">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+                                                <input ng-model="website" name="website" placeholder="Site web" class="form-control" type="text"></input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <input type="submit" value="Envoyer" class="btn btn-large btn-primary"/>
+                            </fieldset>
+                        </form>
+                    </div>    
+            </div>
+            <a href="#!connexion" id="buttonConnexion">Connexion</a>
+        </div>
+        {{pseudonyme}}
+        {{nom}}
+        {{prenom}}
+        {{mdp}}
+        {{mail}}
+        {{genre}}
+        {{age}}
+        {{ville}}
+        {{pays}}
+        {{photo}}
+        {{presentation}}
+        {{website}}
+</div>
