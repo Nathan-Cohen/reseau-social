@@ -1,15 +1,10 @@
-m.directive('rechercheBar', function(){
+m.directive('recherchebar', function(){
     var directiveDefs = {
         controller: function($scope){
 
         },
         template: `
         <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-md-offset-3">
-                    <h1>Expandable Search Form</h1>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-md-4 col-md-offset-3">
                     <form action="" class="search-form">

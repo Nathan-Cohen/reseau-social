@@ -5,7 +5,7 @@ m.directive('actualite', function(){
         },
         template: `
         <div>
-            <h2>Actualite</h2>
+            <h2>Actualité</h2>
             <div class='container'>
                 <div class="well">
                     <div class="media">
