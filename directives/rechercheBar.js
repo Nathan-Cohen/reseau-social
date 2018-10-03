@@ -6,7 +6,7 @@ m.directive('recherchebar', function(){
         template: `
         <div class="container">
             <div class="row">
-                <div class="col-md-4 col-md-offset-3">
+                <div>
                     <form action="" class="search-form">
                         <div class="form-group has-feedback">
                             <label for="search" class="sr-only">Search</label>
