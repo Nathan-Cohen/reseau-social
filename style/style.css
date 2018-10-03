@@ -42,7 +42,7 @@
   }
   .search-form .form-group:hover,
   .search-form .form-group.hover {
-    width: 50%;
+    width: 100%;
     border-radius: 4px 25px 25px 4px;
   }
   .search-form .form-group span.form-control-feedback {
