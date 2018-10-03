@@ -15,12 +15,10 @@ m.config(function($routeProvider) {
         controller: "connexionCtrl"
     })
     .when("/apropos", {
-        templateUrl : "./views/apropos.html",
-        controller: "aproposCtrl"
+        templateUrl : "./views/apropos.html"
     })
     .when("/contact", {
-        templateUrl : "./views/contact.html",
-        controller: "contactCtrl"
+        templateUrl : "./views/contact.html"
     })
     .otherwise({
         redirectTo: '/accueil'

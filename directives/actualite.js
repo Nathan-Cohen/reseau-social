@@ -12,7 +12,7 @@ m.directive('actualite', function(){
                     </div>
                 </div>
             </div>
-            
+
             <!-- directive -->
             <recherchebar></recherchebar>
 
@@ -29,7 +29,7 @@ m.directive('actualite', function(){
                             <ul class="list-inline list-unstyled">
                                 <li><span><i class="glyphicon glyphicon-calendar"></i> date de l'article </span></li>
                             <li>|</li>
-                            <span><i class="glyphicon glyphicon-comment"></i> clique sur les commentaires</span>
+                            <span><i class="glyphicon glyphicon-comment"></i> nombre de commentaires</span>
                             <li>|</li>
                             <li>
                                 <span class="glyphicon glyphicon-star"></span>

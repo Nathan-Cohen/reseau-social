@@ -1,30 +1,3 @@
-m.controller('connexionCtrl', function($scope, $location){
-    $scope.messagetest = "Parti connexion"
-    $scope.pseudonyme = ""
-    $scope.mdp = ""
-
-    $scope.funcConnexion = ()=>{
-        utilisateurConnecter = {
-            pseudonyme: $scope.pseudonyme,
-            mpd: $scope.mdp
-        }
-
-
-    // emit de l'objet ver le server et enregistrement dans la base
-        // socket.emit('enregistrement', nouveauUtilisateur)
-
-        // socket.on('reponseEnregistement', function(data){
-        //     $location.path("/accueil");
-        // })
-    console.log('connexion', utilisateurConnecter)
-        
-    }
-
-})
-
-
-
-
 m.controller('enregistrementCtrl', function($scope, $location){
     $scope.messagetest = "Parti enregistrement"
     $scope.pseudonyme = ""
@@ -66,26 +39,5 @@ m.controller('enregistrementCtrl', function($scope, $location){
         console.log('nouveauUtilisateur', nouveauUtilisateur)
     }
 
-
-})
-
-
-
-
-m.controller('accueilCtrl', function($scope, $location, $http){
-
-    // emit de l'objet ver le server et enregistrement dans la base
-    //         socket.emit('enregistrement', nouveauUtilisateur)
-
-    //         socket.on('reponseEnregistement', function(data){
-    //             $location.path("/accueil");
-    //         })
-
-    // $http.post('./views/fileActualite.js')
-    //     .then(function(data) {
-    //         console.log('success', data)
-    //       }, function(response) {
-    //         console.log('error', response)
-    //     })
 
 })
