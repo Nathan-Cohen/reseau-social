@@ -1,36 +1,41 @@
-const path = require('path');
+const express = require('express')
 const mongo = require('mongodb').MongoClient;
-var express = require('express')
+const path = require('path')
+
 app = express()
 server = require('http').createServer(app);
-
 app.use(express.static(__dirname + '/'));
-// app.use(express.static(__dirname + '/node_modules'));
-// app.use(express.static(__dirname + '/directives'));
-// app.use(express.static(__dirname + '/views'));
-// app.use(express.static(__dirname + './controllers'));
-// app.use(express.static(__dirname + './style'));
-// app.use(express.static(__dirname + './roote'));
+
+//////////////// ROUTES //////////////
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, 'models/index.html'));
+  });
 
 
-// var url = "mongodb://heroku_xxbnv843:m1tp1ts1p4deps3isa7f6dlcgm@ds141932.mlab.com:41932/heroku_xxbnv843";
-var url = 'mongodb://heroku_9qn3w1x7:vinil75020@ds121673.mlab.com:21673/heroku_9qn3w1x7'
-// Use connect method to connect to the server
+////////////// CONNEXION A LA BASE ///////////////////
+var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
 mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
   if(err){
     console.log('err', err)
   }
   else{
     console.log("Connected successfully to server");
-    const db = client.db('heroku_9qn3w1x7').collection('reseau');
+    const db = client.db('heroku_g9jk10c8').collection('utilisateur');
     client.close();
 
   }
 });
 
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, 'models/index.html'));
-  });
+
+//////////// SOCKET IO /////////////
+var socketIO = require('socket.io');
+var io = socketIO(server);
+io.on('connection', function(socket){
+  socket.on('test', function(){
+    console.log('connexion ok', socket)
+    
+  })
+})
   
+server.listen(8080)
  
-server.listen(9007);

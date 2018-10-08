@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/Nathan-Cohen/reseau-social/issues"
   },
-  "homepage": "https://github.com/Nathan-Cohen/reseau-social#readme"
+  "homepage": "https://github.com/Nathan-Cohen/reseau-social#readme",
+  "dependencies": {
+    "angularjs": "0.0.1",
+    "express": "^4.16.3",
+    "mongodb": "^3.1.6",
+    "socket.io": "^2.1.1"
+  }
 }

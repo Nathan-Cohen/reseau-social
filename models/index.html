@@ -27,6 +27,15 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     
         <link rel="stylesheet" href="style/style.css" >
+        <script>
+        (function(window, io){
+            window.addEventListener('DOMContentLoaded', function(){
+            var socket = io();
+            console.log('test', socket)
+            socket.emits('test')
+            })
+        })
+        </script>
     </head>
 
     <body ng-app="monApp">
@@ -54,15 +63,15 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
         <!-- ROUTE -->
-        <script src="../routes/route.js"></script>
+        <script src="routes/route.js"></script>
         <!-- CONTROLLER -->
-        <script src="../controllers/accueilCtrl.js"></script>
-        <script src="../controllers/connexionCtrl.js"></script>
-        <script src="../controllers/enregistrementCtrl.js"></script>
+        <script src="controllers/accueilCtrl.js"></script>
+        <script src="controllers/connexionCtrl.js"></script>
+        <script src="controllers/enregistrementCtrl.js"></script>
         
         <!-- DIRECTIVES -->
-        <script src="../directives/actualite.js"></script>
-        <script src="../directives/rechercheBar.js"></script>
+        <script src="directives/actualite.js"></script>
+        <script src="directives/rechercheBar.js"></script>
         
     </body>
 
