@@ -1,4 +1,4 @@
-m.controller('enregistrementCtrl', function($scope, $location){
+m.controller('enregistrementCtrl', function($scope, $location, $http){
     $scope.messagetest = "Parti enregistrement"
     $scope.pseudonyme = ""
     $scope.nom = ""
@@ -29,13 +29,16 @@ m.controller('enregistrementCtrl', function($scope, $location){
             presentation: $scope.presentation,
             website: $scope.website
         }
+        var postData = angular.toJson(nouveauUtilisateur, true);
+        // envoie des donnees en POST
+        $http({
+            url: 'http://127.0.0.1:7008/enregistrement',
+            method: 'POST',
+            data: postData
+        }).then(function (httpResponse) {
+            console.log('response:', httpResponse);
+        })
 
-        // emit de l'objet ver le server et enregistrement dans la base
-        // socket.emit('enregistrement', nouveauUtilisateur)
-
-        // socket.on('reponseEnregistement', function(data){
-        //     $location.path("/accueil");
-        // })
         console.log('nouveauUtilisateur', nouveauUtilisateur)
     }
 
