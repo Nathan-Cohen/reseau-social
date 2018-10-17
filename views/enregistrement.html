@@ -36,7 +36,7 @@
                                         <div class="col-md-4 inputGroupContainer">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                                <input ng-model="mdp" name="password" placeholder="Mot de passe" class="form-control"  type="password"></input>
+                                                <input ng-model="mdp" name="mdp" placeholder="Mot de passe" class="form-control"  type="password"></input>
                                             </div>
                                         </div>
                                     </div>
@@ -52,7 +52,7 @@
                                         <div class="col-md-4 selectContainer">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
-                                                <select name="genre" class="form-control selectpicker" >
+                                                <select ng-model="genre" name="genre" class="form-control selectpicker" >
                                                     <option value=" ">Genre</option>
                                                     <option>Homme</option>
                                                     <option>Femme</option>

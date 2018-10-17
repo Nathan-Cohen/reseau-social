@@ -1,21 +1,29 @@
-m.controller('connexionCtrl', function($scope, $location){
+m.controller('connexionCtrl', function($scope, $location, $http){
     $scope.messagetest = "Parti connexion"
-    $scope.pseudonyme = ""
+    $scope.mail = ""
     $scope.mdp = ""
 
     $scope.funcConnexion = ()=>{
         utilisateurConnecter = {
-            pseudonyme: $scope.pseudonyme,
+            mail: $scope.mail,
             mpd: $scope.mdp
         }
 
+    // transforme en JSON
+    var postData = angular.toJson(utilisateurConnecter, true);
+    // envoie des donnees en POST
+    $http({
+        url: 'http://127.0.0.1:7007/connection',
+        method: 'POST',
+        data: postData
+    }).then(function (httpResponse) {
+        console.log('response:', httpResponse);
+    })
 
-    // emit de l'objet ver le server et enregistrement dans la base
-        // socket.emit('enregistrement', nouveauUtilisateur)
+    // Supprime les valeurs dans les champs        
+    $scope.mail = ""
+    $scope.mdp = ""
 
-        // socket.on('reponseEnregistement', function(data){
-        //     $location.path("/accueil");
-        // })
     console.log('connexion', utilisateurConnecter)
         
     }

@@ -15,6 +15,7 @@ m.controller('enregistrementCtrl', function($scope, $location, $http){
 
     // a l'envoie du formulaire on execute la function "funcEnregistrement"
     $scope.funcEnregistrement = ()=>{
+        // creer un objet
         nouveauUtilisateur = {
             pseudonyme: $scope.pseudonyme,
             nom: $scope.nom,
@@ -29,6 +30,7 @@ m.controller('enregistrementCtrl', function($scope, $location, $http){
             presentation: $scope.presentation,
             website: $scope.website
         }
+        // transforme en JSON
         var postData = angular.toJson(nouveauUtilisateur, true);
         // envoie des donnees en POST
         $http({
@@ -38,6 +40,20 @@ m.controller('enregistrementCtrl', function($scope, $location, $http){
         }).then(function (httpResponse) {
             console.log('response:', httpResponse);
         })
+
+        // Supprime les valeurs dans les champs
+        $scope.pseudonyme = ""
+        $scope.nom = ""
+        $scope.prenom = ""
+        $scope.mdp = ""
+        $scope.mail = ""
+        $scope.genre = ""
+        $scope.age = ""
+        $scope.ville = ""
+        $scope.pays = ""
+        $scope.photo = ""
+        $scope.presentation = ""
+        $scope.website = ""
 
         console.log('nouveauUtilisateur', nouveauUtilisateur)
     }

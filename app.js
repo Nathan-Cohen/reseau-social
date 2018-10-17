@@ -51,6 +51,35 @@ app.post('/enregistrement', function(req, res) {
   });
   
 });
+
+
+
+// recupere les donnees de la connection pour verifier dans la BDD
+app.post('/connection', function(req, res) {
+  console.log('ressssssssssssssssssssssss', req.body)
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      console.log("Connexion a la base reussi");
+      const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+      // cherche si l'utilisateur existe deja
+      collection.findOne({nom: req.body.nom, prenom: req.body.prenom, mail: req.body.mail, password: req.body.mdp}, function(err, o) {
+        if(err){
+          console.log(err.message);
+        }else{
+          console.log('Bien connecter')
+        }
+
+      });
+  
+    }
+  });
+  
+});
   
 
 
