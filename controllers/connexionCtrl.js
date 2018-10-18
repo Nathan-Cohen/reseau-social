@@ -18,7 +18,14 @@ m.controller('connexionCtrl', function($scope, $http){
         method: 'POST',
         data: postData
     }).then(function (httpResponse) {
-        console.log('response:', httpResponse);
+        console.log('response:', httpResponse.data);
+        if(httpResponse.data.message){
+            alert("Echec de connexion")
+        }
+        else if(httpResponse.data.mail){
+            alert("Connexion reussi")
+        }
+
     })
 
     // Supprime les valeurs dans les champs        

@@ -79,7 +79,7 @@ app.post('/connection', function(req, res) {
           }
           else{
             console.log('Mot de passe ou adresse mail invalide');
-            res.send('Mot de passe ou adresse mail invalide');
+            res.send({message: 'Mot de passe ou adresse mail invalide'});
           }
 
         }
