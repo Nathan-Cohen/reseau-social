@@ -20,7 +20,7 @@ m.controller('connexionCtrl', function($scope, $http){
     }).then(function (httpResponse) {
         console.log('response:', httpResponse.data);
         if(httpResponse.data.message){
-            alert("Echec de connexion")
+            document.getElementById('reponseConnection').style.display = 'block'
         }
         else if(httpResponse.data.mail){
             alert("Connexion reussi")
