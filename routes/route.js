@@ -14,6 +14,10 @@ m.config(function($routeProvider) {
         templateUrl : "./views/connexion.html",
         controller: "connexionCtrl"
     })
+    .when("/profil", {
+        templateUrl : "./views/profil.html",
+        controller: "connexionCtrl"
+    })
     .when("/apropos", {
         templateUrl : "./views/apropos.html"
     })

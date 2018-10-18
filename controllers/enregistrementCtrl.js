@@ -1,4 +1,4 @@
-m.controller('enregistrementCtrl', function($scope, $location, $http){
+m.controller('enregistrementCtrl', function($scope, $http){
     $scope.messagetest = "Parti enregistrement"
     $scope.pseudonyme = ""
     $scope.nom = ""
@@ -20,7 +20,7 @@ m.controller('enregistrementCtrl', function($scope, $location, $http){
             pseudonyme: $scope.pseudonyme,
             nom: $scope.nom,
             prenom: $scope.prenom,
-            mpd: $scope.mdp,
+            mdp: $scope.mdp,
             mail: $scope.mail,
             genre: $scope.genre,
             age: $scope.age,
@@ -34,7 +34,7 @@ m.controller('enregistrementCtrl', function($scope, $location, $http){
         var postData = angular.toJson(nouveauUtilisateur, true);
         // envoie des donnees en POST
         $http({
-            url: 'http://127.0.0.1:7007/enregistrement',
+            url: 'http://127.0.0.1:7006/enregistrement',
             method: 'POST',
             data: postData
         }).then(function (httpResponse) {

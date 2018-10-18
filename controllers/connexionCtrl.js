@@ -1,4 +1,4 @@
-m.controller('connexionCtrl', function($scope, $location, $http){
+m.controller('connexionCtrl', function($scope, $http){
     $scope.messagetest = "Parti connexion"
     $scope.mail = ""
     $scope.mdp = ""
@@ -6,14 +6,15 @@ m.controller('connexionCtrl', function($scope, $location, $http){
     $scope.funcConnexion = ()=>{
         utilisateurConnecter = {
             mail: $scope.mail,
-            mpd: $scope.mdp
+            mdp: $scope.mdp
         }
 
     // transforme en JSON
     var postData = angular.toJson(utilisateurConnecter, true);
+
     // envoie des donnees en POST
     $http({
-        url: 'http://127.0.0.1:7007/connection',
+        url: 'http://127.0.0.1:7006/connection',
         method: 'POST',
         data: postData
     }).then(function (httpResponse) {

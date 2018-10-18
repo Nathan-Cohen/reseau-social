@@ -7,6 +7,7 @@ var bodyParser = require('body-parser')
 app = express()
 server = require('http').createServer(app);
 app.use(express.static(__dirname + '/'));
+app.use("/socket", express.static(path.join(__dirname + "/node_modules/socket.io-client/dist/")));
 
 //////////////// BODY-PARSER //////////////
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -18,7 +19,6 @@ app.get('/', function(req, res) {
 });
 // recupere les donnees de l'enregistrement pour l'enregistrer dans la BDD
 app.post('/enregistrement', function(req, res) {
-  console.log('ressssssssssssssssssssssss', req.body)
   //////////////// CONNEXION A LA BASE ///////////////////
   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
   mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
@@ -56,7 +56,6 @@ app.post('/enregistrement', function(req, res) {
 
 // recupere les donnees de la connection pour verifier dans la BDD
 app.post('/connection', function(req, res) {
-  console.log('ressssssssssssssssssssssss', req.body)
   //////////////// CONNEXION A LA BASE ///////////////////
   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
   mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
@@ -67,11 +66,22 @@ app.post('/connection', function(req, res) {
       console.log("Connexion a la base reussi");
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
       // cherche si l'utilisateur existe deja
-      collection.findOne({nom: req.body.nom, prenom: req.body.prenom, mail: req.body.mail, password: req.body.mdp}, function(err, o) {
+      console.log('req.body.mail', req.body.mail)
+      console.log('req.body', req.body)
+      collection.findOne({mail: req.body.mail, password: req.body.mdp}, function(err, o) {
         if(err){
-          console.log(err.message);
+          console.log('Echec de connexion a la collection', err.message);
         }else{
-          console.log('Bien connecter')
+          if(o){
+            console.log('Bien connecter', o);
+            res.send({mail: req.body.mail});
+
+          }
+          else{
+            console.log('Mot de passe ou adresse mail invalide');
+            res.send('Mot de passe ou adresse mail invalide');
+          }
+
         }
 
       });
@@ -98,4 +108,4 @@ io.on('connection', function(socket){
 })
   
  
-server.listen(7007);
+server.listen(7006);
