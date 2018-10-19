@@ -2,7 +2,7 @@
 <div class="container bootstrap snippet">
     <div class="row">
         <div class="col-sm-10">
-            <h1>Prenom Nom</h1>
+            <h1 ng-model="prenomNom">Prenom Nom</h1>
         </div>
         <div class="col-sm-2">
             <a href="/users" class="pull-right"><img title="profile image" class="img-circle img-responsive" src="http://www.gravatar.com/avatar/28fd20ccec6865e2d5f0e1f4446eb7bf?s=100">
@@ -54,9 +54,9 @@
             <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="profil//#home">Informations</a>
                 </li>
-                <li><a data-toggle="tab" href="profil/#messages">Messages priver</a>
+                <li><a data-toggle="tab" href="profil/#messagesPriver">Messages priver</a>
                 </li>
-                <li><a data-toggle="tab" href="profil//#settings">Discussion instantaner</a>
+                <li><a data-toggle="tab" href="profil//#messages">Discussion instantaner</a>
                 </li>
             </ul>
 
@@ -71,7 +71,8 @@
                                 <label for="prenom">
                                     <h4>Prenom</h4>
                                 </label>
-                                <input type="text" class="form-control" name="prenom" id="prenom" placeholder="Prenom" title="prenom">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <input type="text" class="form-control" ng-model="prenom" name="prenom" id="prenom" placeholder="Prenom" title="prenom">
                             </div>
                         </div>
                         <div class="form-group">
@@ -80,7 +81,32 @@
                                 <label for="nom">
                                     <h4>Nom</h4>
                                 </label>
-                                <input type="text" class="form-control" name="nom" id="nom" placeholder="Nom" title="Nom">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <input type="text" class="form-control" ng-model="nom" name="nom" id="nom" placeholder="Nom" title="Nom">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-6">
+                                <label for="genre">
+                                    <h4>Genre</h4>
+                                </label>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
+                                <select ng-model="genre" name="genre" class="form-control selectpicker" >
+                                    <option value=" ">Genre</option>
+                                    <option>Homme</option>
+                                    <option>Femme</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-6">
+                                <label for="age">
+                                    <h4>Age</h4>
+                                </label>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <input ng-model="age" name="age" placeholder="Age" class="form-control"  type="text"></input>
                             </div>
                         </div>
 
@@ -89,25 +115,38 @@
                                 <label for="email">
                                     <h4>Email</h4>
                                 </label>
-                                <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">
+                                <span class="input-group-addon"><i class="far fa-envelope"></i></span>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Email" title="email">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-xs-6">
-                                <label for="email">
-                                    <h4>Location</h4>
+                                <label for="ville">
+                                    <h4>Ville</h4>
                                 </label>
-                                <input type="email" class="form-control" id="location" placeholder="somewhere" title="enter a location">
+                                <span class="input-group-addon"><i class="fas fa-city"></i></span>
+                                <input ng-model="ville" name="ville" placeholder="Ville" class="form-control"  type="text"></input>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-xs-6">
-                                <label for="password">
-                                    <h4>Password</h4>
+                                <label for="pays">
+                                    <h4>Pays</h4>
                                 </label>
-                                <input type="password" class="form-control" name="password" id="password" placeholder="password" title="enter your password.">
+                                <span class="input-group-addon"><i class="fas fa-globe"></i></span>
+                                <input ng-model="pays" name="pays" placeholder="pays" class="form-control"  type="text"></input>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-6">
+                                <label for="presentation">
+                                    <h4>Presentation</h4>
+                                </label>
+                                <span class="input-group-addon"><i class="fas fa-align-center"></i></span>
+                                <input ng-model="presentation" name="presentation" placeholder="Presentation" class="form-control"  type="text"></input>
                             </div>
                         </div>
 
@@ -115,7 +154,6 @@
                             <div class="col-xs-12">
                                 <br>
                                 <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
-                                <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
                             </div>
                         </div>
                     </form>
@@ -127,7 +165,7 @@
 
 
 
-                <div class="tab-pane" id="messages">
+                <div class="tab-pane" id="messagesPriver">
                     <h2>Messages priver</h2>
                     <hr>
                     <form class="form" role="form">
@@ -143,7 +181,7 @@
 
                 </div>
                 <!--/tab-pane-->
-                <div class="tab-pane" id="settings">
+                <div class="tab-pane" id="messages">
                     <h2>Discussion instantaner</h2>
                     <hr>
                     <form class="form" role="form">

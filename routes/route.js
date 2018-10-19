@@ -16,7 +16,7 @@ m.config(function($routeProvider) {
     })
     .when("/profil:idUtilisateur", {
         templateUrl : "./views/profil.html",
-        controller: "connexionCtrl"
+        controller: "profilCtrl"
     })
     .when("/apropos", {
         templateUrl : "./views/apropos.html"
