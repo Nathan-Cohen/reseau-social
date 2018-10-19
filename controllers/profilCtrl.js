@@ -32,6 +32,7 @@ m.controller('profilCtrl', function($scope, $http, connectionFactorie){
                 $scope.ville = httpResponse.data.profilUtilisateur.ville
                 $scope.pays = httpResponse.data.profilUtilisateur.pays
                 $scope.age = httpResponse.data.profilUtilisateur.age
+                $scope.website = httpResponse.data.profilUtilisateur.website
                 $scope.presentation = httpResponse.data.profilUtilisateur.presentation
 
             }
