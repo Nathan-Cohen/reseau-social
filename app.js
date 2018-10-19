@@ -111,7 +111,7 @@ app.post('/profil', function(req, res) {
         }else{
           if(o){
             console.log('Bien connecter profil');
-            res.send({mail: o.mail, nom: o.nom, prenom: o.prenom, genre: o.genre, ville: o.ville, pays: o.pays, age: o.age, presentation: o.presentation});
+            res.send({profilUtilisateur: o});
 
           }
           else{

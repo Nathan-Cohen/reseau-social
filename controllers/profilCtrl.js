@@ -22,17 +22,17 @@ m.controller('profilCtrl', function($scope, $http, connectionFactorie){
                 console.log('Echec de la recuperation du profil')
             }
             // sinon les donnees sont envoyer par le serveur
-            else if(httpResponse.data.mail){
-                console.log('Recuperation profil reussi', httpResponse.data)
-                $scope.prenomNom = httpResponse.data.prenom + ' ' + httpResponse.data.nom
-                $scope.prenom = httpResponse.data.prenom
-                $scope.nom = httpResponse.data.nom
-                $scope.mail = httpResponse.data.mail
-                $scope.genre = httpResponse.data.genre
-                $scope.ville = httpResponse.data.ville
-                $scope.pays = httpResponse.data.pays
-                $scope.age = httpResponse.data.age
-                $scope.presentation = httpResponse.data.presentation
+            else if(httpResponse.data.profilUtilisateur.mail){
+                console.log('Recuperation profil reussi', httpResponse.data.profilUtilisateur)
+                $scope.prenomNom = httpResponse.data.profilUtilisateur.prenom + ' ' + httpResponse.data.profilUtilisateur.nom
+                $scope.prenom = httpResponse.data.profilUtilisateur.prenom
+                $scope.nom = httpResponse.data.profilUtilisateur.nom
+                $scope.mail = httpResponse.data.profilUtilisateur.mail
+                $scope.genre = httpResponse.data.profilUtilisateur.genre
+                $scope.ville = httpResponse.data.profilUtilisateur.ville
+                $scope.pays = httpResponse.data.profilUtilisateur.pays
+                $scope.age = httpResponse.data.profilUtilisateur.age
+                $scope.presentation = httpResponse.data.profilUtilisateur.presentation
 
             }
 
