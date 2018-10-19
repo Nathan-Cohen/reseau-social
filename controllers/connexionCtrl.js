@@ -4,6 +4,7 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
     $scope.mdp = ""
 
     $scope.funcConnexion = ()=>{
+        // construit l'objet
         utilisateurConnecter = {
             mail: $scope.mail,
             mdp: $scope.mdp
@@ -18,9 +19,11 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
         method: 'POST',
         data: postData
     }).then(function (httpResponse) {
+        // si un message d'erreur est envoyer par le serveur
         if(httpResponse.data.message){
             document.getElementById('reponseConnection').style.display = 'table'
         }
+        // sinon les donnees sont envoyer par le serveur
         else if(httpResponse.data.mail){
             console.log('Connexion reussi', httpResponse.data.prenom)
             $scope.send = function(){

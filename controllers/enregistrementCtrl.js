@@ -15,7 +15,7 @@ m.controller('enregistrementCtrl', function($scope, $http){
 
     // a l'envoie du formulaire on execute la function "funcEnregistrement"
     $scope.funcEnregistrement = ()=>{
-        // creer un objet
+        // construit l'objet
         nouveauUtilisateur = {
             pseudonyme: $scope.pseudonyme,
             nom: $scope.nom,
@@ -54,8 +54,6 @@ m.controller('enregistrementCtrl', function($scope, $http){
         $scope.photo = ""
         $scope.presentation = ""
         $scope.website = ""
-
-        console.log('nouveauUtilisateur', nouveauUtilisateur)
     }
 
 
