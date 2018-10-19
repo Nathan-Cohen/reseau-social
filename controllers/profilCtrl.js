@@ -1,6 +1,7 @@
-m.controller('connexionCtrl', function($scope, $http, $location){
-    $scope.messagetest = "Parti connexion"
+m.controller('profilCtrl', function($scope, $http, $location){
     $scope.prenomNom = "test"
+
+    console.log($scope)
 
     // $scope.funcConnexion = ()=>{
     //     utilisateurConnecter = {
