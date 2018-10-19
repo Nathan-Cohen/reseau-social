@@ -66,15 +66,13 @@ app.post('/connection', function(req, res) {
       console.log("Connexion a la base reussi");
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
       // cherche si l'utilisateur existe deja
-      console.log('req.body.mail', req.body.mail)
-      console.log('req.body', req.body)
       collection.findOne({mail: req.body.mail, password: req.body.mdp}, function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
           if(o){
             console.log('Bien connecter', o);
-            res.send({mail: req.body.mail});
+            res.send({mail: o.mail, nom: o.nom, prenom: o.prenom});
 
           }
           else{

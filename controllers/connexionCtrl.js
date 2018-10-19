@@ -1,4 +1,4 @@
-m.controller('connexionCtrl', function($scope, $http){
+m.controller('connexionCtrl', function($scope, $http, $location){
     $scope.messagetest = "Parti connexion"
     $scope.mail = ""
     $scope.mdp = ""
@@ -18,12 +18,12 @@ m.controller('connexionCtrl', function($scope, $http){
         method: 'POST',
         data: postData
     }).then(function (httpResponse) {
-        console.log('response:', httpResponse.data);
         if(httpResponse.data.message){
-            document.getElementById('reponseConnection').style.display = 'block'
+            document.getElementById('reponseConnection').style.display = 'table'
         }
         else if(httpResponse.data.mail){
-            alert("Connexion reussi")
+            console.log('Connexion reussi', httpResponse.data.prenom)
+            $location.path('/profil' + httpResponse.data.prenom)
         }
 
     })
@@ -31,8 +31,6 @@ m.controller('connexionCtrl', function($scope, $http){
     // Supprime les valeurs dans les champs        
     $scope.mail = ""
     $scope.mdp = ""
-
-    console.log('connexion', utilisateurConnecter)
         
     }
 
