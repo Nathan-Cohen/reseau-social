@@ -17,6 +17,8 @@ app.use(bodyParser.json());
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, 'models/index.html'));
 });
+
+// ENREGISTREMENT
 // recupere les donnees de l'enregistrement pour l'enregistrer dans la BDD
 app.post('/enregistrement', function(req, res) {
   //////////////// CONNEXION A LA BASE ///////////////////
@@ -53,7 +55,7 @@ app.post('/enregistrement', function(req, res) {
 });
 
 
-
+// CONNECTION
 // recupere les donnees de la connection pour verifier dans la BDD
 app.post('/connection', function(req, res) {
   //////////////// CONNEXION A LA BASE ///////////////////
@@ -71,13 +73,51 @@ app.post('/connection', function(req, res) {
           console.log('Echec de connexion a la collection', err.message);
         }else{
           if(o){
-            console.log('Bien connecter', o);
+            console.log('Bien connecter');
             res.send({mail: o.mail, nom: o.nom, prenom: o.prenom});
 
           }
           else{
             console.log('Mot de passe ou adresse mail invalide');
             res.send({message: 'Mot de passe ou adresse mail invalide'});
+          }
+
+        }
+
+      });
+  
+    }
+  });
+  
+});
+
+
+// PROFIL
+// recupere les donnees de la connection pour verifier dans la BDD
+app.post('/profil', function(req, res) {
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      console.log("Connexion a la base reussi");
+      const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+      // cherche si l'utilisateur existe deja
+      console.log('req.body.mail', req.body.mail)
+      collection.findOne({mail: req.body.mail}, function(err, o) {
+        if(err){
+          console.log('Echec de connexion a la collection', err.message);
+        }else{
+          if(o){
+            console.log('Bien connecter profil', o);
+            res.send({mail: o.mail, nom: o.nom, prenom: o.prenom});
+
+          }
+          else{
+            console.log('Erreur de connexion au profil');
+            res.send({message: 'Erreur de connexion au profil'});
           }
 
         }
@@ -106,4 +146,4 @@ io.on('connection', function(socket){
 })
   
  
-server.listen(7006);
+server.listen(7008);

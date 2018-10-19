@@ -1,4 +1,4 @@
-m.controller('connexionCtrl', function($scope, $http, $location){
+m.controller('connexionCtrl', function($scope, $http, $location, connectionFactorie){
     $scope.messagetest = "Parti connexion"
     $scope.mail = ""
     $scope.mdp = ""
@@ -14,7 +14,7 @@ m.controller('connexionCtrl', function($scope, $http, $location){
 
     // envoie des donnees en POST
     $http({
-        url: 'http://127.0.0.1:7006/connection',
+        url: 'http://127.0.0.1:7008/connection',
         method: 'POST',
         data: postData
     }).then(function (httpResponse) {
@@ -23,7 +23,12 @@ m.controller('connexionCtrl', function($scope, $http, $location){
         }
         else if(httpResponse.data.mail){
             console.log('Connexion reussi', httpResponse.data.prenom)
+            $scope.send = function(){
+                connectionFactorie.sendData(utilisateurConnecter);
+            };
+            $scope.send()
             $location.path('/profil' + httpResponse.data.prenom)
+
         }
 
     })
