@@ -15,7 +15,7 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
 
     // envoie des donnees en POST
     $http({
-        url: 'https://reseausocial.herokuapp.com:5000/connection',
+        url: 'https://reseausocial.herokuapp.com/connection',
         method: 'POST',
         data: postData
     }).then(function (httpResponse) {
