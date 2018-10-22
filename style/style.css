@@ -5,6 +5,17 @@
   margin: auto;
 }
 
+#reponseEnregistrement{
+  display: none;
+  width: 335px;
+  margin: auto;
+}
+
+#reponseEnregistrementErreur{
+  display: none;
+  width: 375px;
+  margin: auto;
+}
 
 
 

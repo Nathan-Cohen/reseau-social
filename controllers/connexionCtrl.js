@@ -28,19 +28,20 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
         // sinon les donnees sont envoyer par le serveur
         else if(httpResponse.data.mail){
             console.log('Connexion reussi', httpResponse.data.prenom)
+            // envoie l'information dans la factorie "connection" pour les recuperer dans la page profil
             $scope.send = function(){
                 connectionFactorie.sendData(utilisateurConnecter);
             };
             $scope.send()
+            // change l'url
             $location.path('/profil/' + httpResponse.data.prenom)
+            // Supprime les valeurs dans les champs        
+            $scope.mail = ""
+            $scope.mdp = ""
 
         }
 
     })
-
-    // Supprime les valeurs dans les champs        
-    $scope.mail = ""
-    $scope.mdp = ""
         
     }
 

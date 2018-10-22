@@ -19,7 +19,8 @@ m.controller('profilCtrl', function($scope, $http, $routeParams, connectionFacto
         $http({
             url: urlLocal,
             method: 'POST',
-            data: sessionStorage.utilisateurConnecter
+            // data: sessionStorage.utilisateurConnecter
+            data: postData
         }).then(function (httpResponse) {
             // si un message d'erreur est envoyer par le serveur
             if(httpResponse.data.message){

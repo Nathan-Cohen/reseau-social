@@ -34,18 +34,24 @@ app.post('/enregistrement', function(req, res) {
       // cherche si l'utilisateur existe deja
       mdp = md5(req.body.mdp)
       
-      collection.findOne({nom: req.body.nom, prenom: req.body.prenom, mail: req.body.mail, password: mdp}, function(err, o) {
+      collection.findOne({mail: req.body.mail}, function(err, o) {
         if(err){
           console.log(err.message);
-        }else{
+        }else if(o){
+          res.send({message: 'Adresse mail déjà enregistrer'});                      
+          
+        }
+        else{
           mdp = md5(req.body.mdp)
           // si il m'existe pas on l'insert
           collection.insertOne({nom: req.body.nom, prenom: req.body.prenom, mail: req.body.mail, password: mdp, genre: req.body.genre, age: req.body.age, ville: req.body.ville, pays: req.body.pays, photo: req.body.photo, presentation: req.body.presentation, website: req.body.website}, function(err, o) {
             if(err){
               console.log(err.message);
+              res.send({message: 'Erreur'});            
             }
             else{
               console.log("Nouvel utilisateur : ");
+              res.send({mail: req.body.mail, nom: req.body.nom, prenom: req.body.prenom});                          
 
             }
           });

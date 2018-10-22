@@ -1,4 +1,4 @@
-m.controller('enregistrementCtrl', function($scope, $http){
+m.controller('enregistrementCtrl', function($scope, $http, $location, connectionFactorie){
     $scope.messagetest = "Parti enregistrement"
     $scope.pseudonyme = ""
     $scope.nom = ""
@@ -41,22 +41,40 @@ m.controller('enregistrementCtrl', function($scope, $http){
             method: 'POST',
             data: postData
         }).then(function (httpResponse) {
-            console.log('response:', httpResponse);
+            console.log('response enregistrement:', httpResponse);
+            if(httpResponse.data.message == 'Erreur'){
+                document.getElementById('reponseEnregistrementErreur').style.display = 'table'
+                
+            }
+            else if(httpResponse.data.message == 'Adresse mail déjà enregistrer'){
+                document.getElementById('reponseEnregistrement').style.display = 'table'
+                
+            }
+            else{
+                // envoie l'information dans la factorie "connection" pour les recuperer dans la page profil
+                $scope.send = function(){
+                    connectionFactorie.sendData(nouveauUtilisateur);
+                };
+                $scope.send()
+                // change l'url
+                $location.path('/profil/' + httpResponse.data.prenom)
+                // Supprime les valeurs dans les champs
+                $scope.pseudonyme = ""
+                $scope.nom = ""
+                $scope.prenom = ""
+                $scope.mdp = ""
+                $scope.mail = ""
+                $scope.genre = ""
+                $scope.age = ""
+                $scope.ville = ""
+                $scope.pays = ""
+                $scope.photo = ""
+                $scope.presentation = ""
+                $scope.website = ""
+
+            }
         })
 
-        // Supprime les valeurs dans les champs
-        $scope.pseudonyme = ""
-        $scope.nom = ""
-        $scope.prenom = ""
-        $scope.mdp = ""
-        $scope.mail = ""
-        $scope.genre = ""
-        $scope.age = ""
-        $scope.ville = ""
-        $scope.pays = ""
-        $scope.photo = ""
-        $scope.presentation = ""
-        $scope.website = ""
     }
 
 
