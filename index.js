@@ -2,6 +2,7 @@ const express = require('express')
 const mongo = require('mongodb').MongoClient;
 const path = require('path')
 var bodyParser = require('body-parser')
+var md5 = require('md5')
 
 //////////////// CREATE SERVER //////////////
 app = express()
@@ -31,12 +32,15 @@ app.post('/enregistrement', function(req, res) {
       console.log("Connexion a la base reussi");
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
       // cherche si l'utilisateur existe deja
-      collection.findOne({nom: req.body.nom, prenom: req.body.prenom, mail: req.body.mail, password: req.body.mdp}, function(err, o) {
+      mdp = md5(req.body.mdp)
+      
+      collection.findOne({nom: req.body.nom, prenom: req.body.prenom, mail: req.body.mail, password: mdp}, function(err, o) {
         if(err){
           console.log(err.message);
         }else{
+          mdp = md5(req.body.mdp)
           // si il m'existe pas on l'insert
-          collection.insertOne({nom: req.body.nom, prenom: req.body.prenom, mail: req.body.mail, password: req.body.mdp, genre: req.body.genre, age: req.body.age, ville: req.body.ville, pays: req.body.pays, photo: req.body.photo, presentation: req.body.presentation, website: req.body.website}, function(err, o) {
+          collection.insertOne({nom: req.body.nom, prenom: req.body.prenom, mail: req.body.mail, password: mdp, genre: req.body.genre, age: req.body.age, ville: req.body.ville, pays: req.body.pays, photo: req.body.photo, presentation: req.body.presentation, website: req.body.website}, function(err, o) {
             if(err){
               console.log(err.message);
             }
@@ -67,8 +71,9 @@ app.post('/connection', function(req, res) {
     else{
       console.log("Connexion a la base reussi");
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+      mdp = md5(req.body.mdp)
       // cherche si l'utilisateur existe deja
-      collection.findOne({mail: req.body.mail, password: req.body.mdp}, function(err, o) {
+      collection.findOne({mail: req.body.mail, password: mdp}, function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
@@ -104,6 +109,7 @@ app.post('/profil', function(req, res) {
     else{
       console.log("Connexion a la base reussi");
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+      console.log(req.body.mail)
       // cherche si l'utilisateur existe deja
       collection.findOne({mail: req.body.mail}, function(err, o) {
         if(err){
@@ -145,4 +151,4 @@ io.on('connection', function(socket){
 })
   
  
-server.listen(7008);
+server.listen(process.env.PORT || 5000);

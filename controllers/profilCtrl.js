@@ -1,4 +1,4 @@
-m.controller('profilCtrl', function($scope, $http, connectionFactorie){
+m.controller('profilCtrl', function($scope, $http, $routeParams, connectionFactorie){
     // recupere l'adresse mail a la connexion ou a l'enregistrement
     var utilisateur = connectionFactorie.getData();
 
@@ -10,12 +10,15 @@ m.controller('profilCtrl', function($scope, $http, connectionFactorie){
 
         // transforme en JSON
         var postData = angular.toJson(utilisateurConnecter, true);
+        if(postData != '{}'){
+            sessionStorage.utilisateurConnecter = postData
+        }
 
         // envoie des donnees en POST
         $http({
-            url: 'http://127.0.0.1:7008/profil',
+            url: 'http://127.0.0.1:5000/profil',
             method: 'POST',
-            data: postData
+            data: sessionStorage.utilisateurConnecter
         }).then(function (httpResponse) {
             // si un message d'erreur est envoyer par le serveur
             if(httpResponse.data.message){

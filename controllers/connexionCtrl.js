@@ -15,7 +15,7 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
 
     // envoie des donnees en POST
     $http({
-        url: 'http://127.0.0.1:7008/connection',
+        url: 'http://127.0.0.1:5000/connection',
         method: 'POST',
         data: postData
     }).then(function (httpResponse) {
@@ -30,7 +30,7 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
                 connectionFactorie.sendData(utilisateurConnecter);
             };
             $scope.send()
-            $location.path('/profil' + httpResponse.data.prenom)
+            $location.path('/profil/' + httpResponse.data.prenom)
 
         }
 
