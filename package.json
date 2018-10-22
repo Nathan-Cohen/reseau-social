@@ -19,6 +19,7 @@
   "dependencies": {
     "angularjs": "0.0.1",
     "express": "^4.16.3",
+    "md5": "^2.2.1",
     "mongodb": "^3.1.6",
     "socket.io": "^2.1.1"
   }
