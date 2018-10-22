@@ -13,10 +13,11 @@ m.controller('profilCtrl', function($scope, $http, $routeParams, connectionFacto
         if(postData != '{}'){
             sessionStorage.utilisateurConnecter = postData
         }
-
+        var urlLocal = "http://127.0.0.1:5000/profil"
+        var urlEnLigne = "https://reseausocial.herokuapp.com/profil"
         // envoie des donnees en POST
         $http({
-            url: 'https://reseausocial.herokuapp.com/profil',
+            url: urlLocal,
             method: 'POST',
             data: sessionStorage.utilisateurConnecter
         }).then(function (httpResponse) {
