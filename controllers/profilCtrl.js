@@ -16,7 +16,7 @@ m.controller('profilCtrl', function($scope, $http, $routeParams, connectionFacto
 
         // envoie des donnees en POST
         $http({
-            url: 'http://127.0.0.1:5000/profil',
+            url: 'https://reseausocial.herokuapp.com:5000/profil',
             method: 'POST',
             data: sessionStorage.utilisateurConnecter
         }).then(function (httpResponse) {
