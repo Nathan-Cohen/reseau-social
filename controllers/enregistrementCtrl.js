@@ -34,7 +34,7 @@ m.controller('enregistrementCtrl', function($scope, $http){
         var postData = angular.toJson(nouveauUtilisateur, true);
         // envoie des donnees en POST
         $http({
-            url: 'https://reseausocial.herokuapp.com:5000/enregistrement',
+            url: 'https://reseausocial.herokuapp.com/enregistrement',
             method: 'POST',
             data: postData
         }).then(function (httpResponse) {
