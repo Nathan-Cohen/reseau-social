@@ -14,7 +14,7 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
         var postData = angular.toJson(utilisateurConnecter, true);
 
         var urlLocal = "http://127.0.0.1:5000/connection"
-        var urlEnLigne = "https://reseausocial.herokuapp.com/connection"
+        var urlEnLigne = "https://reseausocial.herokuapp.com:5000/connection"
 
         // envoie des donnees en POST
         $http({
