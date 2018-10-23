@@ -5,14 +5,6 @@ m.directive('actualite', function(){
         },
         template: `
         <div>
-            <div class="container">
-                <div class="row">
-                    <div class="thumbnail center well well-md text-center">
-                        <h2>Actualité</h2>                    
-                    </div>
-                </div>
-            </div>
-
             <!-- directive -->
             <recherchebar></recherchebar>
 
