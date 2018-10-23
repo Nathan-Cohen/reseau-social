@@ -68,14 +68,6 @@ app.post('/enregistrement', function(req, res) {
 // CONNECTION
 // recupere les donnees de la connection pour verifier dans la BDD
 app.post('/connection', function(req, res) {
-
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'); // If needed
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,contenttype'); // If needed
-  res.setHeader('Access-Control-Allow-Credentials', true); // If needed
-
-
-
   //////////////// CONNEXION A LA BASE ///////////////////
   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
   mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
