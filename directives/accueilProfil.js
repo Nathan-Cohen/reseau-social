@@ -1,18 +1,18 @@
 m.directive('accueilprofil', function(){
     var directiveDefsAccueilProfil = {
         controller: function($scope){
-          console.log('localStorage profil', localStorage)            
+          console.log('localStorage profil', localStorage)
             if(localStorage.mail){
                 $scope.mailUtilisateur = localStorage.mail; 
                 $scope.prenomUtilisateur = localStorage.prenom;
 
-                $('.resizeDivTitre').addClass('col-sm-8')        
-                $('.resizeDivTitre').addClass('titreActualite')        
+                $('.resizeDivTitre').addClass('col-sm-9')  
+                $('.resizeDivTitre').addClass('titreActualite')
               }
         },
         template: `
             <div class="container" ng-if="mailUtilisateur">
-            <div class="row col-sm-4">
+            <div class="row col-sm-3">
             <div class="well well-lg" ng-if='mailUtilisateur'>
                 <div>
                     <a href="#!/profil/{{prenomUtilisateur}}"><i class="far fa-user-circle"></i> {{prenomUtilisateur}}</a>

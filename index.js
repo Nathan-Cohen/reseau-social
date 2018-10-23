@@ -103,6 +103,46 @@ app.post('/connection', function(req, res) {
 });
 
 
+
+// BAR DE RECHERCHE
+// recupere les donnees de la connection pour verifier dans la BDD
+app.post('/search', function(req, res) {
+  console.log('req.body.searchEnCour', req.body.searchEnCour)
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      console.log("Connexion a la base reussi");
+      const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+      // cherche si l'utilisateur existe deja
+      var query = { nom: /^t/ };
+      collection.find(query).toArray(function(err, o) {
+        if(err){
+          console.log('Echec de connexion a la collection', err.message);
+        }else{
+          if(o){
+            console.log('Recherche effectuer', o);
+            res.send({search: o});
+
+          }
+          else{
+            console.log('Recherche echouer');
+            res.send({message: 'Recherche echouer'});
+          }
+
+        }
+
+      });
+  
+    }
+  });
+  
+});
+
+
 // PROFIL
 // recupere les donnees de la connection pour verifier dans la BDD
 app.post('/profil', function(req, res) {

@@ -9,7 +9,6 @@ m.directive('publicationbar', function(){
 
         },
         template: `
-          <div class="container">
             <div class="row">
               <div class="well well-lg" ng-if='mailUtilisateur'>
                 <div class="media1">
@@ -20,14 +19,13 @@ m.directive('publicationbar', function(){
                 <div class="media-body">
                                                       
                   <div class="form-group" style="padding:12px;">
-                    <textarea class="form-control animated" placeholder="Update your status"></textarea>
+                    <textarea class="form-control animated" placeholder="Publier un statut"></textarea>
                     <button class="btn btn-info pull-right" style="margin-top:10px" type="button">Share</button>
                   </div>
                             
                 </div>
               </div>
             </div>
-          </div>
         `
 
     }

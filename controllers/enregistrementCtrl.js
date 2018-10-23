@@ -1,6 +1,4 @@
 m.controller('enregistrementCtrl', function($scope, $http, $location, connectionFactorie){
-    $scope.messagetest = "Parti enregistrement"
-    $scope.pseudonyme = ""
     $scope.nom = ""
     $scope.prenom = ""
     $scope.mdp = ""
@@ -17,7 +15,6 @@ m.controller('enregistrementCtrl', function($scope, $http, $location, connection
     $scope.funcEnregistrement = ()=>{
         // construit l'objet
         nouveauUtilisateur = {
-            pseudonyme: $scope.pseudonyme,
             nom: $scope.nom,
             prenom: $scope.prenom,
             mdp: $scope.mdp,
@@ -62,7 +59,6 @@ m.controller('enregistrementCtrl', function($scope, $http, $location, connection
                 localStorage.setItem('mdp', httpResponse.data.mdp)
                 localStorage.setItem('prenom', httpResponse.data.prenom)
                 // Supprime les valeurs dans les champs
-                $scope.pseudonyme = ""
                 $scope.nom = ""
                 $scope.prenom = ""
                 $scope.mdp = ""
