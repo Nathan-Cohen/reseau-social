@@ -85,7 +85,7 @@ app.post('/connection', function(req, res) {
         }else{
           if(o){
             console.log('Bien connecter');
-            res.send({mail: o.mail, nom: o.nom, prenom: o.prenom});
+            res.send({mail: o.mail, nom: o.nom, prenom: o.prenom, mdp: o.password});
 
           }
           else{
