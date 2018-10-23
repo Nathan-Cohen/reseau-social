@@ -6,8 +6,6 @@ m.directive('actualite', function(){
         template: `
         <div>
             <!-- directive -->
-            <recherchebar></recherchebar>
-
             <div class='container'>
                 <div class="well">
                     <div class="media">

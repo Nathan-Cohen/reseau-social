@@ -37,7 +37,7 @@ m.controller('enregistrementCtrl', function($scope, $http, $location, connection
         var urlEnLigne = "https://reseausocial.herokuapp.com/enregistrement"
         // envoie des donnees en POST
         $http({
-            url: urlEnLigne,
+            url: urlLocal,
             method: 'POST',
             data: postData
         }).then(function (httpResponse) {

@@ -17,7 +17,7 @@ m.controller('profilCtrl', function($scope, $http, $routeParams, connectionFacto
         var urlEnLigne = "https://reseausocial.herokuapp.com/profil"
         // envoie des donnees en POST
         $http({
-            url: urlEnLigne,
+            url: urlLocal,
             method: 'POST',
             data: sessionStorage.utilisateurConnecter
             // data: postData
