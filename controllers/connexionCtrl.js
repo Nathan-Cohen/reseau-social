@@ -18,7 +18,7 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
 
         // envoie des donnees en POST
         $http({
-            url: urlLocal,
+            url: urlEnLigne,
             method: 'POST',
             data: postData
         }).then(function (httpResponse) {
@@ -34,8 +34,8 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
                     connectionFactorie.sendData(utilisateurConnecter);
                 };
                 $scope.send()
-                console.log ('connect', httpResponse)
-                // enregistre le mail et le mot de passe en local
+                console.log ('httpResponse', httpResponse)
+                // enregistre le mail, le mot de passe et le prenom en local
                 localStorage.setItem('mail', httpResponse.data.mail)
                 localStorage.setItem('mdp', httpResponse.data.mdp)
                 localStorage.setItem('prenom', httpResponse.data.prenom)
