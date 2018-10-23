@@ -9,20 +9,25 @@ m.directive('publicationbar', function(){
 
         },
         template: `
-        <div class="well well-lg" ng-if='mailUtilisateur'>
-          <div class="media1">
-          <a class="pull-left" href="#">
-            <img class="media-object img-circle" width="80px" src="" alt="Image">
-          </a>
-          <div class="media-body">
-                                                
-            <div class="form-group" style="padding:12px;">
-              <textarea class="form-control animated" placeholder="Update your status"></textarea>
-              <button class="btn btn-info pull-right" style="margin-top:10px" type="button">Share</button>
+          <div class="container">
+            <div class="row">
+              <div class="well well-lg" ng-if='mailUtilisateur'>
+                <div class="media1">
+                <a class="pull-left" href="#">
+                  <i class="far fa-images" style="font-size: 70px;"></i>
+                  <!-- <img class="media-object img-circle" width="80px" src="" alt="Image"> -->
+                </a>
+                <div class="media-body">
+                                                      
+                  <div class="form-group" style="padding:12px;">
+                    <textarea class="form-control animated" placeholder="Update your status"></textarea>
+                    <button class="btn btn-info pull-right" style="margin-top:10px" type="button">Share</button>
+                  </div>
+                            
+                </div>
+              </div>
             </div>
-                       
           </div>
-        </div>
         `
 
     }
