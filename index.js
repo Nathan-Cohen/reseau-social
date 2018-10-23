@@ -1,3 +1,4 @@
+header('Access-Control-Allow-Origin: *');
 const express = require('express')
 const mongo = require('mongodb').MongoClient;
 const path = require('path')
