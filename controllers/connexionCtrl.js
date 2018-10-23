@@ -34,7 +34,7 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
                     connectionFactorie.sendData(utilisateurConnecter);
                 };
                 $scope.send()
-                console.log ('connect', httpResponse.data)
+                console.log ('connect', httpResponse)
                 // enregistre le mail et le mot de passe en local
                 localStorage.setItem('mail', httpResponse.data.mail)
                 localStorage.setItem('mdp', httpResponse.data.mdp)

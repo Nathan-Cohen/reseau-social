@@ -51,7 +51,7 @@ app.post('/enregistrement', function(req, res) {
             }
             else{
               console.log("Nouvel utilisateur : ");
-              res.send({mail: req.body.mail, nom: req.body.nom, prenom: req.body.prenom});                          
+              res.send({mail: req.body.mail, nom: req.body.nom, prenom: req.body.prenom, mdp: o.password});                          
 
             }
           });
