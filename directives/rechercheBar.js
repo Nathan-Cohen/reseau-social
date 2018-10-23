@@ -18,7 +18,7 @@ m.directive('recherchebar', function(){
                 console.log('complete', searchEnCour)
                 // envoie des donnees en POST            
                 $http({
-                    url: urlLocal,
+                    url: urlEnLigne,
                     method: 'POST',
                     // data: searchEnCour
                 }).then(function (httpResponse) {

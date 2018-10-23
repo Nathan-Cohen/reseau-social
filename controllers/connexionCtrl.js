@@ -18,7 +18,7 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
 
         // envoie des donnees en POST
         $http({
-            url: urlLocal,
+            url: urlEnLigne,
             method: 'POST',
             data: postData
         }).then(function (httpResponse) {
