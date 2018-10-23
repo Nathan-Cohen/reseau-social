@@ -24,6 +24,10 @@ m.config(function($routeProvider) {
     .when("/contact", {
         templateUrl : "./views/contact.html"
     })
+    .when("/deconnexion", {
+        controller: "deconnexionCtrl",
+        templateUrl : "./views/accueil.html"
+    })
     .otherwise({
         redirectTo: '/accueil'
     });

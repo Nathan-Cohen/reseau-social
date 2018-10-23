@@ -44,11 +44,9 @@ m.controller('enregistrementCtrl', function($scope, $http, $location, connection
             console.log('response enregistrement:', httpResponse);
             if(httpResponse.data.message == 'Erreur'){
                 document.getElementById('reponseEnregistrementErreur').style.display = 'table'
-                
             }
             else if(httpResponse.data.message == 'Adresse mail déjà enregistrer'){
                 document.getElementById('reponseEnregistrement').style.display = 'table'
-                
             }
             else{
                 // envoie l'information dans la factorie "connection" pour les recuperer dans la page profil

@@ -1,4 +1,13 @@
-/* Connection */
+/* ///////////////MENU//////////////// */
+#deconnexion{
+  float: right;
+  margin-top: -35px;
+  margin-right: 15px
+}
+
+
+
+/* //////////////////Message Alert, Erreur, Succes/////////////////// */
 #reponseConnection{
   display: none;
   width: 375px;
@@ -24,6 +33,7 @@
 
 .searchRight{
   float: right;
+  margin-right: 15px
 }
 
 

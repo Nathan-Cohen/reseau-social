@@ -38,6 +38,7 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
                 // enregistre le mail et le mot de passe en local
                 localStorage.setItem('mail', httpResponse.data.mail)
                 localStorage.setItem('mdp', httpResponse.data.mdp)
+                localStorage.setItem('prenom', httpResponse.data.prenom)
                 // change l'url
                 $location.path('/profil/' + httpResponse.data.prenom)
                 // Supprime les valeurs dans les champs        
@@ -49,10 +50,8 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
         })
         
     }
-    if(localStorage.mdp && localStorage.mail){
-        $scope.mail = localStorage.mail
-        // $scope.mdp = localStorage.mdp
-        // $scope.funcConnexion()
+    if(localStorage.mdp && localStorage.mail && localStorage.prenom){
+        $location.path('/profil/' + localStorage.prenom)
     }
 
 })
