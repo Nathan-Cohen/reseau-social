@@ -107,7 +107,7 @@ app.post('/connection', function(req, res) {
 // BAR DE RECHERCHE
 // recupere les donnees de la connection pour verifier dans la BDD
 app.post('/search', function(req, res) {
-  console.log('req.body.searchEnCour', req.body.searchEnCour)
+  console.log('req.body.message', req.body.message)
   //////////////// CONNEXION A LA BASE ///////////////////
   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
   mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
@@ -118,15 +118,24 @@ app.post('/search', function(req, res) {
       console.log("Connexion a la base reussi");
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
       // cherche si l'utilisateur existe deja
-      var query = { nom: /^t/ };
-      collection.find(query).toArray(function(err, o) {
+      var test = req.body.message;
+      var query = { nomString: test};
+      console.log('query.nomString', query.nomString)
+      collection.find({ 'nom': { '$regex': query.nomString } }).toArray(function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
           if(o){
-            console.log('Recherche effectuer', o);
-            res.send({search: o});
-
+            console.log('Resultat', o);
+              if(o.length == 0){
+                console.log('Aucun resultat');
+                res.send({search: 'Aucun resultat'});
+              }
+              else{
+                console.log('Recherche effectuer', o);
+                // {nom: o.nom, prenom: o.prenom, mail: o.mail}
+                res.send({search: o});
+              }
           }
           else{
             console.log('Recherche echouer');
@@ -197,4 +206,4 @@ io.on('connection', function(socket){
 })
   
  
-server.listen(process.env.PORT || 5000);
+server.listen(process.env.PORT || 5001);
