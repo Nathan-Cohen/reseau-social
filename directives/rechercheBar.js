@@ -25,14 +25,11 @@ m.directive('recherchebar', function(){
                     }
                     // sinon il y a un resultat
                     else{
-                        console.log('search success', httpResponse.data.search[0].nom)
                         // Construit le tableau
-                        output.push(httpResponse.data.search[0].nom);
-                        // angular.forEach(httpResponse.data.search,function(item){
-                        //     if(item.toLowerCase().indexOf(string.toLowerCase())>=0){
-                        //         output.push(item);
-                        //     }
-                        // });
+                        angular.forEach(httpResponse.data.search,function(item){
+                            itemTotal = {prenom: item.prenom, nom: item.nom}
+                            output.push(itemTotal);
+                        });
 
                     }
                 })
@@ -50,7 +47,7 @@ m.directive('recherchebar', function(){
                             <label for="search" class="sr-only">Search</label>
                             <input type="text" name="search" id="search" ng-model="search" ng-keyup="complete(search)" class="form-control" placeholder="search" autocomplete="off"/>
                             <ul class="list-group">
-                                <li class="list-group-item" ng-repeat="itemData in totalItem" ng-click="selectItem(itemData)">{{itemData}}</li>
+                                <li class="list-group-item" ng-repeat="itemData in totalItem" ng-click="selectItem(itemData)"><a href="#!/profil/{{itemData.prenom}}">{{itemData.prenom}} {{itemData.nom}}</a></li>
                             </ul>
                             <span class="glyphicon glyphicon-search form-control-feedback"></span>
                         </div>
