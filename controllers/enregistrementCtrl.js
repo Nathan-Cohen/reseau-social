@@ -31,7 +31,7 @@ m.controller('enregistrementCtrl', function($scope, $http, $location, connection
         var postData = angular.toJson(nouveauUtilisateur, true);
 
         var urlLocal = "http://127.0.0.1:5000/enregistrement"
-        var urlEnLigne = "https://reseausocial.herokuapp.com/enregistrement"
+        var urlEnLigne = "/enregistrement"
         // envoie des donnees en POST
         $http({
             url: urlEnLigne,
