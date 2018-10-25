@@ -1,10 +1,10 @@
 m.directive('publicationbar', function(){
     var directiveDefsPublicationBar = {
         controller: function($scope){
-          // console.log('localStorage', localStorage)
+          // console.log('sessionStorage', sessionStorage)
           // si l'utilisateur est deja connecter on inserer le mail dans la variable mailUtilisateur
-          if(localStorage.mail){
-            $scope.mailUtilisateur = localStorage.mail;        
+          if(sessionStorage.mail){
+            $scope.mailUtilisateur = sessionStorage.mail;        
           }
 
         },

@@ -3,6 +3,7 @@ const mongo = require('mongodb').MongoClient;
 const path = require('path')
 var bodyParser = require('body-parser')
 var md5 = require('md5')
+var ObjectID = require('mongodb').ObjectID
 
 //////////////// CREATE SERVER //////////////
 app = express()
@@ -51,7 +52,7 @@ app.post('/enregistrement', function(req, res) {
             }
             else{
               console.log("Nouvel utilisateur : ");
-              res.send({mail: req.body.mail, nom: req.body.nom, prenom: req.body.prenom, mdp: o.password});                          
+              res.send({id: o._id, mail: req.body.mail, nom: req.body.nom, prenom: req.body.prenom, mdp: o.password});                          
 
             }
           });
@@ -84,8 +85,8 @@ app.post('/connection', function(req, res) {
           console.log('Echec de connexion a la collection', err.message);
         }else{
           if(o){
-            console.log('Bien connecter');
-            res.send({mail: o.mail, nom: o.nom, prenom: o.prenom, mdp: o.password});
+            console.log('Bien connecter', o._id);
+            res.send({id: o._id, mail: o.mail, nom: o.nom, prenom: o.prenom, mdp: o.password});
 
           }
           else{
@@ -164,14 +165,14 @@ app.post('/profil', function(req, res) {
     else{
       console.log("Connexion a la base reussi");
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
-      console.log(req.body.mail)
-      // cherche si l'utilisateur existe deja
-      collection.findOne({mail: req.body.mail}, function(err, o) {
+      console.log('profil connexion', req.body)
+      // cherche si l'utilisateur existe
+      collection.find({'_id': ObjectID(req.body.id)}).toArray(function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
           if(o){
-            console.log('Bien connecter profil');
+            console.log('Bien connecter profil', o);
             res.send({profilUtilisateur: o});
 
           }

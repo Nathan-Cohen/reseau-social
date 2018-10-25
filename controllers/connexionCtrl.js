@@ -28,19 +28,19 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
             }
             // sinon les donnees sont envoyer par le serveur
             else if(httpResponse.data.mail){
-                console.log('Connexion reussi', httpResponse.data.prenom)
+                console.log('Connexion reussi', httpResponse.data)
                 // envoie l'information dans la factorie "connection" pour les recuperer dans la page profil
                 $scope.send = function(){
                     connectionFactorie.sendData(utilisateurConnecter);
                 };
                 $scope.send()
-                console.log ('httpResponse', httpResponse)
                 // enregistre le mail, le mot de passe et le prenom en local
-                localStorage.setItem('mail', httpResponse.data.mail)
-                localStorage.setItem('mdp', httpResponse.data.mdp)
-                localStorage.setItem('prenom', httpResponse.data.prenom)
+                sessionStorage.setItem('id', httpResponse.data.id)
+                sessionStorage.setItem('mail', httpResponse.data.mail)
+                sessionStorage.setItem('mdp', httpResponse.data.mdp)
+                sessionStorage.setItem('prenom', httpResponse.data.prenom)
                 // change l'url
-                $location.path('/profil/' + httpResponse.data.prenom)
+                $location.path('/profil/' + httpResponse.data.id)
                 // Supprime les valeurs dans les champs        
                 $scope.mail = ""
                 $scope.mdp = ""
@@ -50,8 +50,8 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
         })
         
     }
-    if(localStorage.mdp && localStorage.mail && localStorage.prenom){
-        $location.path('/profil/' + localStorage.prenom)
+    if(sessionStorage.mdp && sessionStorage.mail && sessionStorage.prenom){
+        $location.path('/profil/' + sessionStorage.id)
     }
 
 })

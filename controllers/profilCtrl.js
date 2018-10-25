@@ -5,40 +5,48 @@ m.controller('profilCtrl', function($scope, $http, $routeParams, connectionFacto
     $scope.rechercheProfil = ()=>{
         // construit l'objet
         utilisateurConnecter = {
-            mail: utilisateur.mail
+            id: sessionStorage.id,
+            mail: sessionStorage.mail,
+            mdp: sessionStorage.mdp,
+            prenom: sessionStorage.prenom
         }
-
+        
+        paramRoute = {
+            id: $routeParams.idUtilisateur
+        }
         // transforme en JSON
-        var postData = angular.toJson(utilisateurConnecter, true);
-        if(postData != '{}'){
-            sessionStorage.utilisateurConnecter = postData
-        }
+        var utilisateurJsonData = angular.toJson(utilisateurConnecter, true);
+        var routeJsonData = angular.toJson(paramRoute, true);
+        sessionStorage.utilisateurConnecter = utilisateurJsonData
+        
         var urlLocal = "http://127.0.0.1:5000/profil"
         var urlEnLigne = "/profil"
+        var UserId = $routeParams.idUtilisateur
+        console.log("id of user " + routeJsonData);
         // envoie des donnees en POST
         $http({
             url: urlEnLigne,
             method: 'POST',
-            data: sessionStorage.utilisateurConnecter
-            // data: postData
+            data: routeJsonData
+            // data: utilisateurJsonData
         }).then(function (httpResponse) {
+            console.log('Recuperation profil reussi', httpResponse.data.profilUtilisateur)
             // si un message d'erreur est envoyer par le serveur
             if(httpResponse.data.message){
                 console.log('Echec de la recuperation du profil')
             }
             // sinon les donnees sont envoyer par le serveur
-            else if(httpResponse.data.profilUtilisateur.mail){
-                console.log('Recuperation profil reussi', httpResponse.data.profilUtilisateur)
-                $scope.prenomNom = httpResponse.data.profilUtilisateur.prenom + ' ' + httpResponse.data.profilUtilisateur.nom
-                $scope.prenom = httpResponse.data.profilUtilisateur.prenom
-                $scope.nom = httpResponse.data.profilUtilisateur.nom
-                $scope.mail = httpResponse.data.profilUtilisateur.mail
-                $scope.genre = httpResponse.data.profilUtilisateur.genre
-                $scope.ville = httpResponse.data.profilUtilisateur.ville
-                $scope.pays = httpResponse.data.profilUtilisateur.pays
-                $scope.age = httpResponse.data.profilUtilisateur.age
-                $scope.website = httpResponse.data.profilUtilisateur.website
-                $scope.presentation = httpResponse.data.profilUtilisateur.presentation
+            else if(httpResponse.data.profilUtilisateur[0].mail){
+                $scope.prenomNom = httpResponse.data.profilUtilisateur[0].prenom + ' ' + httpResponse.data.profilUtilisateur[0].nom
+                $scope.prenom = httpResponse.data.profilUtilisateur[0].prenom
+                $scope.nom = httpResponse.data.profilUtilisateur[0].nom
+                $scope.mail = httpResponse.data.profilUtilisateur[0].mail
+                $scope.genre = httpResponse.data.profilUtilisateur[0].genre
+                $scope.ville = httpResponse.data.profilUtilisateur[0].ville
+                $scope.pays = httpResponse.data.profilUtilisateur[0].pays
+                $scope.age = httpResponse.data.profilUtilisateur[0].age
+                $scope.website = httpResponse.data.profilUtilisateur[0].website
+                $scope.presentation = httpResponse.data.profilUtilisateur[0].presentation
 
             }
 

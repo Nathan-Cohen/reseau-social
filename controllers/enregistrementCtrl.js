@@ -52,12 +52,13 @@ m.controller('enregistrementCtrl', function($scope, $http, $location, connection
                 };
                 $scope.send()
                 // change l'url
-                $location.path('/profil/' + httpResponse.data.prenom)
+                $location.path('/profil/' + httpResponse.data.id)
                 console.log('httpResponse.data', httpResponse.data)
                 // enregistre le mail et le mot de passe en local
-                localStorage.setItem('mail', httpResponse.data.mail)
-                localStorage.setItem('mdp', httpResponse.data.mdp)
-                localStorage.setItem('prenom', httpResponse.data.prenom)
+                sessionStorage.setItem('id', httpResponse.data.id)
+                sessionStorage.setItem('mail', httpResponse.data.mail)
+                sessionStorage.setItem('mdp', httpResponse.data.mdp)
+                sessionStorage.setItem('prenom', httpResponse.data.prenom)
                 // Supprime les valeurs dans les champs
                 $scope.nom = ""
                 $scope.prenom = ""
