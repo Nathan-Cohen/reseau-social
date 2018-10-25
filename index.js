@@ -237,24 +237,24 @@ app.post('/ajouteami', function(req, res) {
       console.log("Connexion a la base reussi");
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
       // console.log('ajouterAmi connexion', req.body)
-      // cherche si l'utilisateur existe
-      collection.updateOne({'_id': ObjectID(req.body.idEnCour)}, {$set: {ami: req.body.id}}, function(err, o) {
-        if(err){
-          console.log('Echec de connexion a la collection', err.message);
-        }else{
-          if(o){
-            console.log('Ajout a la liste reussi');
-            res.send({profilUtilisateur: o});
+      // met a jour la liste d'ami
+      // collection.updateOne({'_id': ObjectID(req.body.idEnCour)}, {$set: {ami: req.body.id}}, function(err, o) {
+      //   if(err){
+      //     console.log('Echec de connexion a la collection', err.message);
+      //   }else{
+      //     if(o){
+      //       console.log('Ajout a la liste reussi');
+      //       res.send({profilUtilisateur: o});
 
-          }
-          else{
-            console.log('Erreur de connexion au ajouterAmi');
-            res.send({message: 'Erreur de connexion ajouterAmi'});
-          }
+      //     }
+      //     else{
+      //       console.log('Erreur de connexion au ajouterAmi');
+      //       res.send({message: 'Erreur de connexion ajouterAmi'});
+      //     }
 
-        }
+      //   }
 
-      });
+      // });
 
       // ajoute une notification de demande ami
       collection.updateOne({'_id': ObjectID(req.body.id)}, {$set: {demandeAjoutAmi: req.body.idEnCour}}, function(err, o) {
@@ -263,10 +263,13 @@ app.post('/ajouteami', function(req, res) {
         }else{
           if(o){
             console.log('Notification envoyer');
+            res.send({profilUtilisateur: o});
 
           }
           else{
             console.log('Erreur de connexion');
+            res.send({message: 'Erreur de connexion ajouterAmi'});
+
           }
 
         }
@@ -279,7 +282,7 @@ app.post('/ajouteami', function(req, res) {
 });
 
 
-// PROFIL VISITEUR
+// ACCEPTE OU REFUSE LA DEMANDE D'AMI
 // recupere les donnees de la connection pour verifier dans la BDD
 app.post('/choixajouteami', function(req, res) {
   //////////////// CONNEXION A LA BASE ///////////////////

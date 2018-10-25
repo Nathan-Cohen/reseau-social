@@ -50,14 +50,14 @@ m.controller('enregistrementCtrl', function($scope, $http, $location, connection
                     connectionFactorie.sendData(nouveauUtilisateur);
                 };
                 $scope.send()
-                // change l'url
-                $location.path('/profil/' + httpResponse.data.id)
                 console.log('httpResponse.data', httpResponse.data)
-                // enregistre le mail et le mot de passe en local
+                // enregistre l'id, le mail, le mot de passe et le prenom de passe en local
                 sessionStorage.setItem('id', httpResponse.data.id)
                 sessionStorage.setItem('mail', httpResponse.data.mail)
                 sessionStorage.setItem('mdp', httpResponse.data.mdp)
                 sessionStorage.setItem('prenom', httpResponse.data.prenom)
+                // change l'url
+                $location.path('/profil/' + httpResponse.data.id)
                 // Supprime les valeurs dans les champs
                 $scope.nom = ""
                 $scope.prenom = ""
@@ -70,6 +70,10 @@ m.controller('enregistrementCtrl', function($scope, $http, $location, connection
                 $scope.photo = ""
                 $scope.presentation = ""
                 $scope.website = ""
+                // supprime le lien Connexion/Inscription
+                $('#menuConnexion').remove()
+                // ajoute le lien Profil
+                $('#menuProfil').prepend('<li><a href="#!connexion"><i class="fas fa-user"></i> Profil</a></li>')
 
             }
         })

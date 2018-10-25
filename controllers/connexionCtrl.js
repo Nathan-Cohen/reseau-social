@@ -33,7 +33,7 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
                     connectionFactorie.sendData(utilisateurConnecter);
                 };
                 $scope.send()
-                // enregistre le mail, le mot de passe et le prenom en local
+                // enregistre l'id, le mail, le mot de passe et le prenom de passe en local                
                 sessionStorage.setItem('id', httpResponse.data.id)
                 sessionStorage.setItem('mail', httpResponse.data.mail)
                 sessionStorage.setItem('mdp', httpResponse.data.mdp)
@@ -43,6 +43,10 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
                 // Supprime les valeurs dans les champs        
                 $scope.mail = ""
                 $scope.mdp = ""
+                // supprime le lien Connexion/Inscription
+                $('#menuConnexion').css('display', 'none')
+                // ajoute le lien Profil
+                $('#menuProfil').prepend('<li id="monProfil"><a href="#!connexion"><i class="fas fa-user"></i> Profil</a></li>')
 
             }
 
