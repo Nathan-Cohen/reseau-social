@@ -18,6 +18,10 @@
   display: none;
 }
 
+#notifSuccessAmi{
+  display: none;
+}
+
 
 #boutonAjouterAmi{
   color: #17a2b8;

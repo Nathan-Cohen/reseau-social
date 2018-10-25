@@ -13,7 +13,6 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
         // transforme en JSON
         var postData = angular.toJson(utilisateurConnecter, true);
 
-        var urlLocal = "http://127.0.0.1:5000/connection"
         var urlEnLigne = "/connection"
 
         // envoie des donnees en POST

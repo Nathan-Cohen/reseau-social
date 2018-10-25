@@ -32,9 +32,7 @@ m.controller('profilCtrl', function($scope, $http, $routeParams, connectionFacto
             url: urlEnLigne,
             method: 'POST',
             data: routeJsonData
-            // data: utilisateurJsonData
         }).then(function (httpResponse) {
-            console.log('Recuperation profil reussi', httpResponse.data.profilUtilisateur)
             // si un message d'erreur est envoyer par le serveur
             if(httpResponse.data.message){
                 console.log('Echec de la recuperation du profil')

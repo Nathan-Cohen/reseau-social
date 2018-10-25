@@ -23,13 +23,14 @@ m.directive('ajouterami', function(){
                 data: routeJsonData
                 // data: utilisateurJsonData
             }).then(function (httpResponse) {
-                console.log('Recuperation profil reussi', httpResponse.data.profilUtilisateur)
                 // si un message d'erreur est envoyer par le serveur
                 if(httpResponse.data.message){
                     console.log('Echec de la recuperation du profil')
                 }
                 else{
-                    alert('Ajouter comme ami')
+                    console.log('Ajouter comme ami', httpResponse.data)
+                    // affiche la notification de succes d'ajout d'ami
+                    $('#notifSuccessAmi').css('display', 'block')
                 }
 
             })

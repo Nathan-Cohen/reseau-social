@@ -172,12 +172,10 @@ app.post('/profil', function(req, res) {
           console.log('Echec de connexion a la collection', err.message);
         }else{
           if(o){
-            console.log('Bien connecter profil');
             res.send({profilUtilisateur: o});
 
           }
           else{
-            console.log('Erreur de connexion au profil');
             res.send({message: 'Erreur de connexion au profil'});
           }
 
@@ -193,7 +191,7 @@ app.post('/profil', function(req, res) {
 
 // PROFIL VISITEUR
 // recupere les donnees de la connection pour verifier dans la BDD
-app.post('/profil', function(req, res) {
+app.post('/profil/recherche', function(req, res) {
   //////////////// CONNEXION A LA BASE ///////////////////
   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
   mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
@@ -210,12 +208,10 @@ app.post('/profil', function(req, res) {
           console.log('Echec de connexion a la collection', err.message);
         }else{
           if(o){
-            console.log('Bien connecter profil visiteur');
             res.send({profilUtilisateur: o});
 
           }
           else{
-            console.log('Erreur de connexion au profil');
             res.send({message: 'Erreur de connexion au profil'});
           }
 
@@ -242,20 +238,37 @@ app.post('/ajouteami', function(req, res) {
     else{
       console.log("Connexion a la base reussi");
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
-      console.log('ajouterAmi connexion', req.body)
+      // console.log('ajouterAmi connexion', req.body)
       // cherche si l'utilisateur existe
-      collection.find({'_id': ObjectID(req.body.idEnCour)}).toArray(function(err, o) {
+      collection.updateOne({'_id': ObjectID(req.body.idEnCour)}, {$set: {ami: req.body.id}}, function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
           if(o){
-            console.log('Bien connecter ajouterAmi visiteur');
+            console.log('Ajout a la liste reussi');
             res.send({profilUtilisateur: o});
 
           }
           else{
             console.log('Erreur de connexion au ajouterAmi');
-            res.send({message: 'Erreur de connexion au ajouterAmi'});
+            res.send({message: 'Erreur de connexion ajouterAmi'});
+          }
+
+        }
+
+      });
+
+      // ajoute une notification de demande ami
+      collection.updateOne({'_id': ObjectID(req.body.id)}, {$set: {demandeAjoutAmi: req.body.idEnCour}}, function(err, o) {
+        if(err){
+          console.log('Echec de connexion a la collection', err.message);
+        }else{
+          if(o){
+            console.log('Notification envoyer');
+
+          }
+          else{
+            console.log('Erreur de connexion');
           }
 
         }

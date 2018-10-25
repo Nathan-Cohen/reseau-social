@@ -30,7 +30,6 @@ m.controller('enregistrementCtrl', function($scope, $http, $location, connection
         // transforme en JSON
         var postData = angular.toJson(nouveauUtilisateur, true);
 
-        var urlLocal = "http://127.0.0.1:5000/enregistrement"
         var urlEnLigne = "/enregistrement"
         // envoie des donnees en POST
         $http({
@@ -40,10 +39,10 @@ m.controller('enregistrementCtrl', function($scope, $http, $location, connection
         }).then(function (httpResponse) {
             console.log('response enregistrement:', httpResponse);
             if(httpResponse.data.message == 'Erreur'){
-                document.getElementById('reponseEnregistrementErreur').style.display = 'table'
+                $('#reponseEnregistrementErreur').css('display', 'table')
             }
             else if(httpResponse.data.message == 'Adresse mail déjà enregistrer'){
-                document.getElementById('reponseEnregistrement').style.display = 'table'
+                $('#reponseEnregistrement').css('display', 'table')
             }
             else{
                 // envoie l'information dans la factorie "connection" pour les recuperer dans la page profil
