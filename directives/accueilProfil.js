@@ -6,6 +6,7 @@ m.directive('accueilprofil', function(){
                 $scope.idUtilisateur = sessionStorage.id;
                 $scope.prenomUtilisateur = sessionStorage.prenom;
 
+                $('#deconnexion').css('display', 'block')
                 $('.resizeDivTitre').addClass('col-sm-9')  
                 $('.resizeDivTitre').addClass('titreActualite')
               }

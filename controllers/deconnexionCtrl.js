@@ -1,5 +1,5 @@
 m.controller('deconnexionCtrl', function($scope, $http, $location, connectionFactorie){
-
-sessionStorage.clear();
+    $('#deconnexion').css('display', 'none')        
+    sessionStorage.clear();
 
 })

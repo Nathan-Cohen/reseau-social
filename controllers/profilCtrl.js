@@ -1,7 +1,9 @@
 m.controller('profilCtrl', function($scope, $http, $routeParams, connectionFactorie){
     // recupere l'adresse mail a la connexion ou a l'enregistrement
     var utilisateur = connectionFactorie.getData();
-
+    if(sessionStorage.mail){
+        $('#deconnexion').css('display', 'block')
+    }
     $scope.rechercheProfil = ()=>{
         // construit l'objet
         utilisateurConnecter = {
