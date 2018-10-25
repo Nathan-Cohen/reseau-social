@@ -165,7 +165,6 @@ app.post('/profil', function(req, res) {
     else{
       console.log("Connexion a la base reussi");
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
-      console.log('profil connexion', req.body)
       // cherche si l'utilisateur existe
       collection.find({'_id': ObjectID(req.body.id)}).toArray(function(err, o) {
         if(err){
@@ -201,7 +200,6 @@ app.post('/profil/recherche', function(req, res) {
     else{
       console.log("Connexion a la base reussi");
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
-      console.log('profil connexion', req.body)
       // cherche si l'utilisateur existe
       collection.find({'_id': ObjectID(req.body.id)}).toArray(function(err, o) {
         if(err){
@@ -269,6 +267,55 @@ app.post('/ajouteami', function(req, res) {
           }
           else{
             console.log('Erreur de connexion');
+          }
+
+        }
+
+      });
+  
+    }
+  });
+  
+});
+
+
+// PROFIL VISITEUR
+// recupere les donnees de la connection pour verifier dans la BDD
+app.post('/choixajouteami', function(req, res) {
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      console.log("Connexion a la base reussi");
+      const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+      console.log('profil connexion', req.body)
+      // cherche si l'utilisateur existe
+      collection.find({'_id': ObjectID(req.body.id)}).toArray(function(err, o) {
+        if(err){
+          console.log('Echec de connexion a la collection', err.message);
+        }else{
+          if(o){
+            collection.find({'_id': ObjectID(o[0].demandeAjoutAmi)}).toArray(function(err, o) {
+              if(err){
+                console.log('Echec de connexion a la collection', err.message);
+              }else{
+                if(o){
+                  res.send({notificationAmi: o});
+      
+                }
+                else{
+                  res.send({message: 'Erreur de connexion au profil'});
+                }
+      
+              }
+      
+            });
+          }
+          else{
+            res.send({message: 'Erreur de connexion au profil'});
           }
 
         }
