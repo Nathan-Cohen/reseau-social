@@ -6,10 +6,29 @@
   display: none;
 }
 
-/* menu profil accueil */
 .titreActualite{
   margin-right: 5px;
 
+}
+
+
+
+/* ////////////PROFIL VISITEUR///////////// */
+#ajouterAmi{
+  display: none;
+}
+
+
+#boutonAjouterAmi{
+  color: #17a2b8;
+  background-color: transparent;
+  background-image: none;
+  border-color: #17a2b8;
+}
+#boutonAjouterAmi:hover{
+  color: #fff;
+  background-color: #17a2b8;
+  border-color: #17a2b8;
 }
 
 

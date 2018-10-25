@@ -28,6 +28,14 @@ m.controller('profilVisiteurCtrl', function($scope, $http, $routeParams, connect
         
         console.log("sessionStorage.id" + sessionStorage.id);
         console.log("$routeParams.idUtilisateur" + $routeParams.idUtilisateur);
+        // si l'utilisateur est connecter
+        if(sessionStorage.id){
+            $('#ajouterAmi').css('display', 'block')
+            // directive bouton ajouter un ami
+
+        }else{
+            $('#ajouterAmi').css('display', 'none')
+        }
         // envoie des donnees en POST
         $http({
             url: urlEnLigne,

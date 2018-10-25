@@ -12,22 +12,21 @@ m.controller('profilCtrl', function($scope, $http, $routeParams, connectionFacto
             mdp: sessionStorage.mdp,
             prenom: sessionStorage.prenom
         }
-        
+        // les donnees de l'utilisateur a la connexion ou a l'enregistrement
+        var utilisateurJsonData = angular.toJson(utilisateurConnecter, true);
+        sessionStorage.utilisateurConnecter = utilisateurJsonData
+
+        // recupere le parametre dans la route (id)        
         paramRoute = {
             id: $routeParams.idUtilisateur
         }
-        // transforme en JSON
-        // les donnees de l'utilisateur a la connexion ou a l'enregistrement
-        var utilisateurJsonData = angular.toJson(utilisateurConnecter, true);
-        
-        sessionStorage.utilisateurConnecter = utilisateurJsonData
         // les donnees de l'utilisateur dans l'url
         var routeJsonData = angular.toJson(paramRoute, true);
         
-        var urlEnLigne = "/profil"
-        
         console.log("sessionStorage.id" + sessionStorage.id);
         console.log("$routeParams.idUtilisateur" + $routeParams.idUtilisateur);
+        
+        var urlEnLigne = "/profil"
         // envoie des donnees en POST
         $http({
             url: urlEnLigne,
