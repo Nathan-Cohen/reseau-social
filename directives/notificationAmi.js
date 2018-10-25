@@ -39,7 +39,7 @@ m.directive('notificationami', function(){
 
         },
         template: `
-            notifAmi
+            Notification ami
         `
 
     }
