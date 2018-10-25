@@ -47,7 +47,7 @@ m.directive('recherchebar', function(){
                             <label for="search" class="sr-only">Search</label>
                             <input type="text" name="search" id="search" ng-model="search" ng-keyup="complete(search)" class="form-control" placeholder="search" autocomplete="off"/>
                             <ul class="list-group">
-                                <li class="list-group-item" ng-repeat="itemData in totalItem" ng-click="selectItem(itemData)"><a href="#!/profil/{{itemData.id}}">{{itemData.prenom}} {{itemData.nom}}</a></li>
+                                <li class="list-group-item" ng-repeat="itemData in totalItem" ng-click="selectItem(itemData)"><a href="#!/profil/recherche/{{itemData.id}}">{{itemData.prenom}} {{itemData.nom}}</a></li>
                             </ul>
                             <span class="glyphicon glyphicon-search form-control-feedback"></span>
                         </div>

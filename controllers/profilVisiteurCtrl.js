@@ -1,4 +1,4 @@
-m.controller('profilCtrl', function($scope, $http, $routeParams, connectionFactorie){
+m.controller('profilVisiteurCtrl', function($scope, $http, $routeParams, connectionFactorie){
     // recupere l'adresse mail a la connexion ou a l'enregistrement
     var utilisateur = connectionFactorie.getData();
     if(sessionStorage.mail){

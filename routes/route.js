@@ -18,6 +18,10 @@ m.config(function($routeProvider) {
         templateUrl : "./views/profil.html",
         controller: "profilCtrl"
     })
+    .when("/profil/recherche/:idUtilisateur", {
+        templateUrl : "./views/profilVisiteur.html",
+        controller: "profilVisiteurCtrl"
+    })
     .when("/apropos", {
         templateUrl : "./views/apropos.html"
     })

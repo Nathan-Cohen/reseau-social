@@ -1,0 +1,217 @@
+<hr>
+<div class="container bootstrap snippet" ng-controller="profilCtrl">
+    <div class="row">
+        <div class="col-sm-10">
+            <h1 ng-bind="prenomNom"></h1>
+        </div>
+        <div class="col-sm-2">
+            <a href="/users" class="pull-right"><img title="profile image" class="img-circle img-responsive" src="http://www.gravatar.com/avatar/28fd20ccec6865e2d5f0e1f4446eb7bf?s=100">
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <!--left col-->
+
+            <div class="text-center">
+                <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
+                <h6>Upload a different photo...</h6>
+            </div>
+            </hr>
+            <br>
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Website <i class="fa fa-link fa-1x"></i>
+                </div>
+                <div class="panel-body" ng-bind="website"></div>
+            </div>
+
+            <h2>Visiteur</h2>
+
+            <ul class="list-group">
+                <li class="list-group-item text-muted">Activiter <i class="fa fa-dashboard fa-1x"></i>
+                </li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Partage</strong></span> 0</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>J'aimes</strong></span> 0</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Postes</strong></span> 0</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 0</li>
+            </ul>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Autre reseau</div>
+                <div class="panel-body">
+                    <i class="fab fa-facebook"></i>
+                    <i class="fab fa-github"></i> 
+                    <i class="fab fa-instagram"></i> 
+                </div>
+            </div>
+
+        </div>
+        <!--/col-3-->
+    <div class="col-sm-9">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="profil//#home">Mur</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="profil//#informations">Informations</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="profil/#messagesPriver">Messages priver</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="profil//#messages">Discussion instantaner</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <!-- MUR -->
+            <div class="tab-pane active" id="home">
+                <hr>
+                    <publicationbar></publicationbar>
+                    
+            </div>
+
+            <!-- INFORMATIONS -->
+            <div class="tab-pane" id="informations">
+                <hr>
+                <form class="form" role="form">
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                            <label for="prenom">
+                                <h4>Prenom</h4>
+                            </label>
+                            <span><i class="glyphicon glyphicon-user"></i></span>
+                            <div ng-model="prenom" name="prenom" id="prenom">{{prenom}}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                            <label for="nom">
+                                <h4>Nom</h4>
+                            </label>
+                            <span><i class="glyphicon glyphicon-user"></i></span>
+                            <div ng-model="nom" name="nom" id="nom">{{nom}}</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label for="genre">
+                                <h4>Genre</h4>
+                            </label>
+                            <pan><i class="glyphicon glyphicon-list"></i></span>
+                            <div ng-model="genre" name="genre">{{genre}}</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label for="age">
+                                <h4>Age</h4>
+                            </label>
+                            <span><i class="glyphicon glyphicon-user"></i></span>
+                            <div ng-model="age" name="age" placeholder="Age" type="text">{{age}}</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label for="mail">
+                                <h4>Email</h4>
+                            </label>
+                            <span><i class="far fa-envelope"></i></span>
+                            <div ng-model="mail" type="mail" name="mail" placeholder="Email" title="mail">{{mail}}</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label for="ville">
+                                <h4>Ville</h4>
+                            </label>
+                            <span><i class="fas fa-city"></i></span>
+                            <div ng-model="ville" name="ville" placeholder="Ville" type="text">{{ville}}</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label for="pays">
+                                <h4>Pays</h4>
+                            </label>
+                            <span><i class="fas fa-globe"></i></span>
+                            <div ng-model="pays" name="pays" placeholder="pays" type="text">{{pays}}</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label for="presentation">
+                                <h4>Site web</h4>
+                            </label>
+                            <span><i class="fas fa-align-center"></i></span>
+                            <div ng-model="website" name="website" placeholder="Site web" type="text">{{website}}</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label for="presentation">
+                                <h4>Presentation</h4>
+                            </label>
+                            <span><i class="fas fa-align-center"></i></span>
+                            <div ng-model="presentation" name="presentation" placeholder="Presentation" type="text">{{presentation}}</div>
+                        </div>
+                    </div>
+                    
+                </form>
+
+                <hr>
+
+            </div>
+
+
+            <!-- MESSAGES PRIVER -->
+            <div class="tab-pane" id="messagesPriver">
+                <h2>Messages priver</h2>
+                <hr>
+                <form class="form" role="form">
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label for="messagePriver">
+                                <h4>Message</h4>
+                            </label>
+                            <input type="text" class="form-control" name="messagePriver" id="messagePriver" placeholder="Message" title="Message Priver">
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+            <!-- MESSAGES INSTANTANER -->
+            <div class="tab-pane" id="messages">
+                <h2>Discussion instantaner</h2>
+                <hr>
+                <form class="form" role="form">
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label for="message">
+                                <h4>Message</h4>
+                            </label>
+                            <input type="text" class="form-control" name="message" id="message" placeholder="Message" title="Message">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <!--/tab-content-->
+
+    </div>
+    <!--/col-9-->
+</div>
+<!--/row-->
