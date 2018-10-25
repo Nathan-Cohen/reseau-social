@@ -23,9 +23,21 @@ m.directive('notificationami', function(){
                     console.log('Echec de la recuperation du profil')
                 }
                 else{
-                    console.log('liste des demandes dami', httpResponse.data.notificationAmi.length)
-                    $scope.itemDemandeAmi = httpResponse.data.notificationAmi;
+                    // ajoute le nombre de demande d'ami dans l'onglet
                     $scope.previewItemDemandeAmi = httpResponse.data.notificationAmi.length
+                    // envoie dans le tableau
+                    $scope.itemDemandeAmi = httpResponse.data.notificationAmi;
+                    // si l'utilisateur clique sur accepter l'invitation
+                    $scope.accepter = function(itemAccepter){
+                        console.log('accepter', $(itemAccepter.target).attr("id"));
+                    }
+                    // si l'utilisateur clique sur refuser l'invitation
+                    $scope.refuser = function(itemRefuser){
+                        console.log('refuser', $(itemRefuser.target).attr("id"));
+
+
+                    }
+        
                 }
 
             })
@@ -51,7 +63,10 @@ m.directive('notificationami', function(){
                         <td>{{item.prenom}}</td>
                         <td>{{item.nom}}</td>
                         <td>{{item.mail}}</td>
-                        <td class="text-center"><a class='btn btn-info btn-xs'> Accepter</a> <a class="btn btn-danger btn-xs">Refuser</a></td>
+                        <td class="text-center">
+                            <a id="{{item._id}}" class='btn btn-info btn-xs' ng-click="accepter($event)"> Accepter</a>
+                            <a class="btn btn-danger btn-xs" ng-click="refuser($event)">Refuser</a>
+                        </td>
                     </tr>
                 </table>
                 </div>
