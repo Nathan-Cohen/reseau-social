@@ -23,6 +23,7 @@ m.directive('ajouterami', function(){
                 data: routeJsonData
                 // data: utilisateurJsonData
             }).then(function (httpResponse) {
+                console.log('testttttttttt', httpResponse)
                 // si un message d'erreur est envoyer par le serveur
                 if(httpResponse.data.message){
                     console.log('Echec de la recuperation du profil')

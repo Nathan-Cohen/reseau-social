@@ -2,7 +2,13 @@ m.directive('recherchebar', function(){
     var directiveDefs = {
         controller: function($scope, $http){
 
-            var urlLocal = "http://127.0.0.1:5000/search"
+            if(sessionStorage.id){
+                // supprime le lien Connexion/Inscription
+                $('#menuConnexion').css('display', 'none')
+                // ajoute le lien Profil
+                $('#menuProfil').prepend('<li id="monProfil"><a href="#!connexion"><i class="fas fa-user"></i> Profil</a></li>')
+            }
+            
             var urlEnLigne = "/search"
             
             $scope.selectItem = function(item){

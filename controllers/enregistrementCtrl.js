@@ -50,7 +50,7 @@ m.controller('enregistrementCtrl', function($scope, $http, $location, connection
                     connectionFactorie.sendData(nouveauUtilisateur);
                 };
                 $scope.send()
-                console.log('httpResponse.data', httpResponse.data)
+                console.log('httpResponse.data enregistrement', httpResponse.data)
                 // enregistre l'id, le mail, le mot de passe et le prenom de passe en local
                 sessionStorage.setItem('id', httpResponse.data.id)
                 sessionStorage.setItem('mail', httpResponse.data.mail)
