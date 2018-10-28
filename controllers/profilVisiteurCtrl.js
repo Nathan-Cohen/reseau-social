@@ -23,11 +23,8 @@ m.controller('profilVisiteurCtrl', function($scope, $http, $routeParams, connect
         sessionStorage.utilisateurConnecter = utilisateurJsonData
         // les donnees de l'utilisateur dans l'url
         var routeJsonData = angular.toJson(paramRoute, true);
-        
+        // url
         var urlEnLigne = "/profil"
-        
-        console.log("sessionStorage.id" + sessionStorage.id);
-        console.log("$routeParams.idUtilisateur" + $routeParams.idUtilisateur);
         // si l'utilisateur est connecter
         if(sessionStorage.id){
             $('#ajouterAmi').css('display', 'block')

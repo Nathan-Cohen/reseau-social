@@ -1,7 +1,6 @@
 m.directive('notificationami', function(){
     var directiveDefsnotificationAmi = {
         controller: function($scope, $http, $routeParams, $interval){
-          // console.log('sessionStorage', sessionStorage)
           // si l'utilisateur est deja connecter on inserer le mail dans la variable mailUtilisateur
           if(sessionStorage.mail){     
             // recupere le parametre dans la route (id)
@@ -18,35 +17,34 @@ m.directive('notificationami', function(){
                     method: 'POST',
                     data: routeJsonData
                     // data: utilisateurJsonData
-                }).then(function (httpResponse) {                    
+                }).then(function (httpResponse) { 
                     // si un message d'erreur est envoyer par le serveur
                     if(httpResponse.data.message){
                         console.log('Echec de la recuperation du nombre de demande ami')
                     }
-                    else{
+                    else{                       
                         // ajoute le nombre de demande d'ami dans l'onglet
                         $scope.previewItemDemandeAmi = httpResponse.data.notificationAmi.length
                         // envoie dans le tableau
                         $scope.itemDemandeAmi = httpResponse.data.notificationAmi;
                         // si l'utilisateur clique sur accepter l'invitation
                         $scope.accepter = function(itemAccepter){
-                            console.log('accepter', $(itemAccepter.target).attr("id"));
                             $scope.reponseAmi = {reponse: "accepter", id: sessionStorage.id, idDemande: $(itemAccepter.target).attr("id")};
+                            console.log('accepter', $scope.reponseAmi);
                             
                             $scope.envoiReponse()
                             
                         }
                         // si l'utilisateur clique sur refuser l'invitation
                         $scope.refuser = function(itemRefuser){
-                            console.log('refuser', $(itemRefuser.target).attr("id"));
                             $scope.reponseAmi = {reponse: "refuser", id: sessionStorage.id, idDemande: $(itemRefuser.target).attr("id")};;
+                            console.log('refuser', $scope.reponseAmi);
     
                             $scope.envoiReponse()
     
                         }
                         $scope.envoiReponse = function(){
                             $($scope.reponseAmi.idDemande).remove()
-
                             var urlEnLigne = "/reponseajouteami"
                             // envoie des donnees en POST                        
                             $http({
@@ -73,7 +71,7 @@ m.directive('notificationami', function(){
             }
 
             $scope.rechercheDemandeAmi()
-            $interval($scope.rechercheDemandeAmi, 5000)
+            // $interval($scope.rechercheDemandeAmi, 5000)
             
           }
 

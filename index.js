@@ -250,7 +250,7 @@ app.post('/ajouteami', function(req, res) {
           console.log('Echec de connexion a la collection', err.message);
         }else{
           if(o){
-            console.log('Notification envoyer', o);
+            console.log('Notification envoyer');
             res.send({profilUtilisateur: o});
             client.close();
 
@@ -275,6 +275,8 @@ app.post('/ajouteami', function(req, res) {
 // ACCEPTE OU REFUSE LA DEMANDE D'AMI
 // recupere les donnees de la connection pour verifier dans la BDD
 app.post('/choixajouteami', function(req, res) {
+  tabDesDemandes = []
+  booleanDemande = false;
   //////////////// CONNEXION A LA BASE ///////////////////
   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
   mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
@@ -282,9 +284,7 @@ app.post('/choixajouteami', function(req, res) {
       console.log('err', err)
     }
     else{
-      // console.log("Connexion a la base reussi");
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
-      // console.log('profil connexion', req.body)
       // cherche si l'utilisateur existe
       collection.find({'_id': ObjectID(req.body.id)}).toArray(function(err, o) {
         if(err){
@@ -292,24 +292,38 @@ app.post('/choixajouteami', function(req, res) {
         }else{
           if(o){
             if(o[0].demandeAjoutAmi){
-              console.log('profil connexion', o)            
-              collection.find({'_id': ObjectID(o[0].demandeAjoutAmi[0])}).toArray(function(err, o) {
-                if(err){
-                  console.log('Echec de connexion a la collection', err.message);
-                }else{
-                  if(o){
-                    res.send({notificationAmi: o});
-                    client.close();
-        
+              for(var i=0; i<o[0].demandeAjoutAmi.length; i++){
+                collection.find({'_id': ObjectID(o[0].demandeAjoutAmi[i])}).toArray(function(err, o) {
+                  if(err){
+                    console.log('Echec de connexion a la collection', err.message);
+                  }else{
+                    if(o){
+                      tabDesDemandes.push(o[0])
+                      if(i == tabDesDemandes.length){
+                        booleanDemande = true;
+
+                      }
+                      client.close();
+          
+                    }
+                    else{
+                      res.send({message: 'Erreur de connexion au profil'});
+                      if(i == tabDesDemandes.length){
+                        booleanDemande = true;
+
+                      }                   
+                      client.close();
+                    }
+          
                   }
-                  else{
-                    res.send({message: 'Erreur de connexion au profil'});
-                    client.close();
-                  }
-        
-                }
-        
-              });
+                  // si le traitement du tableau a eu lieu on envoie les donnees
+                  if(booleanDemande){
+                    res.send({notificationAmi: tabDesDemandes});
+                  }           
+          
+                });
+
+              }
 
             }
           }
@@ -329,6 +343,83 @@ app.post('/choixajouteami', function(req, res) {
 
 
 
+
+
+// LISTE AMI
+// recupere les donnees de la connection pour verifier dans la BDD
+app.post('/listeami', function(req, res) {
+  tabListeDeAmis = []
+  booleanDemandeListeAmi = false;
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+      // cherche si l'utilisateur existe
+      collection.find({'_id': ObjectID(req.body.id)}).toArray(function(err, o) {
+        if(err){
+          console.log('Echec de connexion a la collection', err.message);
+        }else{
+          if(o){
+            if(o[0].ami){
+              // boucle sur le nombre d'ami
+              for(var i=0; i<o[0].ami.length; i++){
+                collection.find({'_id': ObjectID(o[0].ami[i])}).toArray(function(err, o) {
+                  if(err){
+                    console.log('Echec de connexion a la collection', err.message);
+                  }else{
+                    if(o){
+                      tabListeDeAmis.push(o[0])
+                      // si la taille du tableau est egal au nombre de fois ou il a fait le tour
+                      if(i == tabListeDeAmis.length){
+                        booleanDemandeListeAmi = true;
+                      }
+                      client.close();
+          
+                    }
+                    else{
+                      // si la taille du tableau est egal au nombre de fois ou il a fait le tour
+                      if(i == tabListeDeAmis.length){
+                        booleanDemandeListeAmi = true;
+                      }
+                      res.send({message: 'Erreur de connexion au profil'});            
+                      client.close();
+                    }
+          
+                  }
+                  // si le tableau a bien ete construit on envoie les données
+                  if(booleanDemandeListeAmi){
+                    res.send({listeAmi: tabListeDeAmis});
+    
+                  }           
+          
+                });
+
+              }
+
+            }
+          }
+          else{
+            res.send({message: 'Erreur de connexion au profil'});
+          }
+
+        }
+
+      });
+  
+    }
+  });
+  
+});
+
+
+
+
+
+
 // AJOUTER UN AMI
 // recupere les donnees de la connection pour verifier dans la BDD
 app.post('/reponseajouteami', function(req, res) {
@@ -341,23 +432,23 @@ app.post('/reponseajouteami', function(req, res) {
     else{
       console.log("Connexion a la base reussi");
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
-      console.log('ajouterAmi connexion', req.body)
       // si l'utilisateur accepte l'invitation on met a jour les deux compte en les ajoutant mutuellement dans les amis
       if(req.body.reponse == "accepter"){
         // met a jour la liste d'ami de la personne qui recoit la demande
-        collection.updateOne({'_id': ObjectID(req.body.id)}, {$set: {ami: req.body.idDemande}}, {$pull: {demandeAjoutAmi: {$eq: req.body.idDemande}}}, function(err, o) {
+        collection.updateOne({'_id': ObjectID(req.body.id)}, {$push: {ami: req.body.idDemande}}, function(err, o) {
           if(err){
             console.log('Echec de connexion a la collection', err.message);
           }else{
             if(o){
               console.log('Ajout a la liste reussi ami du receveur');
               // met a jour la liste d'ami de la personne qui envoie la demande
-              collection.updateOne({'_id': ObjectID(req.body.idDemande)}, {$set: {ami: req.body.id}}, function(err, o) {
+              collection.updateOne({'_id': ObjectID(req.body.idDemande)}, {$push: {ami: req.body.id}}, function(err, o) {
                 if(err){
                   console.log('Echec de connexion a la collection', err.message);
                 }else{
                   if(o){
-                    collection.updateOne({'_id': ObjectID(req.body.id)}, {$unset: {demandeAjoutAmi: req.body.idDemande}})
+                    // supprime la demande dans la liste des demandes d'ami
+                    collection.updateOne({'_id': ObjectID(req.body.id)}, {$pull: {demandeAjoutAmi: req.body.idDemande}})
                     console.log('Ajout a la liste reussi du demandeur');
                     res.send({profilUtilisateur: o});
         
@@ -384,16 +475,53 @@ app.post('/reponseajouteami', function(req, res) {
 
       }
       // sinon on supprime de la liste d'attente le compte qui a fait la demande
-      else(
-        console.log('noooooooooooooo')        
-
-      )
+      else{      
+        collection.updateOne({'_id': ObjectID(req.body.id)}, {$pull: {demandeAjoutAmi: req.body.idDemande}})
+      }
   
     }
   });
   
 });
 
+
+
+
+// SUPRIMER UN AMI
+// recupere les donnees de la connection pour verifier dans la BDD
+app.post('/supprimeami', function(req, res) {
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+        // supprime l'ami de l'utilisateur en cour
+        collection.updateOne({'_id': ObjectID(req.body.id)}, {$pull: {ami: req.body.idAmi}}, function(err, o) {
+          if(err){
+            console.log('Echec de connexion a la collection', err.message);
+          }else{
+            if(o){
+              // supprime l'utilisateur de l'ami en cour
+              collection.updateOne({'_id': ObjectID(req.body.idAmi)}, {$pull: {ami: req.body.id}})
+              res.send({message: 'suppression'});
+  
+            }
+            else{
+              console.log('Erreur de connexion au ajouterAmi');
+              res.send({message: 'Erreur de connexion ajouterAmi'});
+            }
+  
+          }
+  
+        });
+          
+    }
+  });
+  
+});
 
 
 

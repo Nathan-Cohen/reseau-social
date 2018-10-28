@@ -8,13 +8,13 @@ m.directive('recherchebar', function(){
                 // ajoute le lien Profil
                 $('#menuProfil').prepend('<li id="monProfil"><a href="#!connexion"><i class="fas fa-user"></i> Profil</a></li>')
             }
-            
+            // url
             var urlEnLigne = "/search"
-            
+            // au clique on recupere la valeur rechercher pour l'affecter au scope
             $scope.selectItem = function(item){
                 $scope.search = item.prenom
             }
-
+            // recherche les valeurs qui correspondes
             $scope.complete = function(string){
                 var output=[];
                 var searchEnCour = {"message": string}

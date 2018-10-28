@@ -63,6 +63,9 @@
             <li>
                 <a data-toggle="tab" href="profil/#notificationAmi">Demandes amis (<span ng-bind="previewItemDemandeAmi"></span>)</a>
             </li>
+            <li>
+                <a data-toggle="tab" href="profil/#listeami">Liste d'amis (<span ng-bind="previewItemListeAmi"></span>)</a>
+            </li>
         </ul>
 
         <div class="tab-content">
@@ -70,15 +73,6 @@
             <div class="tab-pane active" id="home">
                 <hr>
                     <publicationbar></publicationbar>
-                    
-            </div>
-
-            <!-- NOTIFICATION AMI -->
-            <div class="tab-pane" id="notificationAmi">
-                <hr>
-                <div class="form-group">
-                    <notificationami></notificationami>
-                </div>
                     
             </div>
 
@@ -225,6 +219,22 @@
                         </div>
                     </div>
                 </form>
+            </div>
+
+            <!-- NOTIFICATION AMI -->
+            <div class="tab-pane" id="notificationAmi">
+                <hr>
+                <div class="form-group">
+                    <notificationami></notificationami>
+                </div>
+                    
+            </div>
+
+            <!-- LISTE D'AMI -->
+            <div class="tab-pane" id="listeami">
+                <hr>
+                    <listeami></listeami>
+                    
             </div>
 
         </div>
