@@ -57,6 +57,7 @@ m.controller('profilVisiteurCtrl', function($scope, $http, $routeParams, connect
                 $scope.age = httpResponse.data.profilUtilisateur[0].age
                 $scope.website = httpResponse.data.profilUtilisateur[0].website
                 $scope.presentation = httpResponse.data.profilUtilisateur[0].presentation
+                $scope.idProfil = httpResponse.data.profilUtilisateur[0]._id
 
             }
 
