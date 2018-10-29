@@ -48,12 +48,12 @@ m.directive('notificationami', function(){
             // si l'utilisateur clique sur refuser l'invitation
             $scope.refuser = function(itemRefuser){
                 $scope.reponseAmi = {reponse: "refuser", id: sessionStorage.id, idDemande: $(itemRefuser.target).attr("id")};;
-                console.log('refuser', $scope.reponseAmi.idDemande);
+                console.log('refuser', $scope.reponseAmi);
 
                 $scope.envoiReponse()
             }
             $scope.envoiReponse = function(){
-                
+                console.log('testtesttest', $scope.reponseAmi)
                 // url
                 var urlEnLigne = "/reponseajouteami"
                 // envoie des donnees en POST                        
@@ -61,12 +61,10 @@ m.directive('notificationami', function(){
                     url: urlEnLigne,
                     method: 'POST',
                     data: $scope.reponseAmi
-                    // data: utilisateurJsonData
                 }).then(function (httpResponse) {
                     // si un message d'erreur est envoyer par le serveur
-                    if(httpResponse.data.message){
+                    if(httpResponse.data.message == 'Erreur de connexion au ajouterAmi'){
                         console.log('echec de l\'ajout')
-
                     }
                     else{                  
                         $('#item'+$scope.reponseAmi.idDemande).remove()

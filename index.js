@@ -475,6 +475,8 @@ app.post('/reponseajouteami', function(req, res) {
       // sinon on supprime de la liste d'attente le compte qui a fait la demande
       else{      
         collection.updateOne({'_id': ObjectID(req.body.id)}, {$pull: {demandeAjoutAmi: req.body.idDemande}})
+        res.send({message: 'Suppression reussi'});
+
       }
   
     }
