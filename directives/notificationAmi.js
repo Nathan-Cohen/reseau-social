@@ -53,7 +53,6 @@ m.directive('notificationami', function(){
                 $scope.envoiReponse()
             }
             $scope.envoiReponse = function(){
-                console.log('testtesttest', $scope.reponseAmi)
                 // url
                 var urlEnLigne = "/reponseajouteami"
                 // envoie des donnees en POST                        
@@ -69,7 +68,6 @@ m.directive('notificationami', function(){
                     else{                  
                         $('#item'+$scope.reponseAmi.idDemande).remove()
                         $scope.previewItemDemandeAmi--;
-                        console.log('ajout reussi', httpResponse.data)
                     }
                 })
             }
