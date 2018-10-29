@@ -1,9 +1,10 @@
 m.directive('notificationami', function(){
     var directiveDefsnotificationAmi = {
-        controller: function($scope, $http, $routeParams, $interval){
+        controller: function($scope, $http, $routeParams, $interval, $timeout){
           // si l'utilisateur est deja connecter on inserer le mail dans la variable mailUtilisateur
           if(sessionStorage.mail){    
-              $scope.rechercheDemandeAmi = function(){
+            $scope.rechercheDemandeAmi = function(){
+                setTimeout(function(){
                     // recupere le parametre dans la route (id)
                     paramRoute = {
                         id: sessionStorage.id
@@ -34,8 +35,13 @@ m.directive('notificationami', function(){
                         }
                         
                     })
+                }, 100)
                 
             }
+
+            $scope.intervalPromise = $interval(function(){
+                $scope.rechercheDemandeAmi();
+            }, 10000);  
 
             $scope.rechercheDemandeAmi()
             // si l'utilisateur clique sur accepter l'invitation
