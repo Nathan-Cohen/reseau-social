@@ -4,7 +4,7 @@ m.directive('listeami', function(){
           // si l'utilisateur est deja connecter on inserer le mail dans la variable mailUtilisateur
           if(sessionStorage.id){
               $scope.rechercheListe = function(){
-                // $interval($scope.rechercheListe, 5000)                  
+                // $interval($scope.rechercheListe, 5000)
                 // recupere le parametre dans la route (id)
               paramRoute = {
                   id: sessionStorage.id
@@ -17,7 +17,6 @@ m.directive('listeami', function(){
                     url: urlEnLigne,
                     method: 'POST',
                     data: routeJsonData
-                    // data: utilisateurJsonData
                 }).then(function (httpResponse) { 
                     // si un message d'erreur est envoyer par le serveur
                     if(httpResponse.data.message){
@@ -53,7 +52,6 @@ m.directive('listeami', function(){
                     url: urlEnLigne,
                     method: 'POST',
                     data: $scope.supprimeAmi
-                    // data: utilisateurJsonData
                 }).then(function (httpResponse) {
                     // si un message suppression est envoyer par le serveur sinon c'est un message d'erreur
                     if(httpResponse.data.message == 'suppression'){
@@ -84,8 +82,12 @@ m.directive('listeami', function(){
                         </tr>
                     </thead>
                     <tr id="item{{item._id}}" ng-repeat="item in itemListeAmi">
-                        <td>{{item.prenom}}</td>
-                        <td>{{item.nom}}</td>
+                        <td>
+                            <a href="#!/profil/recherche/{{item._id}}">{{item.prenom}}</a>
+                        </td>
+                        <td>
+                            <a href="#!/profil/recherche/{{item._id}}">{{item.nom}}</a>
+                        </td>
                         <td>{{item.mail}}</td>
                         <td class="text-center">
                             <a id="{{item._id}}" class="btn btn-danger btn-xs" ng-click="supprimer($event)">Supprimer</a>
