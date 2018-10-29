@@ -36,7 +36,7 @@ m.directive('notificationami', function(){
                         
                     })
 
-                }, 2000)
+                }, 10000)
                 
             }
             // $interval($scope.rechercheDemandeAmi, 10000)

@@ -31,7 +31,7 @@ m.directive('listeami', function(){
                             
                         }
                     })
-                }, 2000)
+                }, 10000)
 
             }
             $scope.rechercheListe()
