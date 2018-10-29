@@ -2,9 +2,8 @@ m.directive('notificationami', function(){
     var directiveDefsnotificationAmi = {
         controller: function($scope, $http, $routeParams, $interval){
           // si l'utilisateur est deja connecter on inserer le mail dans la variable mailUtilisateur
-          if(sessionStorage.mail){     
+          if(sessionStorage.mail){    
               $scope.rechercheDemandeAmi = function(){
-                $interval(function(){
                     // recupere le parametre dans la route (id)
                     paramRoute = {
                         id: sessionStorage.id
@@ -19,7 +18,7 @@ m.directive('notificationami', function(){
                         data: routeJsonData
                         // data: utilisateurJsonData
                     }).then(function (httpResponse) { 
-                        console.log('test')                 
+                        console.log('test notif')                 
                         // si un message d'erreur est envoyer par le serveur
                         if(httpResponse.data.message){
                             console.log('Echec de la recuperation du nombre de demande ami')
@@ -35,12 +34,10 @@ m.directive('notificationami', function(){
                         }
                         
                     })
-
-                }, 10000)
                 
             }
-            // $interval($scope.rechercheDemandeAmi, 10000)
-            $scope.rechercheDemandeAmi()            
+
+            $scope.rechercheDemandeAmi()
             // si l'utilisateur clique sur accepter l'invitation
             $scope.accepter = function(itemAccepter){
                 $scope.reponseAmi = {reponse: "accepter", id: sessionStorage.id, idDemande: $(itemAccepter.target).attr("id")};
