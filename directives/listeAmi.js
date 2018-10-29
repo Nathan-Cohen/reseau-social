@@ -1,70 +1,73 @@
 m.directive('listeami', function(){
     var directiveDefsListeami = {
-        controller: function($scope, $http){
+        controller: function($scope, $http, $interval){
           // si l'utilisateur est deja connecter on inserer le mail dans la variable mailUtilisateur
           if(sessionStorage.id){
-              // recupere le parametre dans la route (id)
-            paramRoute = {
-                id: sessionStorage.id
+              $scope.rechercheListe = function(){
+                // $interval($scope.rechercheListe, 5000)                  
+                // recupere le parametre dans la route (id)
+              paramRoute = {
+                  id: sessionStorage.id
+              }
+              var routeJsonData = angular.toJson(paramRoute, true);
+              // url
+              var urlEnLigne = "/listeami"
+                // envoie des donnees en POST pour recuperer le nombre de demande d'ami
+                $http({
+                    url: urlEnLigne,
+                    method: 'POST',
+                    data: routeJsonData
+                    // data: utilisateurJsonData
+                }).then(function (httpResponse) { 
+                    // si un message d'erreur est envoyer par le serveur
+                    if(httpResponse.data.message){
+                        console.log('Echec de la recuperation du nombre de demande ami')
+                    }
+                    else{
+                        // ajoute le nombre de demande d'ami dans l'onglet
+                        $scope.previewItemListeAmi = httpResponse.data.listeAmi.length
+                        // envoie dans le tableau
+                        $scope.itemListeAmi = httpResponse.data.listeAmi;
+    
+                        
+                    }
+                })
+
             }
-            var routeJsonData = angular.toJson(paramRoute, true);
-            // url
-            var urlEnLigne = "/listeami"
-            // envoie des donnees en POST pour recuperer le nombre de demande d'ami
-            $http({
-                url: urlEnLigne,
-                method: 'POST',
-                data: routeJsonData
-                // data: utilisateurJsonData
-            }).then(function (httpResponse) { 
-                // si un message d'erreur est envoyer par le serveur
-                if(httpResponse.data.message){
-                    console.log('Echec de la recuperation du nombre de demande ami')
-                }
-                else{                        
-                    console.log('testst', httpResponse.data.listeAmi)
+            $scope.rechercheListe()
+
+
+            $scope.supprimer = function(itemSupprimer){
+                $scope.supprimeAmi = {reponse: "supprimer", id: sessionStorage.id, idAmi: $(itemSupprimer.target).attr("id")};
+                console.log('supprimer', $scope.supprimeAmi);
+
+                $scope.envoiSupprimer()
+
+            }
+            $scope.envoiSupprimer = function(){
+                
+
+                var urlEnLigne = "/supprimeami"
+                // envoie des donnees en POST                        
+                $http({
+                    url: urlEnLigne,
+                    method: 'POST',
+                    data: $scope.supprimeAmi
+                    // data: utilisateurJsonData
+                }).then(function (httpResponse) {
+                    // si un message suppression est envoyer par le serveur sinon c'est un message d'erreur
+                    if(httpResponse.data.message == 'suppression'){
+                        console.log('suppression reussi', httpResponse.data)
+                        console.log('supp', $scope.supprimeAmi.idAmi)
+                        $('#item'+$scope.supprimeAmi.idAmi).remove()
+                        $scope.rechercheListe()
+                    }
+                    else{
+                        console.log('Erreur de suppression')                                    
+                    }
                     
-                    // ajoute le nombre de demande d'ami dans l'onglet
-                    $scope.previewItemListeAmi = httpResponse.data.listeAmi.length
-                    // envoie dans le tableau
-                    $scope.itemListeAmi = httpResponse.data.listeAmi;
-
-                    $scope.supprimer = function(itemSupprimer){
-                        $scope.supprimeAmi = {reponse: "supprimer", id: sessionStorage.id, idAmi: $(itemSupprimer.target).attr("id")};
-                        console.log('supprimer', $scope.supprimeAmi);
-
-                        $scope.envoiSupprimer()
-
-                    }
-                    $scope.envoiSupprimer = function(){
-                        $($scope.supprimeAmi.idAmi).remove()
-
-                        var urlEnLigne = "/supprimeami"
-                        // envoie des donnees en POST                        
-                        $http({
-                            url: urlEnLigne,
-                            method: 'POST',
-                            data: $scope.supprimeAmi
-                            // data: utilisateurJsonData
-                        }).then(function (httpResponse) {
-                            // si un message d'erreur est envoyer par le serveur
-                            if(httpResponse.data.message){
-                                console.log('echec de l\'ajout')
-                            }
-                            else{
-                                if(httpResponse.data.message == 'suppression'){
-                                    console.log('suppression reussi', httpResponse.data)
-                                    
-                                }
-                                else{
-                                    console.log('Erreur de suppression')                                    
-                                }
-                            }
-                        })
-                    }
-
-                }
-            })
+                })
+            }
             
           }
 
@@ -80,7 +83,7 @@ m.directive('listeami', function(){
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
-                    <tr ng-repeat="item in itemListeAmi">
+                    <tr id="item{{item._id}}" ng-repeat="item in itemListeAmi">
                         <td>{{item.prenom}}</td>
                         <td>{{item.nom}}</td>
                         <td>{{item.mail}}</td>
