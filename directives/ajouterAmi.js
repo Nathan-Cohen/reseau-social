@@ -26,7 +26,8 @@ m.directive('ajouterami', function(){
                     // chercher si l'utilisateur et ce profil sont deja ami il enleve le button 'demande ami'
                     for(var i=0; i<httpResponse.data.listeAmi.length; i++){
                         if(httpResponse.data.listeAmi[0].ami[i] == $scope.idProfil){
-                            $scope.booleanBouton = false;
+                            console.log('httpResponse.data.listeAmi[0].ami', httpResponse.data.listeAmi[0])
+                            // $scope.booleanBouton = false;
                         }
                     }
                     

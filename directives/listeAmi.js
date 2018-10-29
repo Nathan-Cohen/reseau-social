@@ -4,33 +4,34 @@ m.directive('listeami', function(){
           // si l'utilisateur est deja connecter on inserer le mail dans la variable mailUtilisateur
           if(sessionStorage.id){
               $scope.rechercheListe = function(){
-                // $interval($scope.rechercheListe, 5000)
-                // recupere le parametre dans la route (id)
-              paramRoute = {
-                  id: sessionStorage.id
-              }
-              var routeJsonData = angular.toJson(paramRoute, true);
-              // url
-              var urlEnLigne = "/listeami"
-                // envoie des donnees en POST pour recuperer le nombre de demande d'ami
-                $http({
-                    url: urlEnLigne,
-                    method: 'POST',
-                    data: routeJsonData
-                }).then(function (httpResponse) { 
-                    // si un message d'erreur est envoyer par le serveur
-                    if(httpResponse.data.message){
-                        console.log('Echec de la recuperation du nombre de demande ami')
+                $interval(function(){
+                    // recupere le parametre dans la route (id)
+                    paramRoute = {
+                        id: sessionStorage.id
                     }
-                    else{
-                        // ajoute le nombre de demande d'ami dans l'onglet
-                        $scope.previewItemListeAmi = httpResponse.data.listeAmi.length
-                        // envoie dans le tableau
-                        $scope.itemListeAmi = httpResponse.data.listeAmi;
-    
-                        
-                    }
-                })
+                    var routeJsonData = angular.toJson(paramRoute, true);
+                    // url
+                    var urlEnLigne = "/listeami"
+                    // envoie des donnees en POST pour recuperer le nombre de demande d'ami
+                    $http({
+                        url: urlEnLigne,
+                        method: 'POST',
+                        data: routeJsonData
+                    }).then(function (httpResponse) { 
+                        // si un message d'erreur est envoyer par le serveur
+                        if(httpResponse.data.message){
+                            console.log('Echec de la recuperation du nombre de demande ami')
+                        }
+                        else{
+                            // ajoute le nombre de demande d'ami dans l'onglet
+                            $scope.previewItemListeAmi = httpResponse.data.listeAmi.length
+                            // envoie dans le tableau
+                            $scope.itemListeAmi = httpResponse.data.listeAmi;
+        
+                            
+                        }
+                    })
+                }, 2000)
 
             }
             $scope.rechercheListe()
@@ -58,7 +59,7 @@ m.directive('listeami', function(){
                         console.log('suppression reussi', httpResponse.data)
                         console.log('supp', $scope.supprimeAmi.idAmi)
                         $('#item'+$scope.supprimeAmi.idAmi).remove()
-                        $scope.rechercheListe()
+                        $scope.previewItemListeAmi--;
                     }
                     else{
                         console.log('Erreur de suppression')                                    

@@ -4,39 +4,42 @@ m.directive('notificationami', function(){
           // si l'utilisateur est deja connecter on inserer le mail dans la variable mailUtilisateur
           if(sessionStorage.mail){     
               $scope.rechercheDemandeAmi = function(){
+                $interval(function(){
+                    // recupere le parametre dans la route (id)
+                    paramRoute = {
+                        id: sessionStorage.id
+                    }
+                    var routeJsonData = angular.toJson(paramRoute, true);
+        
+                    var urlEnLigne = "/choixajouteami"
+                    // envoie des donnees en POST pour recuperer le nombre de demande d'ami
+                    $http({
+                        url: urlEnLigne,
+                        method: 'POST',
+                        data: routeJsonData
+                        // data: utilisateurJsonData
+                    }).then(function (httpResponse) { 
+                        console.log('test')                 
+                        // si un message d'erreur est envoyer par le serveur
+                        if(httpResponse.data.message){
+                            console.log('Echec de la recuperation du nombre de demande ami')
+                        }
+                        else{      
+                            console.log('recuperation reussi')                 
+                            // ajoute le nombre de demande d'ami dans l'onglet
+                            $scope.previewItemDemandeAmi = httpResponse.data.notificationAmi.length
+                            // envoie dans le tableau
+                            $scope.itemDemandeAmi = httpResponse.data.notificationAmi;
+                            
+                            
+                        }
+                        
+                    })
 
-                // $interval($scope.rechercheDemandeAmi, 5000)               
-                // recupere le parametre dans la route (id)
-                paramRoute = {
-                    id: sessionStorage.id
-                }
-                var routeJsonData = angular.toJson(paramRoute, true);
-    
-                var urlEnLigne = "/choixajouteami"
-                // envoie des donnees en POST pour recuperer le nombre de demande d'ami
-                $http({
-                    url: urlEnLigne,
-                    method: 'POST',
-                    data: routeJsonData
-                    // data: utilisateurJsonData
-                }).then(function (httpResponse) { 
-                    console.log('test')                 
-                    // si un message d'erreur est envoyer par le serveur
-                    if(httpResponse.data.message){
-                        console.log('Echec de la recuperation du nombre de demande ami')
-                    }
-                    else{      
-                        // ajoute le nombre de demande d'ami dans l'onglet
-                        $scope.previewItemDemandeAmi = httpResponse.data.notificationAmi.length
-                        // envoie dans le tableau
-                        $scope.itemDemandeAmi = httpResponse.data.notificationAmi;
-                        
-                        
-                    }
-                    
-                })
+                }, 2000)
                 
             }
+            // $interval($scope.rechercheDemandeAmi, 10000)
             $scope.rechercheDemandeAmi()            
             // si l'utilisateur clique sur accepter l'invitation
             $scope.accepter = function(itemAccepter){
@@ -44,7 +47,6 @@ m.directive('notificationami', function(){
                 console.log('accepter', $scope.reponseAmi);
                 
                 $scope.envoiReponse()
-                
             }
             // si l'utilisateur clique sur refuser l'invitation
             $scope.refuser = function(itemRefuser){
@@ -52,7 +54,6 @@ m.directive('notificationami', function(){
                 console.log('refuser', $scope.reponseAmi.idDemande);
 
                 $scope.envoiReponse()
-
             }
             $scope.envoiReponse = function(){
                 
@@ -70,9 +71,9 @@ m.directive('notificationami', function(){
                         console.log('echec de l\'ajout')
 
                     }
-                    else{
-                        $scope.rechercheDemandeAmi()                        
+                    else{                  
                         $('#item'+$scope.reponseAmi.idDemande).remove()
+                        $scope.previewItemDemandeAmi--;
                         console.log('ajout reussi', httpResponse.data)
                     }
                 })
