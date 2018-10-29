@@ -131,13 +131,13 @@ app.post('/search', function(req, res) {
           console.log('Echec de connexion a la collection', err.message);
         }else{
           if(o){
-            console.log('Resultat', o);
+            console.log('Resultat');
               if(o.length == 0){
                 console.log('Aucun resultat');
                 res.send({search: 'Aucun resultat'});
               }
               else{
-                console.log('Recherche effectuer', o);
+                console.log('Recherche effectuer');
                 res.send({search: o});
                 client.close();
               }
@@ -241,9 +241,7 @@ app.post('/ajouteami', function(req, res) {
       console.log('err', err)
     }
     else{
-      // console.log("Connexion a la base reussi");
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
-      // console.log('ajouterAmi connexion', req.body)
       // ajoute une notification de demande ami
       collection.updateOne({'_id': ObjectID(req.body.id)}, {$push: {demandeAjoutAmi: req.body.idEnCour}}, function(err, o) {
         if(err){
