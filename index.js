@@ -530,8 +530,8 @@ var socketIO = require('socket.io');
 var io = socketIO(server);
 io.on('connection', function(socket){
   ///// ROUTE ////
-  socket.on('test', function(){
-    console.log('connexion ok', socket)
+  socket.on('test', function(data){
+    console.log('connexion ok', data)
   })
 
 
@@ -539,4 +539,4 @@ io.on('connection', function(socket){
 })
   
  
-server.listen(process.env.PORT || 5001);
+server.listen(process.env.PORT || 5003);

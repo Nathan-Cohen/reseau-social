@@ -1,4 +1,4 @@
-var m = angular.module("monApp", ["ngRoute"]);
+var m = angular.module("monApp", ["ngRoute", "btford.socket-io"]);
 
 m.config(function($routeProvider) {
     $routeProvider

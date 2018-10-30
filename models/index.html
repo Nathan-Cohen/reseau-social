@@ -27,11 +27,9 @@
         <!-- FONT AWESOME -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
         
-        <script src="/socket/socket.io.js" ></script>
-
         <link rel="stylesheet" href="style/style.css" >
 
-        <script>
+        <!-- <script>
         (function(window, io){
             window.addEventListener('DOMContentLoaded', function(){
             var socket = io();
@@ -39,7 +37,7 @@
             socket.emits('test')
             })
         })
-        </script>
+        </script> -->
     </head>
 
     <body ng-app="monApp">
@@ -74,6 +72,11 @@
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
         <!-- ROUTE -->
         <script src="routes/route.js"></script>
+        <!-- SOCKET -->
+        <script src="../node_modules/angular-socket-io/mock/socket-io.js"></script>
+        <script src="/socket/socket.io.js" ></script>
+        <script src="../node_modules/angular-socket-io/socket.min.js"></script>
+        
         <!-- FACTORIES -->
         <script src="factories/connection.js"></script>
         <!-- CONTROLLER -->
@@ -92,6 +95,9 @@
         <script src="directives/notificationAmi.js"></script>
         <script src="directives/ajouterAmi.js"></script>
         <script src="directives/listeAmi.js"></script>
+
+        <!-- SERVICES -->
+        <script src="services/socketService.js"></script>
         
     </body>
 
