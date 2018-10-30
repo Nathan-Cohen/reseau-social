@@ -3,7 +3,6 @@ m.directive('actualite', function(){
         controller: function($scope, SocketService){
             $scope.testfunc = function(){
                 SocketService.emit('test', {message: 'ledirectcesttropchaud'});
-                console.log('testfront', SocketService)
             }
         },
         template: `

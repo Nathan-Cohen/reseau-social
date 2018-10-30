@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Nathan-Cohen/reseau-social#readme",
   "dependencies": {
+    "angular-socket-io": "^0.7.0",
     "angularjs": "0.0.1",
     "express": "^4.16.3",
     "md5": "^2.2.1",

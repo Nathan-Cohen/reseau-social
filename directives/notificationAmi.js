@@ -30,6 +30,7 @@ m.directive('notificationami', function(){
                             $scope.previewItemDemandeAmi = httpResponse.data.notificationAmi.length
                             // envoie dans le tableau
                             $scope.itemDemandeAmi = httpResponse.data.notificationAmi;
+                            
                             setTimeout(function(){
                                 $scope.rechercheDemandeAmi();
                             }, 10000)

@@ -120,11 +120,10 @@ app.post('/search', function(req, res) {
       console.log('err', err)
     }
     else{
-      // console.log("Connexion a la base reussi");
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
       // cherche si l'utilisateur existe deja
-      var test = req.body.message;
-      var query = { nomString: test};
+      var search = req.body.search;
+      var query = { nomString: search};
       console.log('query.nomString', query.nomString)
       collection.find({ 'nom': { '$regex': query.nomString } }).toArray(function(err, o) {
         if(err){
@@ -290,6 +289,10 @@ app.post('/choixajouteami', function(req, res) {
         }else{
           if(o){
             if(o[0].demandeAjoutAmi){
+              // si il n'a pas encore de demande d'ami
+              if(o[0].demandeAjoutAmi.length == 0){
+                res.send({notificationAmi: tabDesDemandes});                
+              }
               for(var i=0; i<o[0].demandeAjoutAmi.length; i++){
                 collection.find({'_id': ObjectID(o[0].demandeAjoutAmi[i])}).toArray(function(err, o) {
                   if(err){
@@ -363,6 +366,10 @@ app.post('/listeami', function(req, res) {
         }else{
           if(o){
             if(o[0].ami){
+              // si il n'a pas encore d'ami
+              if(o[0].ami.length == 0){
+                res.send({listeAmi: tabListeDeAmis});                              
+              }
               // boucle sur le nombre d'ami
               for(var i=0; i<o[0].ami.length; i++){
                 collection.find({'_id': ObjectID(o[0].ami[i])}).toArray(function(err, o) {
@@ -386,7 +393,7 @@ app.post('/listeami', function(req, res) {
                       res.send({message: 'Erreur de connexion au profil'});            
                       client.close();
                     }
-          
+                    
                   }
                   // si le tableau a bien ete construit on envoie les données
                   if(booleanDemandeListeAmi){
@@ -529,9 +536,12 @@ app.post('/supprimeami', function(req, res) {
 var socketIO = require('socket.io');
 var io = socketIO(server);
 io.on('connection', function(socket){
+  console.log('client connecter')
   ///// ROUTE ////
-  socket.on('test', function(data){
+  socket.on('chatBox', function(data){
     console.log('connexion ok', data)
+    socket.emit('chatBoxRetour', data)
+    socket.broadcast.emit('chatBoxRetour', data)
   })
 
 
