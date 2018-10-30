@@ -4,7 +4,7 @@ m.directive('notificationami', function(){
           // si l'utilisateur est deja connecter on inserer le mail dans la variable mailUtilisateur
           if(sessionStorage.mail){    
             $scope.rechercheDemandeAmi = function(){
-                setTimeout(function(){
+                
                     // recupere le parametre dans la route (id)
                     paramRoute = {
                         id: sessionStorage.id
@@ -30,20 +30,18 @@ m.directive('notificationami', function(){
                             $scope.previewItemDemandeAmi = httpResponse.data.notificationAmi.length
                             // envoie dans le tableau
                             $scope.itemDemandeAmi = httpResponse.data.notificationAmi;
-                            
+                            setTimeout(function(){
+                                $scope.rechercheDemandeAmi();
+                            }, 10000)
                             
                         }
                         
                     })
-                }, 100)
+                
                 
             }
 
-            $scope.intervalPromise = $interval(function(){
-                $scope.rechercheDemandeAmi();
-            }, 10000);  
-
-            $scope.rechercheDemandeAmi()
+            $scope.rechercheDemandeAmi();
             // si l'utilisateur clique sur accepter l'invitation
             $scope.accepter = function(itemAccepter){
                 $scope.reponseAmi = {reponse: "accepter", id: sessionStorage.id, idDemande: $(itemAccepter.target).attr("id")};

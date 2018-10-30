@@ -28,7 +28,9 @@ m.directive('listeami', function(){
                         // envoie dans le tableau
                         $scope.itemListeAmi = httpResponse.data.listeAmi;
     
-                        
+                        setTimeout(function(){
+                            $scope.rechercheListe();
+                        }, 10000)
                     }
                 })
 
