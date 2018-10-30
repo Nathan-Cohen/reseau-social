@@ -1,5 +1,5 @@
 m.directive('actualite', function(){
-    var directiveDef = {
+    var directiveActuDef = {
         controller: function($scope, SocketService){
             $scope.testfunc = function(){
                 SocketService.emit('test', {message: 'ledirectcesttropchaud'});
@@ -43,10 +43,12 @@ m.directive('actualite', function(){
                 </div>
             </div>
         </div>
+
+        <chatbox></chatbox>
         `
 
     }
-    return directiveDef
+    return directiveActuDef
 
 })
 
