@@ -122,9 +122,9 @@ app.post('/search', function(req, res) {
     else{
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
       // cherche si l'utilisateur existe deja
-      var search = req.body.search;
+      var search = req.body.searchEnCour;
       var query = { nomString: search};
-      console.log('query.nomString', query.nomString)
+      console.log('query.nomString', query)
       collection.find({ 'nom': { '$regex': query.nomString } }).toArray(function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);

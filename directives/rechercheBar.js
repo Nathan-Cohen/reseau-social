@@ -1,6 +1,6 @@
 m.directive('recherchebar', function(){
     var directiveDefs = {
-        controller: function($scope, $http){
+        controller: function($scope, $http, $timeout){
 
             if(sessionStorage.id){
                 // supprime le lien Connexion/Inscription
@@ -16,31 +16,35 @@ m.directive('recherchebar', function(){
             }
             // recherche les valeurs qui correspondes
             $scope.complete = function(string){
-                var output=[];
-                var searchEnCour = {"message": string}
-                // envoie des donnees en POST            
-                $http({
-                    url: urlEnLigne,
-                    method: 'POST',
-                    data: searchEnCour
-                }).then(function (httpResponse) {
-                    console.log('httpResponse.data search', httpResponse.data)
-                    // si le message de retour est 'Aucun resultat'
-                    if(httpResponse.data.search == 'Aucun resultat'){
-                        output.push('Aucun resultat');
-                    }
-                    // sinon il y a un resultat
-                    else{
-                        // Construit le tableau
-                        angular.forEach(httpResponse.data.search,function(item){
-                            itemTotal = {prenom: item.prenom, nom: item.nom, id: item._id}
-                            output.push(itemTotal);
-                        });
+                $timeout(function () {
+                    var output=[];
+                    var searchEnCour = {"searchEnCour": string}
+                    console.log('searcch', searchEnCour)
+                    // envoie des donnees en POST            
+                    $http({
+                        url: urlEnLigne,
+                        method: 'POST',
+                        data: searchEnCour
+                    }).then(function (httpResponse) {
+                        console.log('httpResponse.data search', httpResponse.data)
+                        // si le message de retour est 'Aucun resultat'
+                        if(httpResponse.data.search == 'Aucun resultat'){
+                            output.push('Aucun resultat');
+                        }
+                        // sinon il y a un resultat
+                        else{
+                            // Construit le tableau
+                            angular.forEach(httpResponse.data.search,function(item){
+                                itemTotal = {prenom: item.prenom, nom: item.nom, id: item._id}
+                                output.push(itemTotal);
+                            });
 
-                    }
-                })
-                
-                $scope.totalItem=output;
+                        }
+                    })
+                    
+                    $scope.totalItem=output;
+                }, 2000);
+                    
             }
 
         },
