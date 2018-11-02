@@ -540,7 +540,7 @@ io.on('connection', function(socket){
   ///// ROUTE ////
   socket.on('chatBox', function(data){
     console.log('connexion ok', data)
-    socket.emit('chatBoxRetour', data)
+    socket.emit('chatBoxRetourMoi', data)
     socket.broadcast.emit('chatBoxRetour', data)
   })
 
