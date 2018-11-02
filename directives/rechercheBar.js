@@ -13,6 +13,10 @@ m.directive('recherchebar', function(){
             // au clique on recupere la valeur rechercher pour l'affecter au scope
             $scope.selectItem = function(item){
                 $scope.search = item.prenom
+                // supprime la valeur dans le champ
+                $scope.search = "";
+                // supprime la liste afficher
+                $scope.totalItem = "";
             }
             // recherche les valeurs qui correspondes
             $scope.complete = function(string){
@@ -41,7 +45,7 @@ m.directive('recherchebar', function(){
     
                         }
                     })
-                    
+                    // envoi les resultats dans la liste
                     $scope.totalItem=output;
 
                 }
