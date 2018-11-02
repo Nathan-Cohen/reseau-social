@@ -122,10 +122,10 @@ app.post('/search', function(req, res) {
     else{
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
       // cherche si l'utilisateur existe deja
-      var search = req.body.search;
+      var search = req.body.searchEnCour;
       var query = { nomString: search};
       console.log('query.nomString', query.nomString)
-      collection.find({ 'nom': { '$regex': query.nomString } }).toArray(function(err, o) {
+      collection.find({$or:[{ 'nom': { '$regex': query.nomString } },{ 'prenom': { '$regex': query.nomString } }]}).toArray(function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
@@ -288,7 +288,7 @@ app.post('/choixajouteami', function(req, res) {
           console.log('Echec de connexion a la collection', err.message);
         }else{
           if(o){
-            if(o[0].demandeAjoutAmi){
+            if(o[0]){
               // si il n'a pas encore de demande d'ami
               if(o[0].demandeAjoutAmi.length == 0){
                 res.send({notificationAmi: tabDesDemandes});                
@@ -365,7 +365,7 @@ app.post('/listeami', function(req, res) {
           console.log('Echec de connexion a la collection', err.message);
         }else{
           if(o){
-            if(o[0].ami){
+            if(o[0]){
               // si il n'a pas encore d'ami
               if(o[0].ami.length == 0){
                 res.send({listeAmi: tabListeDeAmis});                              
@@ -535,15 +535,33 @@ app.post('/supprimeami', function(req, res) {
 //////////////// SOCKET IO /////////////
 var socketIO = require('socket.io');
 var io = socketIO(server);
+var tabConnection = [];
+
+///// ROUTE ////
 io.on('connection', function(socket){
-  console.log('client connecter')
-  ///// ROUTE ////
+  // a la connexion de l'utilisateur on ajoute dans le tableau
+  socket.on('connexion', function(data){
+    tabConnection.push(socket)
+
+  })
+  socket.on('recupereNbConnecter', function(){
+    socket.emit('nbUtilisateurConnecter', {co: tabConnection.length})
+    socket.broadcast.emit('nbUtilisateurConnecter', {co: tabConnection.length})
+
+    
+  })
+  
+
   socket.on('chatBox', function(data){
-    console.log('connexion ok', data)
     socket.emit('chatBoxRetourMoi', data)
     socket.broadcast.emit('chatBoxRetour', data)
   })
 
+  socket.on("disconnect", function(){
+    console.log('utilisateur deconnecter')
+    tabConnection.pop();
+    socket.broadcast.emit('nbUtilisateurConnecter', {co: tabConnection.length})
+  })
 
 
 })

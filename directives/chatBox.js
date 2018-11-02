@@ -8,7 +8,7 @@ m.directive('chatbox', function(){
 
         },
         template: `
-            <div class="col-md-5" id="chatbox" ng-if="afficheChatBox" ng-controller="chatBoxCtrl">
+            <div class="col-md-3" id="chatbox" ng-if="afficheChatBox" ng-controller="chatBoxCtrl">
                 <div class="panel panel-primary" id="barChatbox">
 
                     <div class="panel-collapse collapse" id="collapseOne">
@@ -42,12 +42,12 @@ m.directive('chatbox', function(){
                         </div>
                     </div>
                     <div class="panel-heading" id="accordion">
-                        <div class="btn-group" id="groupeBouton">
+                        <div class="btn-group" id="groupeBoutonChatBox">
                             <a id="boutonAfficheChatBox" type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordion" href="!#collapseOne">
-                                <div>
-                                    <span class="glyphicon glyphicon-comment"></span> Chat
+                                <div id="groupeIconChatBox">
+                                    <span class="glyphicon glyphicon-comment"></span> Chat ({{nbUtilisateurConnecter}})
+                                    <span class="glyphicon glyphicon-chevron-up"></span>
                                 </div>
-                                <span class="glyphicon glyphicon-chevron-up" id="chevronChatBox"></span>
                             </a>
                         </div>
                     </div>

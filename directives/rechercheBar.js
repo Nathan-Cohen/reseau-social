@@ -17,7 +17,7 @@ m.directive('recherchebar', function(){
             // recherche les valeurs qui correspondes
             $scope.complete = function(string){
                 var output=[];
-                var searchEnCour = {"message": string}
+                var searchEnCour = {"searchEnCour": string}
                 // envoie des donnees en POST            
                 $http({
                     url: urlEnLigne,

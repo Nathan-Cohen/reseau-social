@@ -122,7 +122,6 @@
 
 
   /* ////////////CHATBOX/////////////// */
-
   #chatbox{
     position: fixed;
     bottom: 0;
@@ -130,6 +129,11 @@
     margin-bottom: 10px;
   }
 
+  #groupeIconChatBox{
+    font-size: 15px;
+    font-weight: bold;
+    color: black;
+  }
 
 
   #boutonAfficheChatBox{
@@ -142,7 +146,7 @@
   
   }
   
-  #groupeBouton{
+  #groupeBoutonChatBox{
     width: 100%;
   }
   

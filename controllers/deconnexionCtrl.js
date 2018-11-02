@@ -1,4 +1,5 @@
-m.controller('deconnexionCtrl', function($scope, $http, $location, connectionFactorie){
+m.controller('deconnexionCtrl', function($scope, SocketService){
+    SocketService.emit('disconnect')
     // cache le bouton deconnexion
     $('#deconnexion').css('display', 'none')        
     // supprime les donnes de connexion
@@ -7,5 +8,7 @@ m.controller('deconnexionCtrl', function($scope, $http, $location, connectionFac
     $('#menuConnexion').css('display', 'block')
     // ajoute le lien Profil
     $('#monProfil').remove()
+
+
 
 })

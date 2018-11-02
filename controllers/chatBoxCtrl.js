@@ -1,4 +1,4 @@
-m.controller('chatBoxCtrl', function($scope, $timeout, SocketService, $compile){
+m.controller('chatBoxCtrl', function($scope, SocketService){
     $scope.tabDesMessages = []
 
     $scope.envoieMessage = function(){
@@ -14,10 +14,15 @@ m.controller('chatBoxCtrl', function($scope, $timeout, SocketService, $compile){
             $scope.msgbox = ''
         }
     }
+    SocketService.emit('recupereNbConnecter')
+    SocketService.on('nbUtilisateurConnecter', function(data){
+        $scope.nbUtilisateurConnecter = data.co
+        
+    });
 
 
     SocketService.on('chatBoxRetourMoi', function(data){
-        $scope.tabDesMessages.push(data)
+        $scope.tabDesMessages.push(data);
         // attend la creation de la div du message, modifie la couleur de fond pour reconnaitre le message de l'utilisateur connecter
         setTimeout(function(){
             nbtest = document.getElementsByClassName('chatBoxMessageListe').length-1
@@ -25,11 +30,11 @@ m.controller('chatBoxCtrl', function($scope, $timeout, SocketService, $compile){
             document.getElementsByClassName('chatBoxMessageListe')[nbtest].style.padding = '5px'
         }, 10)
         
-    })
+    });
+
     SocketService.on('chatBoxRetour', function(data){
-        console.log('chatBoxRetour', data)
-        $scope.tabDesMessages.push(data)
+        $scope.tabDesMessages.push(data);
         
-    })
+    });
 
 })
