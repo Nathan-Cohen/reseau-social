@@ -5,7 +5,7 @@ m.directive('listepublication', function(){
                 $scope.rechercheListePublication = function(){
                   // recupere le parametre dans la route (id)
                   paramRoute = {
-                      id: sessionStorage.id,
+                        id: sessionStorage.id,
                         idEnCour: $routeParams.idUtilisateur,
                   }
                   var routeJsonData = angular.toJson(paramRoute, true);
@@ -17,7 +17,7 @@ m.directive('listepublication', function(){
                       method: 'POST',
                       data: routeJsonData
                   }).then(function (httpResponse) { 
-                      console.log('test liste')                 
+                      console.log('test liste publication')                 
                       // si un message d'erreur est envoyer par le serveur
                       if(httpResponse.data.message){
                           console.log('Echec de la recuperation du nombre de publication')
@@ -47,8 +47,8 @@ m.directive('listepublication', function(){
                     [photo de l'article]
                     </a>
                     <div class="media-body">
-                    <h4 class="media-heading">Titre de l'article</h4>
-                        <p class="text-right">By nom de l'auteur</p>
+                    <!-- <h4 class="media-heading">Titre de l'article</h4> -->
+                        <p class="text-right"><a href="#!/profil/recherche/{{item.idPublication}}">{{item.prenom}}{{item.prenomAuteur}} {{item.nomAuteur}}</a></p>
                         <p>{{item.publication}}</p>
                         <ul class="list-inline list-unstyled">
                             <li><span><i class="glyphicon glyphicon-calendar"></i> date de l'article </span></li>

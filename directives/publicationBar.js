@@ -4,6 +4,8 @@ m.directive('publicationbar', function(){
           // si l'utilisateur est deja connecter on inserer le mail dans la variable mailUtilisateur
           if(sessionStorage.id){
             $scope.id = sessionStorage.id; 
+
+            // verifier si le profil et l'utilisateur son ami pour pouvoir publier
             
           }
 

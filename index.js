@@ -382,14 +382,10 @@ app.post('/listeami', function(req, res) {
                       if(i == tabListeDeAmis.length){
                         booleanDemandeListeAmi = true;
                       }
-                      client.close();
           
                     }
                     else{
-                      // si la taille du tableau est egal au nombre de fois ou il a fait le tour
-                      if(i == tabListeDeAmis.length){
-                        booleanDemandeListeAmi = true;
-                      }
+                      
                       res.send({message: 'Erreur de connexion au profil'});            
                       client.close();
                     }
@@ -398,6 +394,7 @@ app.post('/listeami', function(req, res) {
                   // si le tableau a bien ete construit on envoie les données
                   if(booleanDemandeListeAmi){
                     res.send({listeAmi: tabListeDeAmis});
+                    client.close();
     
                   }           
           
@@ -544,7 +541,7 @@ app.post('/publicationProfil', function(req, res) {
     else{
       const collection = client.db('heroku_g9jk10c8').collection('publication');
       // si il m'existe pas on l'insert
-      collection.insertOne({idProfil: req.body.idEnCour, idPublication: req.body.id, publication: req.body.messagepublication}, function(err, o) {
+      collection.insertOne({idProfil: req.body.idEnCour, idPublication: req.body.id, publication: req.body.messagepublication, nomAuteur: req.body.nom, prenomAuteur: req.body.prenom}, function(err, o) {
         if(err){
           console.log(err.message);
           res.send({message: 'Erreur'});

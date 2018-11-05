@@ -3,6 +3,8 @@ m.controller('profilCtrl', function($scope, $http, $routeParams, connectionFacto
     var utilisateur = connectionFactorie.getData();
     if(sessionStorage.mail){
         $('#deconnexion').css('display', 'block')
+        console.log('test nom', sessionStorage.nom)
+        console.log('test prenom', sessionStorage.prenom)
     }
     $scope.rechercheProfil = ()=>{
         // construit l'objet
