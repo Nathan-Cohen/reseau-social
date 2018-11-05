@@ -1,5 +1,5 @@
 m.directive('listepublication', function(){
-    var directiveActuDef = {
+    var directiveListePublicationDef = {
         controller: function($scope, $http, $routeParams, SocketService){
             if(sessionStorage.id){
                 $scope.rechercheListePublication = function(){
@@ -41,41 +41,44 @@ m.directive('listepublication', function(){
             
         },
         template: `
+            <!-- PUBLICATION -->
             <div class="well" ng-repeat="item in itemListePublication">
-                <div class="media">
+                <div class="publications-body">
                     <a class="pull-left" href="#">
                     [photo de l'article]
                     </a>
                     <div class="media-body">
                     <!-- <h4 class="media-heading">Titre de l'article</h4> -->
-                        <p class="text-right"><a href="#!/profil/recherche/{{item.idPublication}}">{{item.prenom}}{{item.prenomAuteur}} {{item.nomAuteur}}</a></p>
+                        <p class="text-right"><span class="glyphicon glyphicon-time"></span>Times</small></p>
+                        <p class="text-left"><a href="#!/profil/recherche/{{item.idPublication}}">{{item.prenom}}{{item.prenomAuteur}} {{item.nomAuteur}}</a> :</p>
                         <p>{{item.publication}}</p>
-                        <ul class="list-inline list-unstyled">
-                            <li><span><i class="glyphicon glyphicon-calendar"></i> date de l'article </span></li>
-                        <li>|</li>
-                        <span><i class="glyphicon glyphicon-comment"></i> nombre de commentaires</span>
-                        <li>|</li>
-                        <li>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star-empty"></span>
-                        </li>
-                        <li>|</li>
-                        <li>
-                            <span><i class="fab fa-facebook-square"></i></span>
-                            <span><i class="fab fa-twitter-square"></i></span>
-                            <span><i class="fab fa-google-plus-square"></i></span>
-                        </li>
-                        </ul>
                     </div>
                 </div>
+                <h5 class="media-heading">Commentaires :</h5>
+                <!-- COMMENTAIRE -->
+                    <ul class="commentaires">
+                        <li class="left clearfix">
+                            <span class="chat-img pull-left">
+                                <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+                            </span>
+                            <div class="commentaires-body clearfix">
+                                <div class="header">
+                                    <strong class="primary-font">Prenom Nom</strong> <small class="pull-right text-muted">
+                                        <span class="glyphicon glyphicon-time"></span>Times</small>
+                                </div>
+                                <p>
+                                    message 
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
             </div>
+
+
         `
 
     }
-    return directiveActuDef
+    return directiveListePublicationDef
 
 })
 

@@ -385,7 +385,6 @@ app.post('/listeami', function(req, res) {
           
                     }
                     else{
-                      
                       res.send({message: 'Erreur de connexion au profil'});            
                       client.close();
                     }
@@ -630,4 +629,4 @@ io.on('connection', function(socket){
 })
   
  
-server.listen(process.env.PORT || 5004);
+server.listen(process.env.PORT || 5000);
