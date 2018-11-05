@@ -532,6 +532,72 @@ app.post('/supprimeami', function(req, res) {
 
 
 
+
+////////////// PUBLICATION ///////////////
+app.post('/publicationProfil', function(req, res) {
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('publication');
+      // si il m'existe pas on l'insert
+      collection.insertOne({idProfil: req.body.idEnCour, idPublication: req.body.id, publication: req.body.messagepublication}, function(err, o) {
+        if(err){
+          console.log(err.message);
+          res.send({message: 'Erreur'});
+          client.close();
+        }
+        else{
+          console.log("Nouvel publication : ", o.ops[0]._id);
+          // res.send({id: o.ops[0]._id, mail: req.body.mail, nom: req.body.nom, prenom: req.body.prenom, mdp: o.ops[0].password});  
+          client.close();                        
+
+        }
+      });
+  
+    }
+  });
+  
+});
+
+
+
+/////// LISTE PUBLICATION ////////
+// recupere les donnees de la connection pour verifier dans la BDD
+app.post('/listepublication', function(req, res) {
+  tabListeDeAmis = []
+  booleanDemandeListeAmi = false;
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('publication');
+      // cherche si l'utilisateur existe
+      collection.find({'idProfil': req.body.idEnCour}).toArray(function(err, o) {
+        if(err){
+          console.log('Echec de connexion a la collection', err.message);
+        }else{
+          console.log('liste des publications', o)
+          res.send({listePublication: o});
+        }
+
+      });
+  
+    }
+  });
+  
+});
+
+
+
+
+
 //////////////// SOCKET IO /////////////
 var socketIO = require('socket.io');
 var io = socketIO(server);
