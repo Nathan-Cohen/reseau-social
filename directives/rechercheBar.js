@@ -13,13 +13,17 @@ m.directive('recherchebar', function(){
             // au clique on recupere la valeur rechercher pour l'affecter au scope
             $scope.selectItem = function(item){
                 $scope.search = item.prenom
+                // supprime la valeur dans le champ
+                $scope.search = "";
+                // supprime la liste afficher
+                $scope.totalItem = "";
             }
             // recherche les valeurs qui correspondes
             $scope.complete = function(string){
-                $timeout(function () {
+                // si la recherche est vide
+                if(string != ''){
                     var output=[];
                     var searchEnCour = {"searchEnCour": string}
-                    console.log('searcch', searchEnCour)
                     // envoie des donnees en POST            
                     $http({
                         url: urlEnLigne,
@@ -38,13 +42,17 @@ m.directive('recherchebar', function(){
                                 itemTotal = {prenom: item.prenom, nom: item.nom, id: item._id}
                                 output.push(itemTotal);
                             });
-
+    
                         }
                     })
-                    
+                    // envoi les resultats dans la liste
                     $scope.totalItem=output;
-                }, 2000);
-                    
+
+                }
+                // sinon on vide le tableau des recherches
+                else{
+                    $scope.totalItem = ''
+                }
             }
 
         },
@@ -56,7 +64,7 @@ m.directive('recherchebar', function(){
                         <div class="form-group has-feedback">
                             <label for="search" class="sr-only">Search</label>
                             <input type="text" name="search" id="search" ng-model="search" ng-keyup="complete(search)" class="form-control" placeholder="search" autocomplete="off"/>
-                            <ul class="list-group">
+                            <ul class="list-group" id="listeGroupeRecherche">
                                 <li class="list-group-item" ng-repeat="itemData in totalItem" ng-click="selectItem(itemData)"><a href="#!/profil/recherche/{{itemData.id}}">{{itemData.prenom}} {{itemData.nom}}</a></li>
                             </ul>
                             <span class="glyphicon glyphicon-search form-control-feedback"></span>

@@ -124,8 +124,8 @@ app.post('/search', function(req, res) {
       // cherche si l'utilisateur existe deja
       var search = req.body.searchEnCour;
       var query = { nomString: search};
-      console.log('query.nomString', query)
-      collection.find({ 'nom': { '$regex': query.nomString } }).toArray(function(err, o) {
+      console.log('query.nomString', query.nomString)
+      collection.find({$or:[{ 'nom': { '$regex': query.nomString } },{ 'prenom': { '$regex': query.nomString } }]}).toArray(function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
@@ -288,7 +288,7 @@ app.post('/choixajouteami', function(req, res) {
           console.log('Echec de connexion a la collection', err.message);
         }else{
           if(o){
-            if(o[0].demandeAjoutAmi){
+            if(o[0]){
               // si il n'a pas encore de demande d'ami
               if(o[0].demandeAjoutAmi.length == 0){
                 res.send({notificationAmi: tabDesDemandes});                
@@ -365,7 +365,7 @@ app.post('/listeami', function(req, res) {
           console.log('Echec de connexion a la collection', err.message);
         }else{
           if(o){
-            if(o[0].ami){
+            if(o[0]){
               // si il n'a pas encore d'ami
               if(o[0].ami.length == 0){
                 res.send({listeAmi: tabListeDeAmis});                              
@@ -382,14 +382,9 @@ app.post('/listeami', function(req, res) {
                       if(i == tabListeDeAmis.length){
                         booleanDemandeListeAmi = true;
                       }
-                      client.close();
           
                     }
                     else{
-                      // si la taille du tableau est egal au nombre de fois ou il a fait le tour
-                      if(i == tabListeDeAmis.length){
-                        booleanDemandeListeAmi = true;
-                      }
                       res.send({message: 'Erreur de connexion au profil'});            
                       client.close();
                     }
@@ -398,6 +393,7 @@ app.post('/listeami', function(req, res) {
                   // si le tableau a bien ete construit on envoie les données
                   if(booleanDemandeListeAmi){
                     res.send({listeAmi: tabListeDeAmis});
+                    client.close();
     
                   }           
           
@@ -532,21 +528,105 @@ app.post('/supprimeami', function(req, res) {
 
 
 
+
+////////////// PUBLICATION ///////////////
+app.post('/publicationProfil', function(req, res) {
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('publication');
+      // si il m'existe pas on l'insert
+      collection.insertOne({idProfil: req.body.idEnCour, idPublication: req.body.id, publication: req.body.messagepublication, nomAuteur: req.body.nom, prenomAuteur: req.body.prenom}, function(err, o) {
+        if(err){
+          console.log(err.message);
+          res.send({message: 'Erreur'});
+          client.close();
+        }
+        else{
+          console.log("Nouvel publication : ", o.ops[0]._id);
+          // res.send({id: o.ops[0]._id, mail: req.body.mail, nom: req.body.nom, prenom: req.body.prenom, mdp: o.ops[0].password});  
+          client.close();                        
+
+        }
+      });
+  
+    }
+  });
+  
+});
+
+
+
+/////// LISTE PUBLICATION ////////
+// recupere les donnees de la connection pour verifier dans la BDD
+app.post('/listepublication', function(req, res) {
+  tabListeDeAmis = []
+  booleanDemandeListeAmi = false;
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('publication');
+      // cherche si l'utilisateur existe
+      collection.find({'idProfil': req.body.idEnCour}).toArray(function(err, o) {
+        if(err){
+          console.log('Echec de connexion a la collection', err.message);
+        }else{
+          console.log('liste des publications', o)
+          res.send({listePublication: o});
+        }
+
+      });
+  
+    }
+  });
+  
+});
+
+
+
+
+
 //////////////// SOCKET IO /////////////
 var socketIO = require('socket.io');
 var io = socketIO(server);
+var tabConnection = [];
+
+///// ROUTE ////
 io.on('connection', function(socket){
-  console.log('client connecter')
-  ///// ROUTE ////
+  // a la connexion de l'utilisateur on ajoute dans le tableau
+  socket.on('connexion', function(data){
+    tabConnection.push(socket)
+
+  })
+  socket.on('recupereNbConnecter', function(){
+    socket.emit('nbUtilisateurConnecter', {co: tabConnection.length})
+    socket.broadcast.emit('nbUtilisateurConnecter', {co: tabConnection.length})
+
+    
+  })
+  
+
   socket.on('chatBox', function(data){
-    console.log('connexion ok', data)
-    socket.emit('chatBoxRetour', data)
+    socket.emit('chatBoxRetourMoi', data)
     socket.broadcast.emit('chatBoxRetour', data)
   })
 
+  socket.on("disconnect", function(){
+    console.log('utilisateur deconnecter')
+    tabConnection.pop();
+    socket.broadcast.emit('nbUtilisateurConnecter', {co: tabConnection.length})
+  })
 
 
 })
   
  
-server.listen(process.env.PORT || 5004);
+server.listen(process.env.PORT || 5000);

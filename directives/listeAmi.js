@@ -1,6 +1,6 @@
 m.directive('listeami', function(){
     var directiveDefsListeami = {
-        controller: function($scope, $http, $interval){
+        controller: function($scope, $http){
           // si l'utilisateur est deja connecter on inserer le mail dans la variable mailUtilisateur
           if(sessionStorage.id){
               $scope.rechercheListe = function(){

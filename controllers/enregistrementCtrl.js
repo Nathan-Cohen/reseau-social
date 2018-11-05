@@ -56,6 +56,7 @@ m.controller('enregistrementCtrl', function($scope, $http, $location, connection
                 sessionStorage.setItem('mail', httpResponse.data.mail)
                 sessionStorage.setItem('mdp', httpResponse.data.mdp)
                 sessionStorage.setItem('prenom', httpResponse.data.prenom)
+                sessionStorage.setItem('nom', httpResponse.data.nom)
                 // change l'url
                 $location.path('/profil/' + httpResponse.data.id)
                 // Supprime les valeurs dans les champs

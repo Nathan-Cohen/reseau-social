@@ -3,6 +3,8 @@ m.controller('profilCtrl', function($scope, $http, $routeParams, connectionFacto
     var utilisateur = connectionFactorie.getData();
     if(sessionStorage.mail){
         $('#deconnexion').css('display', 'block')
+        console.log('test nom', sessionStorage.nom)
+        console.log('test prenom', sessionStorage.prenom)
     }
     $scope.rechercheProfil = ()=>{
         // construit l'objet
@@ -23,8 +25,8 @@ m.controller('profilCtrl', function($scope, $http, $routeParams, connectionFacto
         // les donnees de l'utilisateur dans l'url
         var routeJsonData = angular.toJson(paramRoute, true);
         
-        console.log("sessionStorage.id" + sessionStorage.id);
-        console.log("$routeParams.idUtilisateur" + $routeParams.idUtilisateur);
+        // console.log("sessionStorage.id" + sessionStorage.id);
+        // console.log("$routeParams.idUtilisateur" + $routeParams.idUtilisateur);
         
         var urlEnLigne = "/profil"
         // envoie des donnees en POST

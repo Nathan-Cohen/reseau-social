@@ -1,4 +1,4 @@
-m.controller('connexionCtrl', function($scope, $http, $location, connectionFactorie){
+m.controller('connexionCtrl', function($scope, $http, $location, connectionFactorie, SocketService){
     $scope.messagetest = "Parti connexion"
     $scope.mail = ""
     $scope.mdp = ""
@@ -38,6 +38,7 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
                 sessionStorage.setItem('mail', httpResponse.data.mail)
                 sessionStorage.setItem('mdp', httpResponse.data.mdp)
                 sessionStorage.setItem('prenom', httpResponse.data.prenom)
+                sessionStorage.setItem('nom', httpResponse.data.nom)
                 // change l'url
                 $location.path('/profil/' + httpResponse.data.id)
                 // Supprime les valeurs dans les champs        
@@ -47,6 +48,8 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
                 $('#menuConnexion').css('display', 'none')
                 // ajoute le lien Profil
                 $('#menuProfil').prepend('<li id="monProfil"><a href="#!connexion"><i class="fas fa-user"></i> Profil</a></li>')
+                // ajoute l'utilisateur au tableau des connections dans les websocket
+                SocketService.emit('connexion', {utilisateurConnecter: sessionStorage});
 
             }
 
