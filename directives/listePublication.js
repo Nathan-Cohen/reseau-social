@@ -37,6 +37,12 @@ m.directive('listepublication', function(){
               }
               $scope.rechercheListePublication()
 
+
+            // supprimer la publication
+            $scope.supprimerLaPublication = function(){
+                console.log('delete publication')
+            }
+
             }
             
         },
@@ -48,7 +54,7 @@ m.directive('listepublication', function(){
                     [photo de l'article]
                     </a>
                     <div class="media-body">
-                    <!-- <h4 class="media-heading">Titre de l'article</h4> -->
+                        <button class="pull-right" ng-click="supprimerLaPublication()" type="button"><i class="fas fa-times-circle"></i></button>
                         <p class="text-right"><span class="glyphicon glyphicon-time"></span>Times</small></p>
                         <p class="text-left"><a href="#!/profil/recherche/{{item.idPublication}}">{{item.prenom}}{{item.prenomAuteur}} {{item.nomAuteur}}</a> :</p>
                         <p>{{item.publication}}</p>
