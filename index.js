@@ -528,6 +528,37 @@ app.post('/supprimeami', function(req, res) {
 
 
 
+///////VERIFIE SI L'UTILISATEUR PEUT PUBLIER ////////
+// recupere les donnees de la connection pour verifier dans la BDD
+app.post('/publicationbar', function(req, res) {
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+      // cherche si l'utilisateur existe
+      collection.find({'_id': ObjectID(req.body.idEnCour)}).toArray(function(err, o) {
+        if(err){
+          console.log('Echec de connexion a la collection', err.message);
+        }else{
+          for(var j=0; j<o[0].ami.length; j++){
+            if(o[0].ami[j] == req.body.id){
+              res.send({message: 'autoriser'});
+            }
+          }
+          console.log('accord publications', o[0].ami)
+        }
+
+      });
+  
+    }
+  });
+  
+});
+
 
 ////////////// PUBLICATION ///////////////
 app.post('/publicationProfil', function(req, res) {
@@ -564,8 +595,6 @@ app.post('/publicationProfil', function(req, res) {
 /////// LISTE PUBLICATION ////////
 // recupere les donnees de la connection pour verifier dans la BDD
 app.post('/listepublication', function(req, res) {
-  tabListeDeAmis = []
-  booleanDemandeListeAmi = false;
   //////////////// CONNEXION A LA BASE ///////////////////
   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
   mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
@@ -579,7 +608,7 @@ app.post('/listepublication', function(req, res) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
-          console.log('liste des publications', o)
+          console.log('liste des publications')
           res.send({listePublication: o});
         }
 

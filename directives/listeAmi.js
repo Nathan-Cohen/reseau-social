@@ -17,7 +17,7 @@ m.directive('listeami', function(){
                     method: 'POST',
                     data: routeJsonData
                 }).then(function (httpResponse) { 
-                    console.log('test liste')                 
+                    console.log('test liste ami')                 
                     // si un message d'erreur est envoyer par le serveur
                     if(httpResponse.data.message){
                         console.log('Echec de la recuperation du nombre de demande ami')
@@ -30,7 +30,7 @@ m.directive('listeami', function(){
     
                         setTimeout(function(){
                             $scope.rechercheListe();
-                        }, 10000)
+                        }, 1000)
                     }
                 })
 

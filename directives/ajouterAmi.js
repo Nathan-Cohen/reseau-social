@@ -59,9 +59,11 @@ m.directive('ajouterami', function(){
                     // affiche la notification de succes d'ajout d'ami
                     $('#notifSuccessAmi').css('display', 'block')
                     // fait disparaitre la div 
-                    $("#notifSuccessAmi").fadeOut( 10000, function() {
+                    $("#notifSuccessAmi").fadeOut( 8000, function() {
                         $('#notifSuccessAmi').css('display', 'none');
                     });
+                    // fait disparaitre le bouton ajouter ami
+                    $('#boutonAjouterAmi').css('display', 'none');
                 }
 
             })
