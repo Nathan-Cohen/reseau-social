@@ -28,9 +28,9 @@ m.directive('listepublication', function(){
                           // envoie dans le tableau
                           $scope.itemListePublication = httpResponse.data.listePublication;
       
-                        //   setTimeout(function(){
-                        //       $scope.rechercheListePublication();
-                        //   }, 5000)
+                          setTimeout(function(){
+                              $scope.rechercheListePublication();
+                          }, 5000)
                       }
                   })
   

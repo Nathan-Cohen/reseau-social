@@ -12,8 +12,8 @@ m.directive('publicationcommentairebar', function(){
         },
         template: `
             <div ng-if='id' ng-controller="publicationBarCtrl">                       
-                    <textarea class="form-control animated" placeholder="Publier un statut" name="messagePublication" ng-model="messagepublication" ></textarea>
-                    <button class="btn btn-info pull-right" ng-click="publier()" type="button">Partager</button>
+                    <textarea class="form-control-commentaire animated col-sm-9" placeholder="Publier un statut" name="messagePublication" ng-model="messagepublication" ></textarea>
+                    <button class="btn btn-info col-sm-3" ng-click="publier()" type="button">Partager</button>
             </div>
         `
 

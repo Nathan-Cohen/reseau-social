@@ -162,6 +162,11 @@
 }
 
 
+.form-control-commentaire{
+  border-radius: 5px;
+  
+}
+
 
   /* ////////////CHATBOX/////////////// */
   #chatbox{
