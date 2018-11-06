@@ -19,8 +19,11 @@ m.directive('listeami', function(){
                 }).then(function (httpResponse) { 
                     console.log('test liste ami')                 
                     // si un message d'erreur est envoyer par le serveur
-                    if(httpResponse.data.message){
+                    if(httpResponse.data.message == 'Erreur'){
                         console.log('Echec de la recuperation du nombre de demande ami')
+                    }
+                    else if(httpResponse.data.message == '0'){
+                        console.log('pas dami')
                     }
                     else{
                         // ajoute le nombre de demande d'ami dans l'onglet

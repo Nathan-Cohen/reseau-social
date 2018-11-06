@@ -364,48 +364,46 @@ app.post('/listeami', function(req, res) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
-          if(o){
-            if(o[0]){
+            if(o[0].ami){
               // si il n'a pas encore d'ami
               if(o[0].ami.length == 0){
-                res.send({listeAmi: tabListeDeAmis});                              
+                res.send({message: '0'});
               }
-              // boucle sur le nombre d'ami
-              for(var i=0; i<o[0].ami.length; i++){
-                collection.find({'_id': ObjectID(o[0].ami[i])}).toArray(function(err, o) {
-                  if(err){
-                    console.log('Echec de connexion a la collection', err.message);
-                  }else{
-                    if(o){
-                      tabListeDeAmis.push(o[0])
-                      // si la taille du tableau est egal au nombre de fois ou il a fait le tour
-                      if(i == tabListeDeAmis.length){
-                        booleanDemandeListeAmi = true;
+              else{
+                // boucle sur le nombre d'ami
+                for(var i=0; i<o[0].ami.length; i++){
+                  collection.find({'_id': ObjectID(o[0].ami[i])}).toArray(function(err, o) {
+                    if(err){
+                      console.log('Echec de connexion a la collection', err.message);
+                    }else{
+                      if(o){
+                        tabListeDeAmis.push(o[0])
+                        // si la taille du tableau est egal au nombre de fois ou il a fait le tour
+                        if(i == tabListeDeAmis.length){
+                          booleanDemandeListeAmi = true;
+                        }
+            
                       }
-          
+                      else{
+                        res.send({message: 'Erreur'});            
+                        client.close();
+                      }
+                      
                     }
-                    else{
-                      res.send({message: 'Erreur de connexion au profil'});            
+                    // si le tableau a bien ete construit on envoie les données
+                    if(booleanDemandeListeAmi){
+                      res.send({listeAmi: tabListeDeAmis});
                       client.close();
-                    }
-                    
-                  }
-                  // si le tableau a bien ete construit on envoie les données
-                  if(booleanDemandeListeAmi){
-                    res.send({listeAmi: tabListeDeAmis});
-                    client.close();
-    
-                  }           
-          
-                });
-
+      
+                    }           
+            
+                  });
+  
+                }
+                
               }
 
             }
-          }
-          else{
-            res.send({message: 'Erreur de connexion au profil'});
-          }
 
         }
 
@@ -608,7 +606,6 @@ app.post('/listepublication', function(req, res) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
-          console.log('liste des publications')
           res.send({listePublication: o});
         }
 
