@@ -368,6 +368,7 @@ app.post('/listeami', function(req, res) {
               // si il n'a pas encore d'ami
               if(o[0].ami.length == 0){
                 res.send({message: '0'});
+                client.close();
               }
               else{
                 // boucle sur le nombre d'ami
@@ -376,25 +377,18 @@ app.post('/listeami', function(req, res) {
                     if(err){
                       console.log('Echec de connexion a la collection', err.message);
                     }else{
-                      if(o){
                         tabListeDeAmis.push(o[0])
                         // si la taille du tableau est egal au nombre de fois ou il a fait le tour
                         if(i == tabListeDeAmis.length){
                           booleanDemandeListeAmi = true;
                         }
-            
-                      }
-                      else{
-                        res.send({message: 'Erreur'});            
-                        client.close();
-                      }
                       
                     }
                     // si le tableau a bien ete construit on envoie les données
                     if(booleanDemandeListeAmi){
-                      res.send({listeAmi: tabListeDeAmis});
+                      res.send({listeAmi: tabListeDeAmis}); 
                       client.close();
-      
+
                     }           
             
                   });
@@ -547,7 +541,7 @@ app.post('/publicationbar', function(req, res) {
               res.send({message: 'autoriser'});
             }
           }
-          console.log('accord publications', o[0].ami)
+          console.log('accord publications')
         }
 
       });

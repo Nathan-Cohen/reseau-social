@@ -24,6 +24,14 @@ m.directive('listeami', function(){
                     }
                     else if(httpResponse.data.message == '0'){
                         console.log('pas dami')
+                        // ajoute le nombre de demande d'ami dans l'onglet
+                        $scope.previewItemListeAmi = 0
+                        // envoie dans le tableau
+                        $scope.itemListeAmi = [];
+    
+                        setTimeout(function(){
+                            $scope.rechercheListe();
+                        }, 2000)
                     }
                     else{
                         // ajoute le nombre de demande d'ami dans l'onglet
