@@ -419,7 +419,9 @@ app.post('/listetabami', function(req, res) {
     else{
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
       // boucle sur le nombre d'ami
+      toDo = 0
       for(var i=0; i<req.body.length; i++){
+        toDo++
         collection.findOne({'_id': ObjectID(req.body[i])}, function(err, o) {
           if(err){
             console.log('Echec de connexion a la collection', err.message);
@@ -433,10 +435,14 @@ app.post('/listetabami', function(req, res) {
           // console.log('tabListeDeAmis', tabListeDeAmis)
           if(booleanDemandeListeAmi){
             booleanDemandeListeAmi = false;
-            // si le tableau a bien ete construit on envoie les données
-            res.send({listeAmi: tabListeDeAmis}); 
-    
           }
+            // si le tableau a bien ete construit on envoie les données
+            toDo--
+            if(!toDo){
+              console.log('testtttttqb', toDo)
+              res.send({listeAmi: tabListeDeAmis}); 
+
+            }
         });
         
       }  
