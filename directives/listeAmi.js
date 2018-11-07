@@ -31,17 +31,25 @@ m.directive('listeami', function(){
     
                         setTimeout(function(){
                             $scope.rechercheListe();
-                        }, 2000)
+                        }, 5000)
                     }
                     else{
-                        // ajoute le nombre de demande d'ami dans l'onglet
-                        $scope.previewItemListeAmi = httpResponse.data.listeAmi.length
-                        // envoie dans le tableau
-                        $scope.itemListeAmi = httpResponse.data.listeAmi;
-    
-                        setTimeout(function(){
-                            $scope.rechercheListe();
-                        }, 5000)
+                        console.log('httpResponse.data.listeAmi', httpResponse.data.listeAmi)
+                        successCallback = function(httpResponse){
+                            // ajoute le nombre de demande d'ami dans l'onglet
+                            $scope.previewItemListeAmi = httpResponse.data.listeAmi.length
+                            // envoie dans le tableau
+                            $scope.itemListeAmi = httpResponse.data.listeAmi;
+        
+                            setTimeout(function(){
+                                $scope.rechercheListe();
+                            }, 5000)
+
+                        }
+                        errorCallback = function(httpResponse){
+
+                        }
+                        $http.post('/listetabami', httpResponse.data.listeAmi).then(successCallback, errorCallback);
                     }
                 })
 
@@ -84,14 +92,14 @@ m.directive('listeami', function(){
 
         },
         template: `
-            <div class="row">
-                <table class="table table-striped">
+            <div class="table-responsive">
+                <table class="table">
                     <thead>
                         <tr>
-                            <th>Prenom</th>
-                            <th>Nom</th>
-                            <th>Mail</th>
-                            <th class="text-center">Action</th>
+                            <th scope="col">Prenom</th>
+                            <th scope="col">Nom</th>
+                            <th scope="col">Mail</th>
+                            <th scope="col" class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tr id="item{{item._id}}" ng-repeat="item in itemListeAmi">

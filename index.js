@@ -371,29 +371,23 @@ app.post('/listeami', function(req, res) {
                 client.close();
               }
               else{
-                // boucle sur le nombre d'ami
-                for(var i=0; i<o[0].ami.length; i++){
-                  collection.find({'_id': ObjectID(o[0].ami[i])}).toArray(function(err, o) {
-                    if(err){
-                      console.log('Echec de connexion a la collection', err.message);
-                    }else{
-                        tabListeDeAmis.push(o[0])
-                        // si la taille du tableau est egal au nombre de fois ou il a fait le tour
-                        if(i == tabListeDeAmis.length){
-                          booleanDemandeListeAmi = true;
-                        }
+                res.send({listeAmi: o[0].ami}); 
+                // // boucle sur le nombre d'ami
+                // for(var i=0; i<o[0].ami.length; i++){
+                //   collection.find({'_id': ObjectID(o[0].ami[i])}).toArray(function(err, o) {
+                //     if(err){
+                //       console.log('Echec de connexion a la collection', err.message);
+                //     }else{
+                //         tabListeDeAmis.push(o[0])
                       
-                    }
-                    // si le tableau a bien ete construit on envoie les données
-                    if(booleanDemandeListeAmi){
-                      res.send({listeAmi: tabListeDeAmis}); 
-                      client.close();
-
-                    }           
-            
-                  });
-  
-                }
+                //     }
+                    
+                //   });
+                  
+                // }
+                //   console.log('tabListeDeAmis', tabListeDeAmis)
+                // // si le tableau a bien ete construit on envoie les données
+                //   res.send({listeAmi: tabListeDeAmis}); 
                 
               }
 
@@ -409,6 +403,48 @@ app.post('/listeami', function(req, res) {
 });
 
 
+
+
+
+// TABLEAU AMI
+app.post('/listetabami', function(req, res) {
+  tabListeDeAmis = []
+  booleanDemandeListeAmi = false;
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+      // boucle sur le nombre d'ami
+      for(var i=0; i<req.body.length; i++){
+        collection.findOne({'_id': ObjectID(req.body[i])}, function(err, o) {
+          if(err){
+            console.log('Echec de connexion a la collection', err.message);
+          }else{
+              tabListeDeAmis.push(o)
+              if(tabListeDeAmis.length == req.body.length){
+                booleanDemandeListeAmi = true
+              }
+          }
+          
+          // console.log('tabListeDeAmis', tabListeDeAmis)
+          if(booleanDemandeListeAmi){
+            booleanDemandeListeAmi = false;
+            // si le tableau a bien ete construit on envoie les données
+            res.send({listeAmi: tabListeDeAmis}); 
+    
+          }
+        });
+        
+      }  
+  
+    }
+  });
+  
+});
 
 
 
@@ -541,7 +577,6 @@ app.post('/publicationbar', function(req, res) {
               res.send({message: 'autoriser'});
             }
           }
-          console.log('accord publications')
         }
 
       });
@@ -570,8 +605,7 @@ app.post('/publicationProfil', function(req, res) {
           client.close();
         }
         else{
-          console.log("Nouvel publication : ", o.ops[0]._id);
-          // res.send({id: o.ops[0]._id, mail: req.body.mail, nom: req.body.nom, prenom: req.body.prenom, mdp: o.ops[0].password});  
+          res.send({message: 'Publier'});
           client.close();                        
 
         }
@@ -623,7 +657,7 @@ app.post('/supprimepublication', function(req, res) {
     else{
       const collection = client.db('heroku_g9jk10c8').collection('publication');
         // supprime la publication
-        collection.updateOne({'_id': ObjectID(req.body.id)}, {$pull: {ami: req.body.idAmi}}, function(err, o) {
+        collection.deleteOne({'_id': ObjectID(req.body.idPublication)}, function(err, o) {
           if(err){
             console.log('Echec de connexion a la collection', err.message);
           }else{
@@ -633,7 +667,7 @@ app.post('/supprimepublication', function(req, res) {
             }
             else{
               console.log('Erreur de suppression de la publication');
-              res.send({message: 'Erreur de suppression de la publication'});
+              res.send({message: 'Erreur'});
             }
   
           }

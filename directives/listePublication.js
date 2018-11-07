@@ -17,7 +17,7 @@ m.directive('listepublication', function(){
                       method: 'POST',
                       data: routeJsonData
                   }).then(function (httpResponse) { 
-                      console.log('test liste publication')                 
+                    //   console.log('test liste publication')                 
                       // si un message d'erreur est envoyer par le serveur
                       if(httpResponse.data.message){
                           console.log('Echec de la recuperation du nombre de publication')
@@ -27,80 +27,88 @@ m.directive('listepublication', function(){
                           $scope.previewItemListePublication = httpResponse.data.listePublication.length
                           // envoie dans le tableau
                           $scope.itemListePublication = httpResponse.data.listePublication;
-      
-                        //   setTimeout(function(){
-                        //       $scope.rechercheListePublication();
-                        //   }, 5000)
+                          // boucle sur les publication pour afficher le bouton de suppression si l'utilisateur connecter a une publication qui lui appartient
+                          for(var i=0; i<$scope.itemListePublication.length; i++){
+                            //   envoie l'identifiant de la publication dans la directive commentaire
+                              $scope.testidpublie = $scope.itemListePublication[i]._id
+                            //   si la publication appartient a l'utilisateur
+                              if($scope.itemListePublication[i].idPublication == sessionStorage.id){
+                                  $scope.droitSupression = true
+                                }
+                                else{
+                                  $scope.droitSupression = false
+                                }
+                              
+                            }
+
+                            $scope.timeout_rechercherlistepublie = setTimeout(function(){
+                                $scope.rechercheListePublication();
+                            }, 5000)
                       }
                   })
   
-              }
-              $scope.rechercheListePublication()
+                }
+                $scope.rechercheListePublication()
 
+                // supprimer la publication
+                $scope.supprimerLaPublication = function(itemPublicationSupprimer){
+                    $scope.supprimePublication = {idPublication: $(itemPublicationSupprimer.target).attr("id")};
+                    // url
+                    var urlEnLigne = "/supprimepublication"
+                    // envoie des donnees en POST pour supprimer la publication
+                    $http({
+                        url: urlEnLigne,
+                        method: 'POST',
+                        data: $scope.supprimePublication
+                    }).then(function (httpResponse) {              
+                        // si un message d'erreur est envoyer par le serveur
+                        if(httpResponse.data.message == 'Erreur'){
+                            console.log('Echec de la recuperation du nombre de publication')
+                        }
+                        else{
+                            console.log('suppression reussi')
+                        }
+                    })
+                }
 
-            // supprimer la publication
-            $scope.supprimerLaPublication = function(){
-                console.log('delete publication')
-                // url
-                var urlEnLigne = "/supprimepublication"
-                // envoie des donnees en POST pour recuperer le nombre de publication
-                $http({
-                    url: urlEnLigne,
-                    method: 'POST',
-                    data: routeJsonData
-                }).then(function (httpResponse) { 
-                    console.log('test supprime publication')                 
-                    // si un message d'erreur est envoyer par le serveur
-                    if(httpResponse.data.message){
-                        console.log('Echec de la recuperation du nombre de publication')
-                    }
-                    else{
-                        console.log('suppression reussi')
-                      //   setTimeout(function(){
-                      //       $scope.rechercheListePublication();
-                      //   }, 5000)
-                    }
-                })
-            }
+                // COMMENTAIRE
+                // si l'utilisateur commence a ecrire un commentaire on stop le settimout
+              $scope.focusInput = function(){
+                    console.log('gfnkjdngdjng')
+                    clearTimeout($scope.timeout_rechercherlistepublie)
+                }
+
+                $scope.publierCommentaire = function(){
+                    console.log('message', $scope.messagecommentaire)
+            
+                }
 
             }
             
         },
         template: `
             <!-- PUBLICATION -->
-            <div class="well" ng-repeat="item in itemListePublication">
+            <div class="well" ng-repeat-start="item in itemListePublication">
                 <div class="publications-body">
                     <a class="pull-left" href="#">
                     [photo de l'article]
                     </a>
                     <div class="media-body">
-                        <button class="pull-right supprimePublication" ng-click="supprimerLaPublication()" type="button"><i class="fas fa-times-circle"></i></button>
+                        <button ng-if="droitSupression" class="pull-right supprimePublication" ng-click="supprimerLaPublication($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button>
                         <p class="text-right"><span class="glyphicon glyphicon-time"></span>Times</small></p>
                         <p class="text-left"><a href="#!/profil/recherche/{{item.idPublication}}">{{item.prenom}}{{item.prenomAuteur}} {{item.nomAuteur}}</a> :</p>
                         <p>{{item.publication}}</p>
                     </div>
-                    <publicationcommentairebar></publicationcommentairebar>
-                </div>
-                <div class="containerCommentaires">
-                    <!-- COMMENTAIRE -->
-                        <ul class="commentaires">
-                            <li class="left clearfix">
-                                <span class="chat-img pull-left">
-                                    <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
-                                </span>
-                                <div class="commentaires-body clearfix">
-                                    <div class="header">
-                                        <strong class="primary-font">Prenom Nom</strong> <small class="pull-right text-muted">
-                                            <span class="glyphicon glyphicon-time"></span>Times</small>
-                                    </div>
-                                    <p>
-                                        message 
-                                    </p>
-                                </div>
-                            </li>
-                        </ul>
+                    
                 </div>
             </div>
+            <div ng-repeat-end>
+                <!-- COMMENTAIRE -->
+                <textarea ng-focus="focusInput()" class="form-control-commentaire animated col-sm-9" placeholder="Publier un statut" name="messagecommentaire" ng-model="messagecommentaire" ></textarea>
+                <button class="btn btn-info col-sm-3" ng-click="publierCommentaire()" type="button">Partager</button>
+                <publicationcommentairebar></publicationcommentairebar>
+            </div>
+                
 
 
         `

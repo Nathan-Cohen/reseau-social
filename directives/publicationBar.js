@@ -4,28 +4,36 @@ m.directive('publicationbar', function(){
           // si l'utilisateur est deja connecter on inserer le mail dans la variable mailUtilisateur
           if(sessionStorage.id){
             $scope.id = sessionStorage.id; 
-            $scope.autoriserAPublier = false
-            // verifier si le profil et l'utilisateur son ami pour pouvoir publier
-            // recupere le parametre dans la route (id)
-            paramRoute = {
-              id: sessionStorage.id,
-              idEnCour: $routeParams.idUtilisateur,
+            // si l'utlisateur en cours et le profil ne sont pas le meme utilisateur
+            if(sessionStorage.id != $routeParams.idUtilisateur){
+              $scope.autoriserAPublier = false
+              // verifier si le profil et l'utilisateur son ami pour pouvoir publier
+              // recupere le parametre dans la route (id)
+              paramRoute = {
+                id: sessionStorage.id,
+                idEnCour: $routeParams.idUtilisateur,
+              }
+              var routeJsonData = angular.toJson(paramRoute, true);
+              // url
+              var urlEnLigne = "/publicationbar"
+              // envoie des donnees en POST pour recuperer le nombre de publication
+              $http({
+                  url: urlEnLigne,
+                  method: 'POST',
+                  data: routeJsonData
+              }).then(function (httpResponse) { 
+                  console.log('test accord publication', httpResponse.data)                 
+                  // si les utilisateurs sont amis
+                  if(httpResponse.data.message == 'autoriser'){
+                    $scope.autoriserAPublier = true
+                  }
+              })
+
             }
-            var routeJsonData = angular.toJson(paramRoute, true);
-            // url
-            var urlEnLigne = "/publicationbar"
-            // envoie des donnees en POST pour recuperer le nombre de publication
-            $http({
-                url: urlEnLigne,
-                method: 'POST',
-                data: routeJsonData
-            }).then(function (httpResponse) { 
-                console.log('test liste publication')                 
-                // si les utilisateurs sont amis
-                if(httpResponse.data.message == 'autoriser'){
-                  $scope.autoriserAPublier = true
-                }
-            })
+            else{
+              $scope.autoriserAPublier = true
+
+            }
 
           }
 

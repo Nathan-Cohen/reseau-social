@@ -153,13 +153,13 @@
 }
 
 .containerCommentaires{
-  margin-top: 50px
+  /* margin-top: 65px */
 }
 
 .commentaires li{
   margin-bottom: 10px;
   padding-bottom: 5px;
-
+  margin-top: 50px;
 }
 
 

@@ -19,13 +19,12 @@ m.directive('notificationami', function(){
                         data: routeJsonData
                         // data: utilisateurJsonData
                     }).then(function (httpResponse) { 
-                        console.log('test notif')                 
+                        // console.log('test notif ami')                 
                         // si un message d'erreur est envoyer par le serveur
                         if(httpResponse.data.message){
                             console.log('Echec de la recuperation du nombre de demande ami')
                         }
-                        else{      
-                            console.log('recuperation reussi')                 
+                        else{                      
                             // ajoute le nombre de demande d'ami dans l'onglet
                             $scope.previewItemDemandeAmi = httpResponse.data.notificationAmi.length
                             // envoie dans le tableau
