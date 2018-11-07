@@ -132,6 +132,14 @@
   margin-bottom: 15px
 }
 
+.supprimePublication{
+  border: none;
+  background: none;
+  padding: 5px;
+  margin-top: -5px;
+  margin-left: 15px;
+}
+
 /* ////////////COMMENTAIRES/////////////// */
 
 .commentaires{
@@ -142,6 +150,10 @@
   border-radius: 5px;
 
 
+}
+
+.containerCommentaires{
+  margin-top: 50px
 }
 
 .commentaires li{

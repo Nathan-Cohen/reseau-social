@@ -41,7 +41,7 @@ m.directive('listeami', function(){
     
                         setTimeout(function(){
                             $scope.rechercheListe();
-                        }, 1000)
+                        }, 5000)
                     }
                 })
 

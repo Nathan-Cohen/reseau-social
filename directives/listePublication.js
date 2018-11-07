@@ -28,9 +28,9 @@ m.directive('listepublication', function(){
                           // envoie dans le tableau
                           $scope.itemListePublication = httpResponse.data.listePublication;
       
-                          setTimeout(function(){
-                              $scope.rechercheListePublication();
-                          }, 5000)
+                        //   setTimeout(function(){
+                        //       $scope.rechercheListePublication();
+                        //   }, 5000)
                       }
                   })
   
@@ -41,6 +41,26 @@ m.directive('listepublication', function(){
             // supprimer la publication
             $scope.supprimerLaPublication = function(){
                 console.log('delete publication')
+                // url
+                var urlEnLigne = "/supprimepublication"
+                // envoie des donnees en POST pour recuperer le nombre de publication
+                $http({
+                    url: urlEnLigne,
+                    method: 'POST',
+                    data: routeJsonData
+                }).then(function (httpResponse) { 
+                    console.log('test supprime publication')                 
+                    // si un message d'erreur est envoyer par le serveur
+                    if(httpResponse.data.message){
+                        console.log('Echec de la recuperation du nombre de publication')
+                    }
+                    else{
+                        console.log('suppression reussi')
+                      //   setTimeout(function(){
+                      //       $scope.rechercheListePublication();
+                      //   }, 5000)
+                    }
+                })
             }
 
             }
@@ -54,31 +74,32 @@ m.directive('listepublication', function(){
                     [photo de l'article]
                     </a>
                     <div class="media-body">
-                        <button class="pull-right" ng-click="supprimerLaPublication()" type="button"><i class="fas fa-times-circle"></i></button>
+                        <button class="pull-right supprimePublication" ng-click="supprimerLaPublication()" type="button"><i class="fas fa-times-circle"></i></button>
                         <p class="text-right"><span class="glyphicon glyphicon-time"></span>Times</small></p>
                         <p class="text-left"><a href="#!/profil/recherche/{{item.idPublication}}">{{item.prenom}}{{item.prenomAuteur}} {{item.nomAuteur}}</a> :</p>
                         <p>{{item.publication}}</p>
                     </div>
-                </div>
-                <h5 class="media-heading">Commentaires :</h5>
-                <!-- COMMENTAIRE -->
-                    <ul class="commentaires">
-                        <li class="left clearfix">
-                            <span class="chat-img pull-left">
-                                <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
-                            </span>
-                            <div class="commentaires-body clearfix">
-                                <div class="header">
-                                    <strong class="primary-font">Prenom Nom</strong> <small class="pull-right text-muted">
-                                        <span class="glyphicon glyphicon-time"></span>Times</small>
-                                </div>
-                                <p>
-                                    message 
-                                </p>
-                            </div>
-                        </li>
-                    </ul>
                     <publicationcommentairebar></publicationcommentairebar>
+                </div>
+                <div class="containerCommentaires">
+                    <!-- COMMENTAIRE -->
+                        <ul class="commentaires">
+                            <li class="left clearfix">
+                                <span class="chat-img pull-left">
+                                    <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+                                </span>
+                                <div class="commentaires-body clearfix">
+                                    <div class="header">
+                                        <strong class="primary-font">Prenom Nom</strong> <small class="pull-right text-muted">
+                                            <span class="glyphicon glyphicon-time"></span>Times</small>
+                                    </div>
+                                    <p>
+                                        message 
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+                </div>
             </div>
 
 

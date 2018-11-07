@@ -611,6 +611,40 @@ app.post('/listepublication', function(req, res) {
 });
 
 
+// SUPRIMER UNE PUBLICATION
+// recupere les donnees de la connection pour verifier dans la BDD
+app.post('/supprimepublication', function(req, res) {
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('publication');
+        // supprime la publication
+        collection.updateOne({'_id': ObjectID(req.body.id)}, {$pull: {ami: req.body.idAmi}}, function(err, o) {
+          if(err){
+            console.log('Echec de connexion a la collection', err.message);
+          }else{
+            if(o){
+              res.send({message: 'suppression'});
+  
+            }
+            else{
+              console.log('Erreur de suppression de la publication');
+              res.send({message: 'Erreur de suppression de la publication'});
+            }
+  
+          }
+  
+        });
+          
+    }
+  });
+  
+});
+
 
 
 
