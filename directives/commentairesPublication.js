@@ -13,7 +13,7 @@ m.directive('publicationcommentairebar', function(){
 
         },
         template: `
-            <div ng-if='id' ng-controller="commentaireBarCtrl">                       
+            <div ng-if='id'>                       
                     
                     <div class="containerCommentaires">
                             <ul class="commentaires">
