@@ -5,6 +5,10 @@ var bodyParser = require('body-parser')
 var md5 = require('md5')
 var ObjectID = require('mongodb').ObjectID
 
+// IMPORTER LE MODULE MONGODB
+// var mongoUtil = require( './db' );
+// var db = mongoUtil.get();
+
 //////////////// CREATE SERVER //////////////
 app = express()
 server = require('http').createServer(app);
@@ -272,8 +276,8 @@ app.post('/ajouteami', function(req, res) {
 // ACCEPTE OU REFUSE LA DEMANDE D'AMI
 // recupere les donnees de la connection pour verifier dans la BDD
 app.post('/choixajouteami', function(req, res) {
-  tabDesDemandes = []
-  booleanDemande = false;
+  var tabDesDemandes = []
+  var booleanDemande = false;
   //////////////// CONNEXION A LA BASE ///////////////////
   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
   mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
@@ -349,8 +353,7 @@ app.post('/choixajouteami', function(req, res) {
 // LISTE AMI
 // recupere les donnees de la connection pour verifier dans la BDD
 app.post('/listeami', function(req, res) {
-  tabListeDeAmis = []
-  booleanDemandeListeAmi = false;
+  var tabListeDeAmis = []
   //////////////// CONNEXION A LA BASE ///////////////////
   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
   mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
@@ -370,25 +373,26 @@ app.post('/listeami', function(req, res) {
                 res.send({message: '0'});
                 client.close();
               }
-              else{
-                res.send({listeAmi: o[0].ami}); 
-                // // boucle sur le nombre d'ami
-                // for(var i=0; i<o[0].ami.length; i++){
-                //   collection.find({'_id': ObjectID(o[0].ami[i])}).toArray(function(err, o) {
-                //     if(err){
-                //       console.log('Echec de connexion a la collection', err.message);
-                //     }else{
-                //         tabListeDeAmis.push(o[0])
-                      
-                //     }
-                    
-                //   });
+              else{                
+                // boucle sur le nombre d'ami
+                var compteurAmi = 0
+                for(var i=0; i<o[0].ami.length; i++){
+                  compteurAmi++
+                  collection.findOne({'_id': ObjectID(o[0].ami[i])}, function(err, o) {
+                    if(err){
+                      console.log('Echec de connexion a la collection', err.message);
+                    }else{
+                        tabListeDeAmis.push(o)
+                    }
+                      // si le tableau a bien ete construit on envoie les données
+                      compteurAmi--
+                      if(!compteurAmi){
+                        res.send({listeAmi: tabListeDeAmis}); 
+
+                      }
+                  });
                   
-                // }
-                //   console.log('tabListeDeAmis', tabListeDeAmis)
-                // // si le tableau a bien ete construit on envoie les données
-                //   res.send({listeAmi: tabListeDeAmis}); 
-                
+                }
               }
 
             }
@@ -407,50 +411,40 @@ app.post('/listeami', function(req, res) {
 
 
 // TABLEAU AMI
-app.post('/listetabami', function(req, res) {
-  tabListeDeAmis = []
-  booleanDemandeListeAmi = false;
-  //////////////// CONNEXION A LA BASE ///////////////////
-  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
-  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
-    if(err){
-      console.log('err', err)
-    }
-    else{
-      const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
-      // boucle sur le nombre d'ami
-      toDo = 0
-      for(var i=0; i<req.body.length; i++){
-        toDo++
-        collection.findOne({'_id': ObjectID(req.body[i])}, function(err, o) {
-          if(err){
-            console.log('Echec de connexion a la collection', err.message);
-          }else{
-              tabListeDeAmis.push(o)
-              if(tabListeDeAmis.length == req.body.length){
-                booleanDemandeListeAmi = true
-              }
-          }
-          
-          // console.log('tabListeDeAmis', tabListeDeAmis)
-          if(booleanDemandeListeAmi){
-            booleanDemandeListeAmi = false;
-          }
-            // si le tableau a bien ete construit on envoie les données
-            toDo--
-            if(!toDo){
-              console.log('testtttttqb', toDo)
-              res.send({listeAmi: tabListeDeAmis}); 
+// app.post('/listetabami', function(req, res) {
+//   tabListeDeAmis = []
+//   //////////////// CONNEXION A LA BASE ///////////////////
+//   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+//   mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+//     if(err){
+//       console.log('err', err)
+//     }
+//     else{
+//       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+//       // boucle sur le nombre d'ami
+//       compteurAmi = 0
+//       for(var i=0; i<req.body.length; i++){
+//         compteurAmi++
+//         collection.findOne({'_id': ObjectID(req.body[i])}, function(err, o) {
+//           if(err){
+//             console.log('Echec de connexion a la collection', err.message);
+//           }else{
+//               tabListeDeAmis.push(o)
+//           }
+//             // si le tableau a bien ete construit on envoie les données
+//             compteurAmi--
+//             if(!compteurAmi){
+//               res.send({listeAmi: tabListeDeAmis}); 
 
-            }
-        });
+//             }
+//         });
         
-      }  
+//       }  
   
-    }
-  });
+//     }
+//   });
   
-});
+// });
 
 
 

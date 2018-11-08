@@ -2,6 +2,7 @@ m.directive('listepublication', function(){
     var directiveListePublicationDef = {
         controller: function($scope, $http, $routeParams, SocketService){
             if(sessionStorage.id){
+                $scope.idSession = sessionStorage.id
                 $scope.rechercheListePublication = function(){
                   // recupere le parametre dans la route (id)
                   paramRoute = {
@@ -27,19 +28,6 @@ m.directive('listepublication', function(){
                           $scope.previewItemListePublication = httpResponse.data.listePublication.length
                           // envoie dans le tableau
                           $scope.itemListePublication = httpResponse.data.listePublication;
-                          // boucle sur les publication pour afficher le bouton de suppression si l'utilisateur connecter a une publication qui lui appartient
-                          for(var i=0; i<$scope.itemListePublication.length; i++){
-                            //   envoie l'identifiant de la publication dans la directive commentaire
-                              $scope.testidpublie = $scope.itemListePublication[i]._id
-                            //   si la publication appartient a l'utilisateur
-                              if($scope.itemListePublication[i].idPublication == sessionStorage.id){
-                                  $scope.droitSupression = true
-                                }
-                                else{
-                                  $scope.droitSupression = false
-                                }
-                              
-                            }
 
                             $scope.timeout_rechercherlistepublie = setTimeout(function(){
                                 $scope.rechercheListePublication();
@@ -94,7 +82,7 @@ m.directive('listepublication', function(){
                     [photo de l'article]
                     </a>
                     <div class="media-body">
-                        <button ng-if="droitSupression" class="pull-right supprimePublication" ng-click="supprimerLaPublication($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button>
+                        <button ng-if="item.idPublication == idSession" id="{{item.idPublication}}" class="pull-right supprimePublication" ng-click="supprimerLaPublication($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button>
                         <p class="text-right"><span class="glyphicon glyphicon-time"></span>Times</small></p>
                         <p class="text-left"><a href="#!/profil/recherche/{{item.idPublication}}">{{item.prenom}}{{item.prenomAuteur}} {{item.nomAuteur}}</a> :</p>
                         <p>{{item.publication}}</p>

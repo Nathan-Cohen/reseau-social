@@ -16,8 +16,7 @@ m.directive('listeami', function(){
                     url: urlEnLigne,
                     method: 'POST',
                     data: routeJsonData
-                }).then(function (httpResponse) { 
-                    console.log('test liste ami')                 
+                }).then(function (httpResponse) {           
                     // si un message d'erreur est envoyer par le serveur
                     if(httpResponse.data.message == 'Erreur'){
                         console.log('Echec de la recuperation du nombre de demande ami')
@@ -34,8 +33,8 @@ m.directive('listeami', function(){
                         }, 5000)
                     }
                     else{
-                        console.log('httpResponse.data.listeAmi', httpResponse.data.listeAmi)
-                        successCallback = function(httpResponse){
+                        // console.log('liste ami', httpResponse.data.listeAmi)
+                        
                             // ajoute le nombre de demande d'ami dans l'onglet
                             $scope.previewItemListeAmi = httpResponse.data.listeAmi.length
                             // envoie dans le tableau
@@ -44,12 +43,6 @@ m.directive('listeami', function(){
                             setTimeout(function(){
                                 $scope.rechercheListe();
                             }, 5000)
-
-                        }
-                        errorCallback = function(httpResponse){
-
-                        }
-                        $http.post('/listetabami', httpResponse.data.listeAmi).then(successCallback, errorCallback);
                     }
                 })
 

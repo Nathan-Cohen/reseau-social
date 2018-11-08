@@ -32,7 +32,7 @@ m.directive('notificationami', function(){
                             
                             setTimeout(function(){
                                 $scope.rechercheDemandeAmi();
-                            }, 10000)
+                            }, 5000)
                             
                         }
                         
