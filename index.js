@@ -410,45 +410,6 @@ app.post('/listeami', function(req, res) {
 
 
 
-// TABLEAU AMI
-// app.post('/listetabami', function(req, res) {
-//   tabListeDeAmis = []
-//   //////////////// CONNEXION A LA BASE ///////////////////
-//   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
-//   mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
-//     if(err){
-//       console.log('err', err)
-//     }
-//     else{
-//       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
-//       // boucle sur le nombre d'ami
-//       compteurAmi = 0
-//       for(var i=0; i<req.body.length; i++){
-//         compteurAmi++
-//         collection.findOne({'_id': ObjectID(req.body[i])}, function(err, o) {
-//           if(err){
-//             console.log('Echec de connexion a la collection', err.message);
-//           }else{
-//               tabListeDeAmis.push(o)
-//           }
-//             // si le tableau a bien ete construit on envoie les données
-//             compteurAmi--
-//             if(!compteurAmi){
-//               res.send({listeAmi: tabListeDeAmis}); 
-
-//             }
-//         });
-        
-//       }  
-  
-//     }
-//   });
-  
-// });
-
-
-
-
 // AJOUTER UN AMI
 // recupere les donnees de la connection pour verifier dans la BDD
 app.post('/reponseajouteami', function(req, res) {
@@ -679,6 +640,30 @@ app.post('/supprimepublication', function(req, res) {
   
 });
 
+
+
+// COMMENTAIRE
+app.post('/ajoutcommentaire', function(req, res) {
+  console.log('ajoute commentaire', req.body)
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('publication');
+      collection.updateOne({'_id': ObjectID(req.body.idDeLaPublication)}, {$push: {'idCommentateur': [req.body.id, req.body.commentaire]}}, function(err, o) {
+        if(err){
+          console.log('Echec de connexion a la collection', err.message);
+        }else{
+          res.send({message: 'Commentaire ajouter'});          
+        }
+      });
+    }
+  });
+  
+});
 
 
 

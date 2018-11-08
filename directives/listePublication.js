@@ -67,10 +67,7 @@ m.directive('listepublication', function(){
                     clearTimeout($scope.timeout_rechercherlistepublie)
                 }
 
-                $scope.publierCommentaire = function(){
-                    console.log('message', $scope.messagecommentaire)
-            
-                }
+                
 
             }
             
@@ -91,10 +88,10 @@ m.directive('listepublication', function(){
                     
                 </div>
             </div>
-            <div ng-repeat-end>
+            <div ng-repeat-end ng-controller="commentairesPublicationCtrl">
                 <!-- COMMENTAIRE -->
-                <textarea ng-focus="focusInput()" class="form-control-commentaire animated col-sm-9" placeholder="Publier un statut" name="messagecommentaire" ng-model="messagecommentaire" ></textarea>
-                <button class="btn btn-info col-sm-3 boutonCommentaire" ng-click="publierCommentaire()" type="button">Partager</button>
+                <textarea id="{{item._id}}" ng-focus="focusInput()" class="form-control-commentaire animated col-sm-9" placeholder="Publier un statut" name="messagecommentaire" ng-model="messagecommentaire" ></textarea>
+                <button class="btn btn-info col-sm-3 boutonCommentaire" ng-click="publierCommentaire(item._id)" type="button">Partager</button>
                 <publicationcommentairebar></publicationcommentairebar>
             </div>
                 

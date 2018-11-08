@@ -7,6 +7,8 @@ m.directive('publicationcommentairebar', function(){
 
             // verifier si le profil et l'utilisateur son ami pour pouvoir publier
             
+            console.log('$scope.itemListePublication', $scope.itemListePublication[0].idCommentateur[0][1])
+            
             
             
           }
