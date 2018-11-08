@@ -63,6 +63,7 @@ m.directive('listepublication', function(){
                 // si l'utilisateur commence a ecrire un commentaire on stop le settimout
               $scope.focusInput = function(){
                     console.log('gfnkjdngdjng')
+                    // arrete de refraichire les publications le temp du commentaire
                     clearTimeout($scope.timeout_rechercherlistepublie)
                 }
 
@@ -93,7 +94,7 @@ m.directive('listepublication', function(){
             <div ng-repeat-end>
                 <!-- COMMENTAIRE -->
                 <textarea ng-focus="focusInput()" class="form-control-commentaire animated col-sm-9" placeholder="Publier un statut" name="messagecommentaire" ng-model="messagecommentaire" ></textarea>
-                <button class="btn btn-info col-sm-3" ng-click="publierCommentaire()" type="button">Partager</button>
+                <button class="btn btn-info col-sm-3 boutonCommentaire" ng-click="publierCommentaire()" type="button">Partager</button>
                 <publicationcommentairebar></publicationcommentairebar>
             </div>
                 
