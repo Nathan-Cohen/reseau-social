@@ -13,6 +13,8 @@ m.controller('commentairesPublicationCtrl', function($scope, $http, $routeParams
             // construit l'objet
             paramRoute = {
                 id: sessionStorage.id,
+                prenom: sessionStorage.prenom,
+                nom: sessionStorage.nom,
                 idEnCour: $routeParams.idUtilisateur,
                 commentaire: $scope.messagecommentaire,
                 idDeLaPublication: idDeLaPublication
@@ -33,6 +35,7 @@ m.controller('commentairesPublicationCtrl', function($scope, $http, $routeParams
                 // sinon les donnees sont envoyer par le serveur
                 if(httpResponse.data.message == 'Commentaire ajouter'){
                     console.log('Commentaire ajouter')
+                    $scope.rechercheListePublication();
                     
                 }
                 // si un message d'erreur est envoyer par le serveur

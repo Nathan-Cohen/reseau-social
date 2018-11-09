@@ -29,6 +29,10 @@ m.directive('listepublication', function(){
                           // envoie dans le tableau
                           $scope.itemListePublication = httpResponse.data.listePublication;
 
+                          $scope.itemListeCommentaire =  httpResponse.data.listePublication[0].idCommentateur
+
+                          console.log('httpResponse.data.listePublication.idCommentateur', httpResponse.data.listePublication[0].idCommentateur)
+            
                             $scope.timeout_rechercherlistepublie = setTimeout(function(){
                                 $scope.rechercheListePublication();
                             }, 5000)
@@ -89,10 +93,32 @@ m.directive('listepublication', function(){
                 </div>
             </div>
             <div ng-repeat-end ng-controller="commentairesPublicationCtrl">
-                <!-- COMMENTAIRE -->
-                <textarea id="{{item._id}}" ng-focus="focusInput()" class="form-control-commentaire animated col-sm-9" placeholder="Publier un statut" name="messagecommentaire" ng-model="messagecommentaire" ></textarea>
-                <button class="btn btn-info col-sm-3 boutonCommentaire" ng-click="publierCommentaire(item._id)" type="button">Partager</button>
-                <publicationcommentairebar></publicationcommentairebar>
+                <!-- PUBLIER UN COMMENTAIRE -->
+                <div>
+                    <textarea id="{{item._id}}" ng-focus="focusInput()" class="form-control-commentaire animated col-sm-9" placeholder="Votre commentaire .." name="messagecommentaire" ng-model="messagecommentaire" ></textarea>
+                    <button class="btn btn-info col-sm-3 boutonCommentaire" ng-click="publierCommentaire(item._id)" type="button">Partager</button>
+                </div>
+                <!-- AFFICHER LES COMMENTAIRES -->
+                <div class="containerCommentaires">
+                    <div ng-repeat="testitem in item.idCommentateur">
+                            <ul class="commentaires">
+                                <li class="left clearfix">
+                                    <span class="chat-img pull-left">
+                                        <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+                                    </span>
+                                    <div class="commentaires-body clearfix">
+                                        <div class="header">
+                                            <strong class="primary-font">{{testitem[2]}} {{testitem[3]}}</strong> <small class="pull-right text-muted">
+                                                <span class="glyphicon glyphicon-time"></span>Times</small>
+                                        </div>
+                                        <p>
+                                            {{testitem[1]}} 
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul>
+                    </div>
+                </div>
             </div>
                 
 

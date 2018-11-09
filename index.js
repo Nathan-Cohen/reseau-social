@@ -653,7 +653,7 @@ app.post('/ajoutcommentaire', function(req, res) {
     }
     else{
       const collection = client.db('heroku_g9jk10c8').collection('publication');
-      collection.updateOne({'_id': ObjectID(req.body.idDeLaPublication)}, {$push: {'idCommentateur': [req.body.id, req.body.commentaire]}}, function(err, o) {
+      collection.updateOne({'_id': ObjectID(req.body.idDeLaPublication)}, {$push: {'idCommentateur': [req.body.id, req.body.commentaire, req.body.prenom, req.body.nom]}}, function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
