@@ -557,9 +557,12 @@ app.post('/publicationProfil', function(req, res) {
       console.log('err', err)
     }
     else{
+      var tab_mois=new Array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre");
+      var d = new Date()
+      var date = d.getDate() + ' ' + tab_mois[d.getMonth()] + ' ' + d.getHours() + ' heures ' + d.getMinutes() + ' minutes';
       const collection = client.db('heroku_g9jk10c8').collection('publication');
       // si il m'existe pas on l'insert
-      collection.insertOne({idProfil: req.body.idEnCour, idPublication: req.body.id, publication: req.body.messagepublication, nomAuteur: req.body.nom, prenomAuteur: req.body.prenom}, function(err, o) {
+      collection.insertOne({idProfil: req.body.idEnCour, idPublication: req.body.id, publication: req.body.messagepublication, nomAuteur: req.body.nom, prenomAuteur: req.body.prenom, date: date}, function(err, o) {
         if(err){
           console.log(err.message);
           res.send({message: 'Erreur'});
@@ -652,8 +655,11 @@ app.post('/ajoutcommentaire', function(req, res) {
       console.log('err', err)
     }
     else{
+      var tab_mois=new Array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre");
+      var d = new Date()
+      var date = d.getDate() + ' ' + tab_mois[d.getMonth()] + ' ' + d.getHours() + ' heures ' + d.getMinutes() + ' minutes';
       const collection = client.db('heroku_g9jk10c8').collection('publication');
-      collection.updateOne({'_id': ObjectID(req.body.idDeLaPublication)}, {$push: {'idCommentateur': [req.body.id, req.body.commentaire, req.body.prenom, req.body.nom]}}, function(err, o) {
+      collection.updateOne({'_id': ObjectID(req.body.idDeLaPublication)}, {$push: {'idCommentateur': [req.body.id, req.body.commentaire, req.body.prenom, req.body.nom, date]}}, function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{

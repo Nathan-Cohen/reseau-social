@@ -31,7 +31,9 @@ m.directive('listepublication', function(){
 
                           $scope.itemListeCommentaire =  httpResponse.data.listePublication[0].idCommentateur
 
-                          console.log('httpResponse.data.listePublication.idCommentateur', httpResponse.data.listePublication[0].idCommentateur)
+                          $scope.date = new Date()
+
+                        //   console.log('httpResponse.data.listePublication.idCommentateur', httpResponse.data.listePublication[0].idCommentateur)
             
                             $scope.timeout_rechercherlistepublie = setTimeout(function(){
                                 $scope.rechercheListePublication();
@@ -65,13 +67,15 @@ m.directive('listepublication', function(){
 
                 // COMMENTAIRE
                 // si l'utilisateur commence a ecrire un commentaire on stop le settimout
-              $scope.focusInput = function(){
-                    console.log('gfnkjdngdjng')
+                $scope.focusInput = function(){
                     // arrete de refraichire les publications le temp du commentaire
                     clearTimeout($scope.timeout_rechercherlistepublie)
                 }
 
-                
+                // supprime le commentaire
+                $scope.supprimerLeCommentaire = function(){
+                    console.log('supprime le commentaire')
+                }
 
             }
             
@@ -100,24 +104,25 @@ m.directive('listepublication', function(){
                 </div>
                 <!-- AFFICHER LES COMMENTAIRES -->
                 <div class="containerCommentaires">
-                    <div ng-repeat="testitem in item.idCommentateur">
-                            <ul class="commentaires">
-                                <li class="left clearfix">
-                                    <span class="chat-img pull-left">
-                                        <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
-                                    </span>
-                                    <div class="commentaires-body clearfix">
-                                        <div class="header">
-                                            <strong class="primary-font">{{testitem[2]}} {{testitem[3]}}</strong> <small class="pull-right text-muted">
-                                                <span class="glyphicon glyphicon-time"></span>Times</small>
-                                        </div>
-                                        <p>
-                                            {{testitem[1]}} 
-                                        </p>
-                                    </div>
-                                </li>
-                            </ul>
-                    </div>
+                    <ul class="commentaires">
+                        <li class="left clearfix" ng-repeat="testitem in item.idCommentateur">
+                            <span class="chat-img pull-left">
+                                <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+                            </span>
+                            <div class="commentaires-body clearfix">
+                                <div class="header">
+                                    <button ng-if="item.idPublication == idSession" id="{{item.idPublication}}" class="pull-right supprimePublication" ng-click="supprimerLeCommentaire($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button>
+
+                                    <strong class="primary-font">{{testitem[2]}} {{testitem[3]}}</strong> <small class="pull-right text-muted">
+
+                                    {{testitem[4]}} <span class="glyphicon glyphicon-time"></span></small>
+                                </div>
+                                <p>
+                                    {{testitem[1]}} 
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
                 
