@@ -9,14 +9,52 @@
 
 		<accueilprofil></accueilprofil>
 
-		<publicationbar></publicationbar>
+		<!-- PUBLICATION -->
+		<div class="well" ng-repeat-start="item in itemListePublication">
+			<div class="publications-body">
+				<a class="pull-left" href="#">
+				[photo de l'article]
+				</a>
+				<div class="media-body">
+					<button ng-if="item.idPublication == idSession" id="{{item.idPublication}}" class="pull-right supprimePublication" ng-click="supprimerLaPublication($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button>
+					<p class="text-right">{{item.date}} <span class="glyphicon glyphicon-time"></span></small></p>
+					<p class="text-left"><a href="#!/profil/recherche/{{item.idPublication}}">{{item.prenom}}{{item.prenomAuteur}} {{item.nomAuteur}}</a> :</p>
+					<p>{{item.publication}}</p>
+				</div>
+				
+			</div>
+		</div>
+		<div ng-repeat-end ng-controller="commentairesPublicationCtrl">
+			<!-- PUBLIER UN COMMENTAIRE -->
+			<div>
+				<textarea id="{{item._id}}" ng-focus="focusInput()" class="form-control-commentaire animated col-sm-9" placeholder="Votre commentaire .." name="messagecommentaire" ng-model="messagecommentaire" ></textarea>
+				<button class="btn btn-info col-sm-3 boutonCommentaire" ng-click="publierCommentaire(item._id)" type="button">Partager</button>
+			</div>
+			<!-- AFFICHER LES COMMENTAIRES -->
+			<div class="containerCommentaires">
+				<ul class="commentaires">
+					<li class="left clearfix" ng-repeat="itemCommentaire in item.idCommentateur">
+						<span class="chat-img pull-left">
+							<img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+						</span>
+						<div class="commentaires-body clearfix">
+							<div class="header">
+								<button ng-if="item.idCommentateur[0].id == idSession" id="{{itemCommentaire.idUniqueCommentaire}}" class="pull-right supprimePublication" ng-click="supprimerLeCommentaire($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button>
+
+								<strong class="primary-font">{{itemCommentaire.prenom}} {{itemCommentaire.nom}}</strong> <small class="pull-right text-muted">
+
+								{{itemCommentaire.date}} <span class="glyphicon glyphicon-time"></span></small>
+							</div>
+							<p>
+								{{itemCommentaire.commentaire}} 
+							</p>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
 		
 	</div>
-
-
-
-	
-	<actualite></actualite>
 
     
 </body>

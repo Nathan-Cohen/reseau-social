@@ -234,6 +234,36 @@ app.post('/profil/recherche', function(req, res) {
 
 
 
+/////// ACUTALITER ACCUEIL ////////
+// recupere les donnees de la connection pour verifier dans la BDD
+app.post('/accueilactualiter', function(req, res) {
+  console.log('accueilactualiter req body', req.body)
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('publication');
+      // cherche si l'utilisateur existe dans les publications ou dans les commentaires des publications
+      collection.find({'idProfil': req.body.idEnCour, 'idCommentateur.id': req.body.idEnCour}).toArray(function(err, o) {
+        if(err){
+          console.log('Echec de connexion a la collection', err.message);
+        }else{
+          console.log('accueilactualiter', o)
+          res.send({accueilactualiter: o});
+        }
+
+      });
+  
+    }
+  });
+  
+});
+
+
+
 // AJOUTER UN AMI
 // recupere les donnees de la connection pour verifier dans la BDD
 app.post('/ajouteami', function(req, res) {
