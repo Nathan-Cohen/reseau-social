@@ -26,10 +26,14 @@ m.directive('listepublication', function(){
                       else{
                           // ajoute le nombre de publication dans l'onglet
                           $scope.previewItemListePublication = httpResponse.data.listePublication.length
-                          // envoie dans le tableau
-                          $scope.itemListePublication = httpResponse.data.listePublication;
-
-                          $scope.itemListeCommentaire =  httpResponse.data.listePublication[0].idCommentateur
+                          // inverse et envoie dans le tableau
+                          if(httpResponse.data.listePublication.length > 0){
+                              $scope.itemListePublication = httpResponse.data.listePublication.reverse();
+                          }
+                          // si il y a des commentaires on inverse et on envoie dans le tableau
+                          if(httpResponse.data.listePublication[0]){
+                              $scope.itemListeCommentaire = httpResponse.data.listePublication[0].idCommentateur.reverse();
+                          }
 
                           $scope.date = new Date()
 
@@ -73,8 +77,32 @@ m.directive('listepublication', function(){
                 }
 
                 // supprime le commentaire
-                $scope.supprimerLeCommentaire = function(){
-                    console.log('supprime le commentaire')
+                $scope.supprimerLeCommentaire = function(commentaire){
+
+                    $scope.commentaireSuppression = {
+                        idPublication: $(commentaire.target).attr("id"),
+                        idUniqueCommentaire: $(commentaire.currentTarget).attr("id"),
+                        nom: sessionStorage.nom,
+                        prenom: sessionStorage.prenom,
+                        idEnCour: sessionStorage.id
+                    }
+                    // url
+                    var urlEnLigne = "/supprimecommentaire"
+                    // envoie des donnees en POST pour supprimer la publication
+                    $http({
+                        url: urlEnLigne,
+                        method: 'POST',
+                        data: $scope.commentaireSuppression
+                    }).then(function (httpResponse) {              
+                        // si un message d'erreur est envoyer par le serveur
+                        if(httpResponse.data.message == 'Erreur'){
+                            console.log('Echec de la recuperation du nombre de publication')
+                        }
+                        else{
+                            console.log('suppression reussi')
+                        }
+                    })
+
                 }
 
             }
@@ -89,7 +117,7 @@ m.directive('listepublication', function(){
                     </a>
                     <div class="media-body">
                         <button ng-if="item.idPublication == idSession" id="{{item.idPublication}}" class="pull-right supprimePublication" ng-click="supprimerLaPublication($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button>
-                        <p class="text-right"><span class="glyphicon glyphicon-time"></span>Times</small></p>
+                        <p class="text-right">{{item.date}} <span class="glyphicon glyphicon-time"></span></small></p>
                         <p class="text-left"><a href="#!/profil/recherche/{{item.idPublication}}">{{item.prenom}}{{item.prenomAuteur}} {{item.nomAuteur}}</a> :</p>
                         <p>{{item.publication}}</p>
                     </div>
@@ -105,20 +133,20 @@ m.directive('listepublication', function(){
                 <!-- AFFICHER LES COMMENTAIRES -->
                 <div class="containerCommentaires">
                     <ul class="commentaires">
-                        <li class="left clearfix" ng-repeat="testitem in item.idCommentateur">
+                        <li class="left clearfix" ng-repeat="itemCommentaire in item.idCommentateur">
                             <span class="chat-img pull-left">
                                 <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
                             </span>
                             <div class="commentaires-body clearfix">
                                 <div class="header">
-                                    <button ng-if="item.idPublication == idSession" id="{{item.idPublication}}" class="pull-right supprimePublication" ng-click="supprimerLeCommentaire($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button>
+                                    <button ng-if="item.idPublication == idSession" id="{{itemCommentaire.idUniqueCommentaire}}" class="pull-right supprimePublication" ng-click="supprimerLeCommentaire($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button>
 
-                                    <strong class="primary-font">{{testitem[2]}} {{testitem[3]}}</strong> <small class="pull-right text-muted">
+                                    <strong class="primary-font">{{itemCommentaire.prenom}} {{itemCommentaire.nom}}</strong> <small class="pull-right text-muted">
 
-                                    {{testitem[4]}} <span class="glyphicon glyphicon-time"></span></small>
+                                    {{itemCommentaire.date}} <span class="glyphicon glyphicon-time"></span></small>
                                 </div>
                                 <p>
-                                    {{testitem[1]}} 
+                                    {{itemCommentaire.commentaire}} 
                                 </p>
                             </div>
                         </li>

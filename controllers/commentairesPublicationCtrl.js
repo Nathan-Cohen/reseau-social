@@ -4,11 +4,6 @@ m.controller('commentairesPublicationCtrl', function($scope, $http, $routeParams
         $('#deconnexion').css('display', 'block')
 
         $scope.publierCommentaire = function(idDeLaPublication){
-            console.log('message', $scope.messagecommentaire)
-            console.log('message id en cours', $routeParams.idUtilisateur)
-            console.log('message id', sessionStorage.id)
-            console.log('message id publication', idDeLaPublication)
-
             
             // construit l'objet
             paramRoute = {
@@ -31,7 +26,6 @@ m.controller('commentairesPublicationCtrl', function($scope, $http, $routeParams
                 data: routeJsonData
                 // data: utilisateurJsonData
             }).then(function (httpResponse) {
-                console.log('commentaire envoie', httpResponse.data)
                 // sinon les donnees sont envoyer par le serveur
                 if(httpResponse.data.message == 'Commentaire ajouter'){
                     console.log('Commentaire ajouter')

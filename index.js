@@ -367,7 +367,7 @@ app.post('/listeami', function(req, res) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
-            if(o[0].ami){
+            if(o[0]){
               // si il n'a pas encore d'ami
               if(o[0].ami.length == 0){
                 res.send({message: '0'});
@@ -647,7 +647,6 @@ app.post('/supprimepublication', function(req, res) {
 
 // COMMENTAIRE
 app.post('/ajoutcommentaire', function(req, res) {
-  console.log('ajoute commentaire', req.body)
   //////////////// CONNEXION A LA BASE ///////////////////
   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
   mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
@@ -658,14 +657,52 @@ app.post('/ajoutcommentaire', function(req, res) {
       var tab_mois=new Array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre");
       var d = new Date()
       var date = d.getDate() + ' ' + tab_mois[d.getMonth()] + ' ' + d.getHours() + ' heures ' + d.getMinutes() + ' minutes';
+      idUniqueCommentaire = ObjectID()
       const collection = client.db('heroku_g9jk10c8').collection('publication');
-      collection.updateOne({'_id': ObjectID(req.body.idDeLaPublication)}, {$push: {'idCommentateur': [req.body.id, req.body.commentaire, req.body.prenom, req.body.nom, date]}}, function(err, o) {
+      collection.updateOne({'_id': ObjectID(req.body.idDeLaPublication)}, {$push: {'idCommentateur': {idUniqueCommentaire: idUniqueCommentaire, id: req.body.id, commentaire: req.body.commentaire, prenom: req.body.prenom, nom: req.body.nom, date: date}}}, function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
           res.send({message: 'Commentaire ajouter'});          
         }
       });
+    }
+  });
+  
+});
+
+
+// SUPRIMER UN COMMENTAIRE
+// recupere les donnees de la connection pour verifier dans la BDD
+app.post('/supprimecommentaire', function(req, res) {
+  console.log('SUPPRIME COMMENTAIRE', req.body)
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('publication');
+        // supprime le commentaire
+      collection.updateOne({'_id': ObjectID(req.body.idPublication)}, {$pull: {'idCommentateur': {idUniqueCommentaire: ObjectID(req.body.idUniqueCommentaire)}}}, function(err, o) {
+        if(err){
+          console.log('Echec de connexion a la collection', err.message);
+        }else{
+          if(o){
+            console.log('Suppresion reussi');
+            res.send({message: 'suppression'});
+
+          }
+          else{
+            console.log('Erreur de connexion');
+            res.send({message: 'Erreur de connexion'});
+          }
+
+        }
+
+      });
+          
     }
   });
   

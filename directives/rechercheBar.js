@@ -63,7 +63,7 @@ m.directive('recherchebar', function(){
                     <form action="" class="search-form">
                         <div class="form-group has-feedback">
                             <label for="search" class="sr-only">Search</label>
-                            <input type="text" name="search" id="search" ng-model="search" ng-keyup="complete(search)" class="form-control" placeholder="search" autocomplete="off"/>
+                            <input type="text" name="search" id="search" ng-model="search" ng-keyup="complete(search)" class="form-control" placeholder="recherche..." autocomplete="off"/>
                             <ul class="list-group" id="listeGroupeRecherche">
                                 <li class="list-group-item" ng-repeat="itemData in totalItem" ng-click="selectItem(itemData)"><a href="#!/profil/recherche/{{itemData.id}}">{{itemData.prenom}} {{itemData.nom}}</a></li>
                             </ul>
