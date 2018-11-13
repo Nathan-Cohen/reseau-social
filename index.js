@@ -638,10 +638,13 @@ app.post('/publicationbar', function(req, res) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
-          for(var j=0; j<o[0].ami.length; j++){
-            if(o[0].ami[j] == req.body.id){
-              res.send({message: 'autoriser'});
+          if(o[0].ami){
+            for(var j=0; j<o[0].ami.length; j++){
+              if(o[0].ami[j] == req.body.id){
+                res.send({message: 'autoriser'});
+              }
             }
+
           }
         }
 
