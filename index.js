@@ -815,6 +815,82 @@ app.post('/supprimecommentaire', function(req, res) {
 
 
 
+////////////// MESSAGE PRIVER ///////////////
+app.post('/envoiemessagepriver', function(req, res) {
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      var tab_mois=new Array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre");
+      var d = new Date()
+      var date = d.getDate() + ' ' + tab_mois[d.getMonth()] + ' ' + d.getHours() + ' heures ' + d.getMinutes() + ' minutes';
+      const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+      // ajoute une notification de demande ami
+      collection.updateOne({'_id': ObjectID(req.body.idAmi)}, {$push: {messagePriver: {idAmi: req.body.idEnCour, messagePriver: req.body.messagePriver, prenom: req.body.prenomMessagePriver, nom: req.body.nomMessagePriver, date: date}}}, function(err, o) {
+        if(err){
+          console.log('Echec de connexion a la collection', err.message);
+        }else{
+          if(o){
+            console.log('message priver envoyer');
+            collection.updateOne({'_id': ObjectID(req.body.idEnCour)}, {$push: {messagePriver: {idAmi: req.body.idAmi, messagePriver: req.body.messagePriver, prenom: req.body.prenomMessagePriver, nom: req.body.nomMessagePriver, date: date}}})
+            res.send({message: 'ok'});
+            client.close();
+
+          }
+          else{
+            res.send({message: 'Erreur'});
+            client.close();
+
+          }
+
+        }
+      })
+  
+    }
+  });
+  
+});
+
+
+// recupere les donnees de la connection pour verifier dans la BDD
+app.post('/affichemessagepriver', function(req, res) {
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+      // cherche les messages priver
+      console.log('recherche liste message priver', req.body.idEnCour)
+      collection.find({'messagePriver.idAmi': req.body.idEnCour}).toArray(function(err, o) {
+        if(err){
+          console.log('Echec de connexion a la collection', err.message);
+        }else{
+            if(o[0]){
+              // console.log('affiche liste message priver', o[0].messagePriver)
+              // envoie la liste des message priver
+              res.send({listeMessagePriver: o[0].messagePriver});
+
+            }
+            else{
+              res.send({message: 'pas de message'});
+            }
+        }
+
+      });
+  
+    }
+  });
+  
+});
+
+
+
 //////////////// SOCKET IO /////////////
 var socketIO = require('socket.io');
 var io = socketIO(server);

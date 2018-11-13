@@ -177,6 +177,21 @@
   
 }
 
+  /* ////////////MESSAGE PRIVER/////////////// */
+
+
+
+.nomMessagePriver{
+  margin-top: -15px;
+}
+
+.chat-body1{
+  margin-bottom: 20px;
+}
+
+.chat_time{
+  font-size: 11px;
+}
 
   /* ////////////CHATBOX/////////////// */
   #chatbox{
