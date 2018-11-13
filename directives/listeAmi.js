@@ -3,7 +3,7 @@ m.directive('listeami', function(){
         controller: function($scope, $http){
           // si l'utilisateur est deja connecter on inserer le mail dans la variable mailUtilisateur
           if(sessionStorage.id){
-              $scope.rechercheListe = function(){
+              $scope.rechercheListe = function(){                  
                 // recupere le parametre dans la route (id)
                 paramRoute = {
                     id: sessionStorage.id
@@ -16,7 +16,8 @@ m.directive('listeami', function(){
                     url: urlEnLigne,
                     method: 'POST',
                     data: routeJsonData
-                }).then(function (httpResponse) {           
+                }).then(function (httpResponse) {
+                     
                     // si un message d'erreur est envoyer par le serveur
                     if(httpResponse.data.message == 'Erreur'){
                         console.log('Echec de la recuperation du nombre de demande ami')

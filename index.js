@@ -397,7 +397,7 @@ app.post('/choixajouteami', function(req, res) {
           console.log('Echec de connexion a la collection', err.message);
         }else{
           if(o){
-            if(o[0]){
+            if(o[0].demandeAjoutAmi){
               // si il n'a pas encore de demande d'ami
               if(o[0].demandeAjoutAmi.length == 0){
                 res.send({notificationAmi: tabDesDemandes});                
@@ -417,7 +417,7 @@ app.post('/choixajouteami', function(req, res) {
           
                     }
                     else{
-                      res.send({message: 'Erreur de connexion au profil'});
+                      res.send({message: 'Erreur'});
                       if(i == tabDesDemandes.length){
                         booleanDemande = true;
 
@@ -435,10 +435,12 @@ app.post('/choixajouteami', function(req, res) {
 
               }
 
+            }else{
+              res.send({message: '0'});              
             }
           }
           else{
-            res.send({message: 'Erreur de connexion au profil'});
+            res.send({message: 'Erreur'});
           }
 
         }
@@ -472,7 +474,7 @@ app.post('/listeami', function(req, res) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
-            if(o[0]){
+            if(o[0].ami){
               // si il n'a pas encore d'ami
               if(o[0].ami.length == 0){
                 res.send({message: '0'});
@@ -500,6 +502,9 @@ app.post('/listeami', function(req, res) {
                 }
               }
 
+            }
+            else{
+              res.send({message: '0'});
             }
 
         }

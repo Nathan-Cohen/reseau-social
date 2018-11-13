@@ -21,8 +21,16 @@ m.directive('notificationami', function(){
                     }).then(function (httpResponse) { 
                         // console.log('test notif ami')                 
                         // si un message d'erreur est envoyer par le serveur
-                        if(httpResponse.data.message){
+                        if(httpResponse.data.message == '0'){
+                            // ajoute le nombre de demande d'ami dans l'onglet
+                            $scope.previewItemDemandeAmi = 0
+                            setTimeout(function(){
+                                $scope.rechercheDemandeAmi();
+                            }, 5000)
+                        }
+                        else if(httpResponse.data.message == 'Erreur'){
                             console.log('Echec de la recuperation du nombre de demande ami')
+                            
                         }
                         else{                      
                             // ajoute le nombre de demande d'ami dans l'onglet
