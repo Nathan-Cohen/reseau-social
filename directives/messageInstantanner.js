@@ -8,8 +8,6 @@ m.directive('messageinstantanner', function(){
 
         },
         template: `
-        <div class="main_section">
-            <div class="container">
                 <div class="chat_container">
                     <div class="col-sm-3 chat_sidebar">
                         <div class="row">
@@ -95,8 +93,6 @@ m.directive('messageinstantanner', function(){
                     </div>
                     <!--message_section-->
                 </div>
-            </div>
-        </div>
         `
 
     }
