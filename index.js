@@ -161,6 +161,81 @@ app.post('/search', function(req, res) {
 });
 
 
+
+// BAR DE RECHERCHE DES AMIS
+// recupere les donnees de la connection pour verifier dans la BDD
+app.post('/searchami', function(req, res) {
+  var tabListesearchDeAmis = []
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+      // cherche si l'utilisateur existe deja
+      var search = req.body.searchEnCour;
+      var query = { nomString: search};
+      // console.log('req.body searhc ami', req.body)
+      collection.find({'_id': ObjectID(req.body.idEnCour)}).toArray(function(err, o) {
+        if(err){
+          console.log('Echec de connexion a la collection', err.message);
+        }else{
+          if(o){
+            if(o[0]){
+              // si il n'a pas encore d'ami
+              if(o[0].ami.length == 0){
+                res.send({message: '0'});
+                client.close();
+              }
+              else{                
+                // boucle sur le nombre d'ami
+                var compteurSearchAmi = 0
+                for(var i=0; i<o[0].ami.length; i++){
+                  compteurSearchAmi++
+                  collection.findOne({'_id': ObjectID(o[0].ami[i])}, function(err, o) {
+                    if(err){
+                      console.log('Echec de connexion a la collection', err.message);
+                    }else{
+                        // on met le resultat dans le tableau seulement si il contient le charactere dans le nom ou le prenom
+                        var position = o.nom.indexOf(search);
+                        if(position >= 0){
+                          tabListesearchDeAmis.push(o)
+                        }
+                    }
+                      // si le tableau a bien ete construit on envoie les données
+                      compteurSearchAmi--
+                      if(!compteurSearchAmi){
+                        res.send({listeSearchAmi: tabListesearchDeAmis}); 
+
+                      }
+                  });
+                  
+                }
+              }
+
+            }
+          }
+          else{
+            console.log('Recherche echouer');
+            res.send({message: 'Recherche echouer'});
+            client.close();
+          }
+
+        }
+
+      });
+  
+    }
+  });
+  
+});
+
+
+
+
+
 // PROFIL
 // recupere les donnees de la connection pour verifier dans la BDD
 app.post('/profil', function(req, res) {
