@@ -836,13 +836,14 @@ app.post('/envoiemessagepriver', function(req, res) {
       var d = new Date()
       var date = d.getDate() + ' ' + tab_mois[d.getMonth()] + ' ' + d.getHours() + ' heures ' + d.getMinutes() + ' minutes';
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
-      // ajoute une notification de demande ami
-      collection.updateOne({'_id': ObjectID(req.body.idAmi)}, {$push: {messagePriver: {idAmi: req.body.idEnCour, messagePriver: req.body.messagePriver, prenom: req.body.prenomMessagePriver, nom: req.body.nomMessagePriver, date: date}}}, function(err, o) {
+      // ajoute le message dans le document de l'ami
+      collection.updateOne({'_id': ObjectID(req.body.idAmi)}, {$push: {messagePriver: {idAmi: req.body.idEnCour, messagePriver: req.body.messagePriver, prenom: req.body.prenomMessagePriver, nom: req.body.nomMessagePriver, date: date, vu: 'faux'}}}, function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
           if(o){
             console.log('message priver envoyer');
+            // ajoute le message dans le document de l'utilisateur en cours
             collection.updateOne({'_id': ObjectID(req.body.idEnCour)}, {$push: {messagePriver: {idAmi: req.body.idAmi, messagePriver: req.body.messagePriver, prenom: req.body.prenomMessagePriver, nom: req.body.nomMessagePriver, date: date}}})
             res.send({message: 'ok'});
             client.close();
@@ -874,13 +875,14 @@ app.post('/affichemessagepriver', function(req, res) {
     else{
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
       // cherche les messages priver
-      console.log('recherche liste message priver', req.body.idEnCour)
-      collection.find({'messagePriver.idAmi': req.body.idEnCour}).toArray(function(err, o) {
+      console.log('recherche liste message priver', req.body)
+      collection.find({'_id': ObjectID(req.body.idAmi)}, {'messagePriver.idAmi': req.body.idEnCour}).toArray(function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
             if(o[0]){
               // console.log('affiche liste message priver', o[0].messagePriver)
+              // collection.updateOne({'_id': ObjectID(req.body.idEnCour), 'messagePriver.idAmi': req.body.idAmi}, {$set: {'messagePriver.vu': 'vrais'}})
               // envoie la liste des message priver
               res.send({listeMessagePriver: o[0].messagePriver});
 

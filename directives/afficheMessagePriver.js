@@ -9,6 +9,7 @@ m.directive('affichemessagepriver', function(){
                 $scope.messagePriver = ''
                 // selection l'ami pour voir la conversation
                 $scope.choixAmiMessagePriver = function(item){
+                    $scope.ListeMessagePriverTab = []
                     // enregitre les valeurs pour raffraichir la liste si on envoie un message
                     $scope.itemReload = item
                     // envoie les valeurs dans les div correspondante
@@ -34,16 +35,14 @@ m.directive('affichemessagepriver', function(){
                     }).then(function (httpResponse) {             
                         // si un message d'erreur est envoyer par le serveur
                         if(httpResponse.data.message == 'pas de message'){
-                            // affiche le nombre de messages
-                            $scope.nbListeMessagePriverTab = 0
+                            
                         }
                         else if(httpResponse.data.message && httpResponse.data.message != 'pas de message'){
                             console.log('Echec de la recuperation du nombre de publication', httpResponse.data.message)
                         }
                         else{
                             $scope.ListeMessagePriverTab = httpResponse.data.listeMessagePriver
-                            // affiche le nombre de messages
-                            $scope.nbListeMessagePriverTab = httpResponse.data.listeMessagePriver.length
+                            
                         }
                     })
                     
@@ -98,7 +97,7 @@ m.directive('affichemessagepriver', function(){
                                         <strong class="primary-font">{{item.prenom}} {{item.nom}}</strong>
                                     </div>
                                     <div class="contact_sec">
-                                            <span class="badge pull-right">{{nbListeMessagePriverTab}} message</span>
+                                            <span class="badge pull-right">nombre de message</span>
                                     </div>
                                 </div>
                             </li>
@@ -115,7 +114,7 @@ m.directive('affichemessagepriver', function(){
                         <div class="pull-left"><button><i class="fa fa-plus-square-o" aria-hidden="true"></i> {{prenomMessagePriver}} {{nomMessagePriver}}</button></div>
                         <div class="pull-right">
                             <div class="dropdown">
-                                {{nbListeMessagePriverTab}} messages
+                                nombre de messages
                             </div>
                         </div>
                     </div>
