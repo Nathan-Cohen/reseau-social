@@ -32,13 +32,13 @@ m.directive('listepublication', function(){
                           }
                           // si il y a des commentaires on inverse et on envoie dans le tableau
                           if(httpResponse.data.listePublication[0]){
-                              $scope.itemListeCommentaire = httpResponse.data.listePublication[0].idCommentateur.reverse();
+                              $scope.itemListeCommentaire = httpResponse.data.listePublication[0].idCommentateur;
                           }
 
                           $scope.date = new Date()
 
                         //   console.log('httpResponse.data.listePublication.idCommentateur', httpResponse.data.listePublication[0].idCommentateur)
-            
+
                             $scope.timeout_rechercherlistepublie = setTimeout(function(){
                                 $scope.rechercheListePublication();
                             }, 5000)
@@ -127,8 +127,8 @@ m.directive('listepublication', function(){
             <div ng-repeat-end ng-controller="commentairesPublicationCtrl">
                 <!-- PUBLIER UN COMMENTAIRE -->
                 <div>
-                    <textarea id="{{item._id}}" ng-focus="focusInput()" class="form-control-commentaire animated col-sm-9" placeholder="Votre commentaire .." name="messagecommentaire" ng-model="messagecommentaire" ></textarea>
-                    <button class="btn btn-info col-sm-3 boutonCommentaire" ng-click="publierCommentaire(item._id)" type="button">Partager</button>
+                    <input id="{{item._id}}" ng-focus="focusInput()" class="champCommentaire col-sm-9" placeholder="Votre commentaire .." name="messagecommentaire" ng-model="messagecommentaire" >
+                    <button class="btn-info col-sm-3 boutonCommentaire" ng-click="publierCommentaire(item._id)" type="button">Partager</button>
                 </div>
                 <!-- AFFICHER LES COMMENTAIRES -->
                 <div class="containerCommentaires">

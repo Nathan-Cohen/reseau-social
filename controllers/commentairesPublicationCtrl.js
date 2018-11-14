@@ -29,6 +29,8 @@ m.controller('commentairesPublicationCtrl', function($scope, $http, $routeParams
                 // sinon les donnees sont envoyer par le serveur
                 if(httpResponse.data.message == 'Commentaire ajouter'){
                     console.log('Commentaire ajouter')
+                    // vide le champ
+                    $scope.messagecommentaire = ""
                     $scope.rechercheListePublication();
                     
                 }

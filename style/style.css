@@ -158,7 +158,12 @@
 }
 
 .boutonCommentaire{
-  height: 44px;
+  border: none;
+  padding: 2px;
+}
+
+.champCommentaire{
+  border: 1px solid #B3A9A9;
 }
 
 .commentaires li.left .commentaires-body

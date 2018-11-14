@@ -322,7 +322,7 @@ app.post('/accueilactualiter', function(req, res) {
     else{
       const collection = client.db('heroku_g9jk10c8').collection('publication');
       // cherche si l'utilisateur existe dans les publications ou dans les commentaires des publications
-      collection.find({'idProfil': req.body.idEnCour, 'idCommentateur.id': req.body.idEnCour}).toArray(function(err, o) {
+      collection.find({$or:[ {"idProfil":req.body.idEnCour}, {"idPublication":req.body.idEnCour}]}).toArray(function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
