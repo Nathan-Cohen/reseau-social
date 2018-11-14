@@ -396,7 +396,7 @@ app.post('/choixajouteami', function(req, res) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
-          if(o){
+          if(o[0]){
             if(o[0].demandeAjoutAmi){
               // si il n'a pas encore de demande d'ami
               if(o[0].demandeAjoutAmi.length == 0){
@@ -474,6 +474,7 @@ app.post('/listeami', function(req, res) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
+          if(o[0]){
             if(o[0].ami){
               // si il n'a pas encore d'ami
               if(o[0].ami.length == 0){
@@ -506,6 +507,8 @@ app.post('/listeami', function(req, res) {
             else{
               res.send({message: '0'});
             }
+
+          }
 
         }
 
@@ -875,14 +878,13 @@ app.post('/affichemessagepriver', function(req, res) {
     else{
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
       // cherche les messages priver
-      console.log('recherche liste message priver', req.body)
+      // console.log('recherche liste message priver', req.body)
       collection.find({'_id': ObjectID(req.body.idAmi)}, {'messagePriver.idAmi': req.body.idEnCour}).toArray(function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
             if(o[0]){
-              // console.log('affiche liste message priver', o[0].messagePriver)
-              // collection.updateOne({'_id': ObjectID(req.body.idEnCour), 'messagePriver.idAmi': req.body.idAmi}, {$set: {'messagePriver.vu': 'vrais'}})
+              collection.update({'_id': ObjectID(req.body.idEnCour), 'messagePriver.idAmi': req.body.idAmi}, {$set: {'messagePriver.$[].vu': 'vrais'}})
               // envoie la liste des message priver
               res.send({listeMessagePriver: o[0].messagePriver});
 
@@ -898,6 +900,41 @@ app.post('/affichemessagepriver', function(req, res) {
   });
   
 });
+
+
+
+app.post('/affichenotifmessagepriver', function(req, res) {
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+      // cherche les messages priver
+      // console.log('recherche liste message priver', req.body)
+      collection.find({'_id': ObjectID(req.body.idEnCour)}).toArray(function(err, o) {
+        if(err){
+          console.log('Echec de connexion a la collection', err.message);
+        }else{
+            if(o[0]){
+              // envoie la liste des message priver
+              res.send({listeMessagePriver: o[0].messagePriver});
+
+            }
+            else{
+              res.send({message: 'pas de message'});
+            }
+        }
+
+      });
+  
+    }
+  });
+  
+});
+
 
 
 

@@ -139,7 +139,7 @@ m.directive('listepublication', function(){
                             </span>
                             <div class="commentaires-body clearfix">
                                 <div class="header">
-                                    <button ng-if="item.idPublication == idSession" id="{{itemCommentaire.idUniqueCommentaire}}" class="pull-right supprimePublication" ng-click="supprimerLeCommentaire($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button>
+                                    <button ng-if="itemCommentaire.id == idSession" id="{{itemCommentaire.idUniqueCommentaire}}" class="pull-right supprimePublication" ng-click="supprimerLeCommentaire($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button>
 
                                     <strong class="primary-font">{{itemCommentaire.prenom}} {{itemCommentaire.nom}}</strong> <small class="pull-right text-muted">
 

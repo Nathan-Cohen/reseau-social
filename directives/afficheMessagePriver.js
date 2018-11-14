@@ -80,6 +80,45 @@ m.directive('affichemessagepriver', function(){
                     })
                     
                 }
+
+                // function qui verifie toute les 5s si un nouveau message a ete poster
+                $scope.notifMessagePriver = function(){
+                    envoieMessagePriverObj = {
+                        idEnCour: sessionStorage.id
+                    }
+                    $scope.tabNotifMessagePriver = []
+                     // url
+                     var urlEnLigne = "/affichenotifmessagepriver"
+                     // envoie des donnees en POST pour recuperer le nombre de publication
+                     $http({
+                         url: urlEnLigne,
+                         method: 'POST',
+                         data: envoieMessagePriverObj
+                     }).then(function (httpResponse) {             
+                         // si un message d'erreur est envoyer par le serveur
+                         if(httpResponse.data.message == 'pas de message'){
+                             
+                         }
+                         else if(httpResponse.data.message && httpResponse.data.message != 'pas de message'){
+                             console.log('Echec de la recuperation du nombre de publication', httpResponse.data.message)
+                         }
+                         else{
+                            for(var i=0; i<httpResponse.data.listeMessagePriver.length; i++){
+                                if(httpResponse.data.listeMessagePriver[i].vu == 'faux'){
+                                    $scope.tabNotifMessagePriver.push(httpResponse.data.listeMessagePriver[i])
+                                }
+                            }
+                            $scope.previewMessagePriver = $scope.tabNotifMessagePriver.length
+                            setTimeout(function(){
+                                $scope.notifMessagePriver()
+                            }, 5000)
+                         }
+                     })
+
+                }
+
+                $scope.notifMessagePriver()
+
             }
         },
         template: `
@@ -97,7 +136,7 @@ m.directive('affichemessagepriver', function(){
                                         <strong class="primary-font">{{item.prenom}} {{item.nom}}</strong>
                                     </div>
                                     <div class="contact_sec">
-                                            <span class="badge pull-right">nombre de message</span>
+                                            <span class="badge pull-right" ng-if="tabNotifMessagePriver[tabNotifMessagePriver.length-1].prenom == item.prenom">message en attente</span>
                                     </div>
                                 </div>
                             </li>
