@@ -57,6 +57,7 @@ m.directive('affichemessageinstantanner', function(){
                         }
                         else{
                             $scope.ListeMessageInstantannerTab = httpResponse.data.listeMessageInstantanner
+                            $scope.nbListeMessageInstantannerTab = httpResponse.data.listeMessageInstantanner.length
                             setTimeout(function(){
                                 $scope.itemReload.messageReload = "true"
                                 $scope.choixAmiMessageInstantanner($scope.itemReload)
@@ -87,7 +88,7 @@ m.directive('affichemessageinstantanner', function(){
                     }).then(function (httpResponse) {             
                         // si un message d'erreur est envoyer par le serveur
                         if(httpResponse.data.message == "Erreur"){
-                            console.log('Echec de la recuperation du nombre de publication')
+                            console.log('Echec de la recuperation')
                         }
                         else{
                             // vide le champ
@@ -108,7 +109,7 @@ m.directive('affichemessageinstantanner', function(){
                     $scope.tabNotifMessageInstantanner = []
                      // url
                      var urlEnLigne = "/affichenotifmessageinstantanner"
-                     // envoie des donnees en POST pour recuperer le nombre de publication
+                     // envoie des donnees en POST pour recuperer le nombre de message
                      $http({
                          url: urlEnLigne,
                          method: 'POST',
@@ -119,7 +120,7 @@ m.directive('affichemessageinstantanner', function(){
                              
                          }
                          else if(httpResponse.data.message && httpResponse.data.message != 'pas de message'){
-                             console.log('Echec de la recuperation du nombre de publication', httpResponse.data.message)
+                             console.log('Echec de la recuperation du nombre de message', httpResponse.data.message)
                          }
                          else{
                              if(httpResponse.data.listeMessageInstantanner){
@@ -175,7 +176,7 @@ m.directive('affichemessageinstantanner', function(){
                         <div class="pull-left"><button><i class="fa fa-plus-square-o" aria-hidden="true"></i> {{prenomMessageInstantanner}} {{nomMessageInstantanner}}</button></div>
                         <div class="pull-right">
                             <div class="dropdown">
-                                nombre de messages
+                                {{nbListeMessageInstantannerTab}} messages
                             </div>
                         </div>
                     </div>
