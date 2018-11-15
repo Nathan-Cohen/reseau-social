@@ -35,14 +35,18 @@ m.directive('affichemessagepriver', function(){
                     }).then(function (httpResponse) {             
                         // si un message d'erreur est envoyer par le serveur
                         if(httpResponse.data.message == 'pas de message'){
-                            
+                            setTimeout(function(){
+                                $scope.choixAmiMessagePriver(itemReload)
+                            }, 5000)
                         }
                         else if(httpResponse.data.message && httpResponse.data.message != 'pas de message'){
                             console.log('Echec de la recuperation du nombre de publication', httpResponse.data.message)
                         }
                         else{
                             $scope.ListeMessagePriverTab = httpResponse.data.listeMessagePriver
-                            
+                            setTimeout(function(){
+                                $scope.choixAmiMessagePriver(itemReload)
+                            }, 5000)
                         }
                     })
                     

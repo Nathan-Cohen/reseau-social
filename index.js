@@ -912,13 +912,12 @@ app.post('/affichemessagepriver', function(req, res) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
-            if(o[0]){
+            if(o[0].messagePriver){
               collection.updateOne({'_id': ObjectID(req.body.idEnCour), 'messagePriver.idAmi': req.body.idAmi}, {$set: {'messagePriver.$[].vu': 'vrais'}})
               // boucle sur le tableau des messages priver pour trouver les messages correspondant au deux ami et les mettre dans le tableau avant l'envoie
               o[0].messagePriver.forEach(function(elem){
                 if(elem.idAmi == req.body.idEnCour){
                   tabListeMessagePriver.push(elem)
-                  
                 }
                 
               })
