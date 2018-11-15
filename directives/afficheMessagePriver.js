@@ -9,7 +9,6 @@ m.directive('affichemessagepriver', function(){
                 $scope.messagePriver = ''
                 // selection l'ami pour voir la conversation
                 $scope.choixAmiMessagePriver = function(item){
-                    $scope.ListeMessagePriverTab = []
                     // enregitre les valeurs pour raffraichir la liste si on envoie un message
                     $scope.itemReload = item
                     // envoie les valeurs dans les div correspondante
@@ -36,16 +35,17 @@ m.directive('affichemessagepriver', function(){
                         // si un message d'erreur est envoyer par le serveur
                         if(httpResponse.data.message == 'pas de message'){
                             setTimeout(function(){
-                                $scope.choixAmiMessagePriver(itemReload)
+                                $scope.choixAmiMessagePriver($scope.itemReload)
                             }, 5000)
                         }
                         else if(httpResponse.data.message && httpResponse.data.message != 'pas de message'){
                             console.log('Echec de la recuperation du nombre de publication', httpResponse.data.message)
                         }
                         else{
+                    $scope.ListeMessagePriverTab = []
                             $scope.ListeMessagePriverTab = httpResponse.data.listeMessagePriver
                             setTimeout(function(){
-                                $scope.choixAmiMessagePriver(itemReload)
+                                $scope.choixAmiMessagePriver($scope.itemReload)
                             }, 5000)
                         }
                     })
