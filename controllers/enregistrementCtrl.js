@@ -1,4 +1,4 @@
-m.controller('enregistrementCtrl', function($scope, $http, $location, connectionFactorie){
+m.controller('enregistrementCtrl', function($scope, $http, $location){
     $scope.nom = ""
     $scope.prenom = ""
     $scope.mdp = ""
@@ -45,11 +45,6 @@ m.controller('enregistrementCtrl', function($scope, $http, $location, connection
                 $('#reponseEnregistrement').css('display', 'table')
             }
             else{
-                // envoie l'information dans la factorie "connection" pour les recuperer dans la page profil
-                $scope.send = function(){
-                    connectionFactorie.sendData(nouveauUtilisateur);
-                };
-                $scope.send()
                 console.log('httpResponse.data enregistrement', httpResponse.data)
                 // enregistre l'id, le mail, le mot de passe et le prenom de passe en local
                 sessionStorage.setItem('id', httpResponse.data.id)

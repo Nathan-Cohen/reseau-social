@@ -1,4 +1,4 @@
-m.controller('accueilCtrl', function($scope, $location, $http){
+m.controller('accueilCtrl', function($scope, $location, $http, SocketService){
     if(sessionStorage.id){
         $scope.idSession = sessionStorage.id
 
@@ -24,6 +24,16 @@ m.controller('accueilCtrl', function($scope, $location, $http){
                 $scope.itemListePublication = httpResponse.data.accueilactualiter.reverse()
             }
         })
+        
+        
     }
+    
+    // recupere le nombre de membre connecter
+    SocketService.emit('recupereNbConnecter')
+    SocketService.on('nbUtilisateurConnecter', function(data){
+        $scope.nbUtilisateurConnecter = data.co
+        
+    });
+
 
 })

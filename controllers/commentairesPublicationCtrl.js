@@ -1,4 +1,4 @@
-m.controller('commentairesPublicationCtrl', function($scope, $http, $routeParams, connectionFactorie){
+m.controller('commentairesPublicationCtrl', function($scope, $http, $routeParams){
     // si l'utilisateur est connecter
     if(sessionStorage.id){
         $('#deconnexion').css('display', 'block')

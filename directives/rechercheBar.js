@@ -7,51 +7,58 @@ m.directive('recherchebar', function(){
                 $('#menuConnexion').css('display', 'none')
                 // ajoute le lien Profil
                 $('#menuProfil').prepend('<li id="monProfil"><a href="#!connexion"><i class="fas fa-user"></i> Profil</a></li>')
-            }
-            // url
-            var urlEnLigne = "/search"
-            // au clique on recupere la valeur rechercher pour l'affecter au scope
-            $scope.selectItem = function(item){
-                $scope.search = item.prenom
-                // supprime la valeur dans le champ
-                $scope.search = "";
-                // supprime la liste afficher
-                $scope.totalItem = "";
-            }
-            // recherche les valeurs qui correspondes
-            $scope.complete = function(string){
-                // si la recherche est vide
-                if(string != ''){
-                    var output=[];
-                    var searchEnCour = {"searchEnCour": string}
-                    // envoie des donnees en POST            
-                    $http({
-                        url: urlEnLigne,
-                        method: 'POST',
-                        data: searchEnCour
-                    }).then(function (httpResponse) {
-                        console.log('httpResponse.data search', httpResponse.data)
-                        // si le message de retour est 'Aucun resultat'
-                        if(httpResponse.data.search == 'Aucun resultat'){
-                            output.push('Aucun resultat');
-                        }
-                        // sinon il y a un resultat
-                        else{
-                            // Construit le tableau
-                            angular.forEach(httpResponse.data.search,function(item){
-                                itemTotal = {prenom: item.prenom, nom: item.nom, id: item._id}
-                                output.push(itemTotal);
-                            });
-    
-                        }
-                    })
-                    // envoi les resultats dans la liste
-                    $scope.totalItem=output;
-
+                // url
+                var urlEnLigne = "/search"
+                // au clique on recupere la valeur rechercher pour l'affecter au scope
+                $scope.selectItem = function(item){
+                    $scope.search = item.prenom
+                    // supprime la valeur dans le champ
+                    $scope.search = "";
+                    // supprime la liste afficher
+                    $scope.totalItem = "";
                 }
-                // sinon on vide le tableau des recherches
-                else{
-                    $scope.totalItem = ''
+                // recherche les valeurs qui correspondes
+                $scope.complete = function(string){
+                    // si la recherche est vide
+                    if(string != ''){
+                        var output=[];
+                        var searchEnCour = {"searchEnCour": string}
+                        // envoie des donnees en POST            
+                        $http({
+                            url: urlEnLigne,
+                            method: 'POST',
+                            data: searchEnCour
+                        }).then(function (httpResponse) {
+                            console.log('httpResponse.data search', httpResponse.data)
+                            // si le message de retour est 'Aucun resultat'
+                            if(httpResponse.data.search == 'Aucun resultat'){
+                                output.push('Aucun resultat');
+                            }
+                            // sinon il y a un resultat
+                            else{
+                                // Construit le tableau
+                                angular.forEach(httpResponse.data.search,function(item){
+                                    itemTotal = {prenom: item.prenom, nom: item.nom, id: item._id}
+                                    output.push(itemTotal);
+                                });
+        
+                            }
+                        })
+                        // envoi les resultats dans la liste
+                        $scope.totalItem=output;
+                        console.log('freeeeeeeee', $scope.totalItem)
+    
+                    }
+                    // sinon on vide le tableau des recherches
+                    else{
+                        $scope.totalItem = ''
+                    }
+                }
+            }
+            else{
+                // si l'utilisateur n'est pas connecter il ne peut pas effectuer de recherche
+                $scope.complete = function(){
+                    $scope.totalItem= [{prenom: 'connexion requise'}]
                 }
             }
 

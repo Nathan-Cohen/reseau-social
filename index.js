@@ -312,7 +312,7 @@ app.post('/profil/recherche', function(req, res) {
 /////// ACUTALITER ACCUEIL ////////
 // recupere les donnees de la connection pour verifier dans la BDD
 app.post('/accueilactualiter', function(req, res) {
-  console.log('accueilactualiter req body', req.body)
+  // console.log('accueilactualiter req body', req.body)
   //////////////// CONNEXION A LA BASE ///////////////////
   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
   mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
@@ -326,7 +326,7 @@ app.post('/accueilactualiter', function(req, res) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
-          console.log('accueilactualiter', o)
+          // console.log('accueilactualiter', o)
           res.send({accueilactualiter: o});
         }
 
@@ -869,6 +869,7 @@ app.post('/envoiemessagepriver', function(req, res) {
 
 // recupere les donnees de la connection pour verifier dans la BDD
 app.post('/affichemessagepriver', function(req, res) {
+  var tabListeMessagePriver = []
   //////////////// CONNEXION A LA BASE ///////////////////
   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
   mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
@@ -877,16 +878,25 @@ app.post('/affichemessagepriver', function(req, res) {
     }
     else{
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+      // console.log('recherche liste message priver idAmi', req.body.idAmi)
+      // console.log('recherche liste message priver idEnCour', req.body.idEnCour)
       // cherche les messages priver
-      // console.log('recherche liste message priver', req.body)
-      collection.find({'_id': ObjectID(req.body.idAmi)}, {'messagePriver.idAmi': req.body.idEnCour}).toArray(function(err, o) {
+      collection.find({'_id': ObjectID(req.body.idAmi)}, {'messagePriver.$.idAmi': req.body.idEnCour}).toArray(function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
             if(o[0]){
-              collection.update({'_id': ObjectID(req.body.idEnCour), 'messagePriver.idAmi': req.body.idAmi}, {$set: {'messagePriver.$[].vu': 'vrais'}})
+              collection.updateOne({'_id': ObjectID(req.body.idEnCour), 'messagePriver.idAmi': req.body.idAmi}, {$set: {'messagePriver.$[].vu': 'vrais'}})
+              // boucle sur le tableau des messages priver pour trouver les messages correspondant au deux ami et les mettre dans le tableau avant l'envoie
+              o[0].messagePriver.forEach(function(elem){
+                if(elem.idAmi == req.body.idEnCour){
+                  tabListeMessagePriver.push(elem)
+                  
+                }
+                
+              })
               // envoie la liste des message priver
-              res.send({listeMessagePriver: o[0].messagePriver});
+              res.send({listeMessagePriver: tabListeMessagePriver});
 
             }
             else{
@@ -950,14 +960,12 @@ io.on('connection', function(socket){
     tabConnection.push(socket)
 
   })
+
   socket.on('recupereNbConnecter', function(){
     socket.emit('nbUtilisateurConnecter', {co: tabConnection.length})
     socket.broadcast.emit('nbUtilisateurConnecter', {co: tabConnection.length})
-
-    
   })
   
-
   socket.on('chatBox', function(data){
     socket.emit('chatBoxRetourMoi', data)
     socket.broadcast.emit('chatBoxRetour', data)
@@ -965,8 +973,8 @@ io.on('connection', function(socket){
 
   socket.on("disconnect", function(){
     console.log('utilisateur deconnecter')
-    tabConnection.pop();
-    socket.broadcast.emit('nbUtilisateurConnecter', {co: tabConnection.length})
+    // tabConnection.pop();
+    // socket.broadcast.emit('nbUtilisateurConnecter', {co: tabConnection.length})
   })
 
 

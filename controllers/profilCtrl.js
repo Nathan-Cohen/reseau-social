@@ -1,6 +1,5 @@
-m.controller('profilCtrl', function($scope, $http, $routeParams, connectionFactorie){
+m.controller('profilCtrl', function($scope, $http, $routeParams, SocketService){
     // recupere l'adresse mail a la connexion ou a l'enregistrement
-    var utilisateur = connectionFactorie.getData();
     if(sessionStorage.mail){
         $('#deconnexion').css('display', 'block')
     }
@@ -56,5 +55,12 @@ m.controller('profilCtrl', function($scope, $http, $routeParams, connectionFacto
         
     }
     $scope.rechercheProfil()
+
+    // recupere le nombre de membre connecter
+    SocketService.emit('recupereNbConnecter')
+    SocketService.on('nbUtilisateurConnecter', function(data){
+        $scope.nbUtilisateurConnecter = data.co
+        
+    });
 
 })

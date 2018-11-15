@@ -1,4 +1,4 @@
-m.controller('connexionCtrl', function($scope, $http, $location, connectionFactorie, SocketService){
+m.controller('connexionCtrl', function($scope, $http, $location, SocketService){
     $scope.messagetest = "Parti connexion"
     $scope.mail = ""
     $scope.mdp = ""
@@ -27,27 +27,28 @@ m.controller('connexionCtrl', function($scope, $http, $location, connectionFacto
             }
             // sinon les donnees sont envoyer par le serveur
             else if(httpResponse.data.mail){
-                console.log('Connexion reussi', httpResponse.data)
-                // envoie l'information dans la factorie "connection" pour les recuperer dans la page profil
-                $scope.send = function(){
-                    connectionFactorie.sendData(utilisateurConnecter);
-                };
-                $scope.send()
+                // console.log('Connexion reussi', httpResponse.data)
+
                 // enregistre l'id, le mail, le mot de passe et le prenom de passe en local                
                 sessionStorage.setItem('id', httpResponse.data.id)
                 sessionStorage.setItem('mail', httpResponse.data.mail)
                 sessionStorage.setItem('mdp', httpResponse.data.mdp)
                 sessionStorage.setItem('prenom', httpResponse.data.prenom)
                 sessionStorage.setItem('nom', httpResponse.data.nom)
+
                 // change l'url
                 $location.path('/profil/' + httpResponse.data.id)
+
                 // Supprime les valeurs dans les champs        
                 $scope.mail = ""
                 $scope.mdp = ""
+
                 // supprime le lien Connexion/Inscription
                 $('#menuConnexion').css('display', 'none')
+
                 // ajoute le lien Profil
                 $('#menuProfil').prepend('<li id="monProfil"><a href="#!connexion"><i class="fas fa-user"></i> Profil</a></li>')
+
                 // ajoute l'utilisateur au tableau des connections dans les websocket
                 SocketService.emit('connexion', {utilisateurConnecter: sessionStorage});
 
