@@ -853,8 +853,8 @@ app.post('/supprimecommentaire', function(req, res) {
 
 
 
-////////////// MESSAGE PRIVER ///////////////
-app.post('/envoiemessagepriver', function(req, res) {
+////////////// MESSAGE Instantanner ///////////////
+app.post('/envoiemessageinstantanner', function(req, res) {
   //////////////// CONNEXION A LA BASE ///////////////////
   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
   mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
@@ -867,14 +867,14 @@ app.post('/envoiemessagepriver', function(req, res) {
       var date = d.getDate() + ' ' + tab_mois[d.getMonth()] + ' ' + d.getHours() + ' heures ' + d.getMinutes() + ' minutes';
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
       // ajoute le message dans le document de l'ami
-      collection.updateOne({'_id': ObjectID(req.body.idAmi)}, {$push: {messagePriver: {idAmi: req.body.idEnCour, messagePriver: req.body.messagePriver, prenom: req.body.prenomMessagePriver, nom: req.body.nomMessagePriver, date: date, vu: 'faux'}}}, function(err, o) {
+      collection.updateOne({'_id': ObjectID(req.body.idAmi)}, {$push: {messageInstantanner: {idAmi: req.body.idEnCour, messageInstantanner: req.body.messageInstantanner, prenom: req.body.prenomMessageInstantanner, nom: req.body.nomMessageInstantanner, date: date, vu: 'faux'}}}, function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
           if(o){
-            console.log('message priver envoyer');
+            console.log('message Instantanner envoyer');
             // ajoute le message dans le document de l'utilisateur en cours
-            collection.updateOne({'_id': ObjectID(req.body.idEnCour)}, {$push: {messagePriver: {idAmi: req.body.idAmi, messagePriver: req.body.messagePriver, prenom: req.body.prenomMessagePriver, nom: req.body.nomMessagePriver, date: date}}})
+            collection.updateOne({'_id': ObjectID(req.body.idEnCour)}, {$push: {messageInstantanner: {idAmi: req.body.idAmi, messageInstantanner: req.body.messageInstantanner, prenom: req.body.prenomMessageInstantanner, nom: req.body.nomMessageInstantanner, date: date}}})
             res.send({message: 'ok'});
             client.close();
 
@@ -895,8 +895,8 @@ app.post('/envoiemessagepriver', function(req, res) {
 
 
 // recupere les donnees de la connection pour verifier dans la BDD
-app.post('/affichemessagepriver', function(req, res) {
-  var tabListeMessagePriver = []
+app.post('/affichemessageinstantanner', function(req, res) {
+  var tabListeMessageInstantanner = []
   //////////////// CONNEXION A LA BASE ///////////////////
   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
   mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
@@ -905,24 +905,24 @@ app.post('/affichemessagepriver', function(req, res) {
     }
     else{
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
-      // console.log('recherche liste message priver idAmi', req.body.idAmi)
-      // console.log('recherche liste message priver idEnCour', req.body.idEnCour)
-      // cherche les messages priver
-      collection.find({'_id': ObjectID(req.body.idAmi)}, {'messagePriver.$.idAmi': req.body.idEnCour}).toArray(function(err, o) {
+      // console.log('recherche liste message Instantanner idAmi', req.body.idAmi)
+      // console.log('recherche liste message Instantanner idEnCour', req.body.idEnCour)
+      // cherche les messages Instantanner
+      collection.find({'_id': ObjectID(req.body.idAmi)}, {'messageInstantanner.$.idAmi': req.body.idEnCour}).toArray(function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
-            if(o[0].messagePriver){
-              collection.updateOne({'_id': ObjectID(req.body.idEnCour), 'messagePriver.idAmi': req.body.idAmi}, {$set: {'messagePriver.$[].vu': 'vrais'}})
-              // boucle sur le tableau des messages priver pour trouver les messages correspondant au deux ami et les mettre dans le tableau avant l'envoie
-              o[0].messagePriver.forEach(function(elem){
+            if(o[0].messageInstantanner){
+              collection.updateOne({'_id': ObjectID(req.body.idEnCour), 'messageInstantanner.idAmi': req.body.idAmi}, {$set: {'messageInstantanner.$[].vu': 'vrais'}})
+              // boucle sur le tableau des messages Instantanner pour trouver les messages correspondant au deux ami et les mettre dans le tableau avant l'envoie
+              o[0].messageInstantanner.forEach(function(elem){
                 if(elem.idAmi == req.body.idEnCour){
-                  tabListeMessagePriver.push(elem)
+                  tabListeMessageInstantanner.push(elem)
                 }
                 
               })
-              // envoie la liste des message priver
-              res.send({listeMessagePriver: tabListeMessagePriver});
+              // envoie la liste des message Instantanner
+              res.send({listeMessageInstantanner: tabListeMessageInstantanner});
 
             }
             else{
@@ -939,7 +939,7 @@ app.post('/affichemessagepriver', function(req, res) {
 
 
 
-app.post('/affichenotifmessagepriver', function(req, res) {
+app.post('/affichenotifmessageinstantanner', function(req, res) {
   //////////////// CONNEXION A LA BASE ///////////////////
   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
   mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
@@ -948,15 +948,15 @@ app.post('/affichenotifmessagepriver', function(req, res) {
     }
     else{
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
-      // cherche les messages priver
-      // console.log('recherche liste message priver', req.body)
+      // cherche les messages Instantanner
+      // console.log('recherche liste message Instantanner', req.body)
       collection.find({'_id': ObjectID(req.body.idEnCour)}).toArray(function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
             if(o[0]){
-              // envoie la liste des message priver
-              res.send({listeMessagePriver: o[0].messagePriver});
+              // envoie la liste des message Instantanner
+              res.send({listeMessageInstantanner: o[0].messageInstantanner});
 
             }
             else{

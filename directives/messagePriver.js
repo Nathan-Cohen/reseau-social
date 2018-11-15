@@ -1,4 +1,4 @@
-m.directive('messageinstantanner', function(){
+m.directive('messagepriver', function(){
     var directiveDefs = {
         controller: function($scope, $http){
 
