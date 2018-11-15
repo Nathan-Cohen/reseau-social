@@ -3,10 +3,10 @@ m.directive('affichemessageinstantanner', function(){
         controller: function($scope, $http){
             // si l'utilisateur est connecter
             if(sessionStorage.id){
-                $scope.prenomtest = sessionStorage.prenom
+                $scope.prenomEnCours = sessionStorage.prenom
                 $scope.prenomMessageInstantanner = ''
                 $scope.nomMessageInstantanner = ''
-                $scope.messageInstantanner = ''
+                $scope.msg = {messageInstantanner: ''}
 
                 $scope.scrollBarEnBas = function(){
                     console.log('element height', document.getElementById('bodyMessageInstantanner').scrollHeight)
@@ -17,7 +17,11 @@ m.directive('affichemessageinstantanner', function(){
 
                 // selection l'ami pour voir la conversation
                 $scope.choixAmiMessageInstantanner = function(item){
-                    
+                    // si le message de reload n'existe pas on ne vide pas la table des messages 
+                    if(!item.messageReload){
+                        $scope.ListeMessageInstantannerTab = []
+                    }
+
                     // enregitre les valeurs pour raffraichir la liste si on envoie un message
                     $scope.itemReload = item
                     // envoie les valeurs dans les div correspondante
@@ -44,6 +48,7 @@ m.directive('affichemessageinstantanner', function(){
                         // si un message d'erreur est envoyer par le serveur
                         if(httpResponse.data.message == 'pas de message'){
                             setTimeout(function(){
+                                $scope.itemReload.messageReload = "true"
                                 $scope.choixAmiMessageInstantanner($scope.itemReload)
                             }, 5000)
                         }
@@ -51,9 +56,9 @@ m.directive('affichemessageinstantanner', function(){
                             console.log('Echec de la recuperation du nombre de publication', httpResponse.data.message)
                         }
                         else{
-                    $scope.ListeMessageInstantannerTab = []
                             $scope.ListeMessageInstantannerTab = httpResponse.data.listeMessageInstantanner
                             setTimeout(function(){
+                                $scope.itemReload.messageReload = "true"
                                 $scope.choixAmiMessageInstantanner($scope.itemReload)
                             }, 5000)
                         }
@@ -66,7 +71,7 @@ m.directive('affichemessageinstantanner', function(){
                     envoieMessageInstantannerObj = {
                         idEnCour: sessionStorage.id,
                         idAmi: idAmi,
-                        messageInstantanner: $scope.messageInstantanner,
+                        messageInstantanner: $scope.msg.messageInstantanner,
                         prenomMessageInstantanner: sessionStorage.prenom,
                         nomMessageInstantanner: sessionStorage.nom
                     }
@@ -86,8 +91,9 @@ m.directive('affichemessageinstantanner', function(){
                         }
                         else{
                             // vide le champ
-                            $scope.messageInstantanner = "";
+                            $scope.msg.messageInstantanner = "";
                             // raffraichie la liste des messages envoiemessageinstantanner
+                            $scope.itemReload.messageReload = "true"
                             $scope.choixAmiMessageInstantanner($scope.itemReload);
                         }
                     })
@@ -163,7 +169,7 @@ m.directive('affichemessageinstantanner', function(){
             <!--chat_sidebar-->
 
 
-            <div class="col-sm-9 message_section" id="bodyMessageInstantanner">
+            <div class="col-sm-9 message_section" id="bodyMessageInstantanner" ng-if="prenomMessageInstantanner">
                 <div class="row">
                     <div class="new_message_head">
                         <div class="pull-left"><button><i class="fa fa-plus-square-o" aria-hidden="true"></i> {{prenomMessageInstantanner}} {{nomMessageInstantanner}}</button></div>
@@ -178,7 +184,7 @@ m.directive('affichemessageinstantanner', function(){
                     <div class="chat_area">
                         <ul class="list-unstyled">
                         
-                            <li class="left clearfix" ng-repeat-start="itemMessageInstantanner in ListeMessageInstantannerTab" ng-if="itemMessageInstantanner.prenom == prenomtest">
+                            <li class="left clearfix" ng-repeat-start="itemMessageInstantanner in ListeMessageInstantannerTab" ng-if="itemMessageInstantanner.prenom == prenomEnCours">
                                 <span class="chat-img1 pull-left">
                                     <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="User Avatar" class="img-circle">
                                 </span>
@@ -189,7 +195,7 @@ m.directive('affichemessageinstantanner', function(){
                                 </div>
                             </li>
 
-                            <li class="left clearfix admin_chat" ng-repeat-end="itemMessageInstantanner in ListeMessageInstantannerTab" ng-if="itemMessageInstantanner.prenom != prenomtest">
+                            <li class="left clearfix admin_chat" ng-repeat-end="itemMessageInstantanner in ListeMessageInstantannerTab" ng-if="itemMessageInstantanner.prenom != prenomEnCours">
                                 <span class="chat-img1 pull-right">
                                     <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="User Avatar" class="img-circle">
                                 </span>
@@ -205,7 +211,7 @@ m.directive('affichemessageinstantanner', function(){
                     </div>
                     <!--chat_area-->
                     <div class="message_write">
-                        <textarea ng-model="messageInstantanner" class="form-control" placeholder="Message..."></textarea>
+                        <textarea ng-model="msg.messageInstantanner" class="form-control" placeholder="Message..."></textarea>
                         <div class="clearfix"></div>
                         <div class="chat_bottom"><a href="#" class="pull-left upload_btn"><i class="fa fa-cloud-upload" aria-hidden="true"></i>Add Files</a>
                             <button class="pull-right btn btn-success" id="{{idMessageInstantanner}}" ng-click="envoieMessageInstantanner(idMessageInstantanner)" >Envoyer</button></div>
