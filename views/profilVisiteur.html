@@ -56,17 +56,23 @@
         <!--/col-3-->
     <div class="col-sm-9">
         <ul class="nav nav-tabs">
-            <li class="active">
+            <li class="active" ng-if="!booleanBouton">
                 <a data-toggle="tab" href="profil//#home">Mur</a>
             </li>
-            <li>
+            <li class="active" ng-if="booleanBouton">
+                <a data-toggle="tab" href="profil//#listeami" >Liste d'amis</a>
+            </li>
+            <li ng-if="!booleanBouton">
+                <a data-toggle="tab" href="profil//#listeami" >Liste d'amis</a>
+            </li>
+            <li ng-if="!booleanBouton">
                 <a data-toggle="tab" href="profil//#informations">Informations</a>
             </li>
         </ul>
 
         <div class="tab-content">
             <!-- MUR -->
-            <div class="tab-pane active" id="home">
+            <div class="tab-pane active" id="home" ng-if="!booleanBouton">
                 <hr>
                     <publicationbar></publicationbar>
 
@@ -75,8 +81,23 @@
                     
             </div>
 
+
+            <!-- MUR -->
+            <div class="tab-pane" id="listeami" ng-if="!booleanBouton">
+                <hr>
+                    <h2>Liste d'ami</h2>
+                    <listeami></listeami>
+                    
+            </div>
+            <div class="tab-pane active" id="listeami" ng-if="booleanBouton">
+                <hr>
+                    <h2>Liste d'ami</h2>
+                    <listeami></listeami>
+                    
+            </div>
+
             <!-- INFORMATIONS -->
-            <div class="tab-pane" id="informations">
+            <div class="tab-pane" id="informations" ng-if="!booleanBouton">
                 <hr>
                 <form class="form" role="form">
                     <div class="form-group">

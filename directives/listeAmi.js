@@ -93,7 +93,7 @@ m.directive('listeami', function(){
                             <th scope="col">Prenom</th>
                             <th scope="col">Nom</th>
                             <th scope="col">Mail</th>
-                            <th scope="col" class="text-center">Action</th>
+                            <th scope="col" class="text-center" ng-if="!booleanBouton">Action</th>
                         </tr>
                     </thead>
                     <tr id="item{{item._id}}" ng-repeat="item in itemListeAmi">
@@ -104,7 +104,7 @@ m.directive('listeami', function(){
                             <a href="#!/profil/recherche/{{item._id}}">{{item.nom}}</a>
                         </td>
                         <td>{{item.mail}}</td>
-                        <td class="text-center">
+                        <td class="text-center" ng-if="!booleanBouton">
                             <a id="{{item._id}}" class="btn btn-danger btn-xs" ng-click="supprimer($event)">Supprimer</a>
                         </td>
                     </tr>

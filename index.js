@@ -337,6 +337,33 @@ app.post('/accueilactualiter', function(req, res) {
   
 });
 
+// actualise le nombre de publication dans l'accueil pour les utilisateurs non connecter
+// recupere les donnees de la connection pour verifier dans la BDD
+app.post('/nbpublicationaccueil', function(req, res) {
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('publication');
+      // cherche si l'utilisateur existe dans les publications ou dans les commentaires des publications
+      collection.find().toArray(function(err, o) {
+        if(err){
+          console.log('Echec de connexion a la collection', err.message);
+        }else{
+          res.send({nbpublicationaccueil: o.length});
+        }
+
+      });
+  
+    }
+  });
+  
+});
+
+
 
 
 // AJOUTER UN AMI

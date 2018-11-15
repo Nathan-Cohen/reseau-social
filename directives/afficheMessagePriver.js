@@ -103,12 +103,15 @@ m.directive('affichemessagepriver', function(){
                              console.log('Echec de la recuperation du nombre de publication', httpResponse.data.message)
                          }
                          else{
-                            for(var i=0; i<httpResponse.data.listeMessagePriver.length; i++){
-                                if(httpResponse.data.listeMessagePriver[i].vu == 'faux'){
-                                    $scope.tabNotifMessagePriver.push(httpResponse.data.listeMessagePriver[i])
-                                }
-                            }
-                            $scope.previewMessagePriver = $scope.tabNotifMessagePriver.length
+                             if(httpResponse.data.listeMessagePriver){
+                                 for(var i=0; i<httpResponse.data.listeMessagePriver.length; i++){
+                                     if(httpResponse.data.listeMessagePriver[i].vu == 'faux'){
+                                         $scope.tabNotifMessagePriver.push(httpResponse.data.listeMessagePriver[i])
+                                     }
+                                 }
+                                 $scope.previewMessagePriver = $scope.tabNotifMessagePriver.length
+
+                             }
                             setTimeout(function(){
                                 $scope.notifMessagePriver()
                             }, 5000)

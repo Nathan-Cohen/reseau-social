@@ -7,6 +7,9 @@ m.directive('recherchebar', function(){
                 $('#menuConnexion').css('display', 'none')
                 // ajoute le lien Profil
                 $('#menuProfil').prepend('<li id="monProfil"><a href="#!connexion"><i class="fas fa-user"></i> Profil</a></li>')
+
+            }
+
                 // url
                 var urlEnLigne = "/search"
                 // au clique on recupere la valeur rechercher pour l'affecter au scope
@@ -19,48 +22,59 @@ m.directive('recherchebar', function(){
                 }
                 // recherche les valeurs qui correspondes
                 $scope.complete = function(string){
-                    // si la recherche est vide
-                    if(string != ''){
-                        var output=[];
-                        var searchEnCour = {"searchEnCour": string}
-                        // envoie des donnees en POST            
-                        $http({
-                            url: urlEnLigne,
-                            method: 'POST',
-                            data: searchEnCour
-                        }).then(function (httpResponse) {
-                            console.log('httpResponse.data search', httpResponse.data)
-                            // si le message de retour est 'Aucun resultat'
-                            if(httpResponse.data.search == 'Aucun resultat'){
-                                output.push('Aucun resultat');
+                    if(sessionStorage.id){
+                        setTimeout(function(){
+                            // si la recherche est vide
+                            if(string != ''){
+                                var output=[];
+                                var searchEnCour = {"searchEnCour": string}
+                                // envoie des donnees en POST            
+                                $http({
+                                    url: urlEnLigne,
+                                    method: 'POST',
+                                    data: searchEnCour
+                                }).then(function (httpResponse) {
+                                    console.log('httpResponse.data search', httpResponse.data)
+                                    // si le message de retour est 'Aucun resultat'
+                                    if(httpResponse.data.search == 'Aucun resultat'){
+                                        output.push('Aucun resultat');
+                                    }
+                                    // sinon il y a un resultat
+                                    else{
+                                        // Construit le tableau
+                                        angular.forEach(httpResponse.data.search,function(item){
+                                            itemTotal = {prenom: item.prenom, nom: item.nom, id: item._id}
+                                            output.push(itemTotal);
+                                        });
+                
+                                    }
+                                })
+                                // envoi les resultats dans la liste
+                                $scope.totalItem=output;
+            
                             }
-                            // sinon il y a un resultat
+                            // sinon on vide le tableau des recherches
                             else{
-                                // Construit le tableau
-                                angular.forEach(httpResponse.data.search,function(item){
-                                    itemTotal = {prenom: item.prenom, nom: item.nom, id: item._id}
-                                    output.push(itemTotal);
-                                });
-        
+                                $scope.totalItem = ""
                             }
-                        })
-                        // envoi les resultats dans la liste
-                        $scope.totalItem=output;
-                        console.log('freeeeeeeee', $scope.totalItem)
-    
+                        }, 500)
+                        
                     }
-                    // sinon on vide le tableau des recherches
+                    // sinon l'utilisateur n'est pas connecter il ne peut pas effectuer de recherche
                     else{
-                        $scope.totalItem = ''
+                        $scope.totalItem = [{message: 'connexion requise'}]
+                        setTimeout(function(){
+                            $scope.totalItem = ""
+                        }, 2000)
+                        
                     }
                 }
-            }
-            else{
-                // si l'utilisateur n'est pas connecter il ne peut pas effectuer de recherche
-                $scope.complete = function(){
-                    $scope.totalItem= [{prenom: 'connexion requise'}]
-                }
-            }
+                
+            
+
+            
+           
+            
 
         },
         template: `
@@ -70,9 +84,12 @@ m.directive('recherchebar', function(){
                     <form action="" class="search-form">
                         <div class="form-group has-feedback">
                             <label for="search" class="sr-only">Search</label>
-                            <input type="text" name="search" id="search" ng-model="search" ng-keyup="complete(search)" class="form-control" placeholder="recherche..." autocomplete="off"/>
+                            <input type="text" name="search" id="search" ng-model="search" ng-keydown="complete(search)" class="form-control" placeholder="recherche..." autocomplete="off"/>
                             <ul class="list-group" id="listeGroupeRecherche">
-                                <li class="list-group-item" ng-repeat="itemData in totalItem" ng-click="selectItem(itemData)"><a href="#!/profil/recherche/{{itemData.id}}">{{itemData.prenom}} {{itemData.nom}}</a></li>
+                                <li class="list-group-item" ng-repeat="itemData in totalItem" ng-click="selectItem(itemData)">
+                                    <a ng-if="itemData.message">{{itemData.message}}</a>
+                                    <a ng-if="itemData.prenom" href="#!/profil/recherche/{{itemData.id}}">{{itemData.prenom}} {{itemData.nom}}</a>
+                                </li>
                             </ul>
                             <span class="glyphicon glyphicon-search form-control-feedback"></span>
                         </div>
