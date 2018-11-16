@@ -3,6 +3,8 @@ m.directive('affichemessageinstantanner', function(){
         controller: function($scope, $http){
             // si l'utilisateur est connecter
             if(sessionStorage.id){
+                $scope.buttonActiveMessageInstantanner = {booleanDemande: 'true', booleanReponse: 'true'};
+
                 $scope.prenomEnCours = sessionStorage.prenom
                 $scope.prenomMessageInstantanner = ''
                 $scope.nomMessageInstantanner = ''
@@ -45,28 +47,116 @@ m.directive('affichemessageinstantanner', function(){
                         method: 'POST',
                         data: afficheMessageInstanntanerObjJson
                     }).then(function (httpResponse) {             
-                        // si un message d'erreur est envoyer par le serveur
+                        // si il n'y a pas de message
                         if(httpResponse.data.message == 'pas de message'){
                             setTimeout(function(){
                                 $scope.itemReload.messageReload = "true"
                                 $scope.choixAmiMessageInstantanner($scope.itemReload)
                             }, 5000)
+                            $scope.buttonActiveMessageInstantanner.booleanDemande = 'true';
                         }
+                        // si un message d'erreur est envoyer par le serveur
                         else if(httpResponse.data.message && httpResponse.data.message != 'pas de message'){
                             console.log('Echec de la recuperation du nombre de publication', httpResponse.data.message)
                         }
                         else{
-                            $scope.ListeMessageInstantannerTab = httpResponse.data.listeMessageInstantanner
-                            $scope.nbListeMessageInstantannerTab = httpResponse.data.listeMessageInstantanner.length
+                            // si la demande de conversation est en cours
+                            if(httpResponse.data.listeMessageInstantanner[0].demande == "en cours"){
+                                $scope.buttonActiveMessageInstantanner.booleanDemande = 'false';
+                                $scope.buttonActiveMessageInstantanner.booleanReponse = 'true';
+                                console.log('liste des messages', httpResponse.data.listeMessageInstantanner[0].demande)
+                            }
+                            // sinon on affiche les messages
+                            else if(httpResponse.data.listeMessageInstantanner[0].demande == "accepter"){
+                                buttonActiveMessageInstantanner.booleanReponse = "true"
+                                $scope.buttonActiveMessageInstantanner.booleanDemande = 'false';
+                                $scope.ListeMessageInstantannerTab = httpResponse.data.listeMessageInstantanner
+                                $scope.nbListeMessageInstantannerTab = httpResponse.data.listeMessageInstantanner.length
+                            }
+                            // recharge la listes des messages
                             setTimeout(function(){
                                 $scope.itemReload.messageReload = "true"
                                 $scope.choixAmiMessageInstantanner($scope.itemReload)
                             }, 5000)
+                            
+
                         }
                     })
                     
 
                 }
+
+
+                $scope.envoieDemandeMessageInstantanner = function(idAmi){
+                    envoieDemandeMessageInstantannerObj = {
+                        idEnCour: sessionStorage.id,
+                        idAmi: idAmi,
+                        demandeMessage: "en cours",
+                        prenomMessageInstantanner: sessionStorage.prenom,
+                        nomMessageInstantanner: sessionStorage.nom
+                    }
+                    var routeJsonData = angular.toJson(envoieDemandeMessageInstantannerObj, true);
+                    console.log('demande', envoieDemandeMessageInstantannerObj)
+                    
+                    // url
+                    var urlEnLigne = "/envoiedemandemessageinstantanner"
+                    // envoie des donnees en POST pour recuperer le nombre de publication
+                    $http({
+                        url: urlEnLigne,
+                        method: 'POST',
+                        data: routeJsonData
+                    }).then(function (httpResponse) {             
+                        // si un message d'erreur est envoyer par le serveur
+                        if(httpResponse.data.message == "Erreur"){
+                            console.log('Echec de la recuperation')
+                        }
+                        else{
+                            $scope.buttonActiveMessageInstantanner.booleanDemande = 'false';
+
+                            // raffraichie la liste des messages envoiemessageinstantanner
+                            $scope.itemReload.messageReload = "true"
+                            $scope.choixAmiMessageInstantanner($scope.itemReload);
+                        }
+                    })
+
+
+                }
+
+
+                $scope.envoieReponseDemandeMessageInstantanner = function(idAmi){
+                    envoieReponseDemandeMessageInstantannerObj = {
+                        idEnCour: sessionStorage.id,
+                        idAmi: idAmi,
+                        demandeMessage: "accepter",
+                        prenomMessageInstantanner: sessionStorage.prenom,
+                        nomMessageInstantanner: sessionStorage.nom
+                    }
+                    var routeJsonData = angular.toJson(envoieReponseDemandeMessageInstantannerObj, true);
+                    console.log('reponse demande', envoieReponseDemandeMessageInstantannerObj)
+                    
+                    // url
+                    var urlEnLigne = "/envoiereponsedemandemessageinstantanner"
+                    // envoie des donnees en POST pour recuperer le nombre de publication
+                    $http({
+                        url: urlEnLigne,
+                        method: 'POST',
+                        data: routeJsonData
+                    }).then(function (httpResponse) {             
+                        // si un message d'erreur est envoyer par le serveur
+                        if(httpResponse.data.message == "Erreur"){
+                            console.log('Echec de la recuperation')
+                        }
+                        else{
+                            // raffraichie la liste des messages envoiemessageinstantanner
+                            $scope.itemReload.messageReload = "true"
+                            $scope.choixAmiMessageInstantanner($scope.itemReload);
+                        }
+                    })
+
+
+                }
+
+
                 // envoie un message a l'ami selectionner
                 $scope.envoieMessageInstantanner = function(idAmi){
                     envoieMessageInstantannerObj = {
@@ -173,7 +263,7 @@ m.directive('affichemessageinstantanner', function(){
             <div class="col-sm-9 message_section" id="bodyMessageInstantanner" ng-if="prenomMessageInstantanner">
                 <div class="row">
                     <div class="new_message_head">
-                        <div class="pull-left"><button><i class="fa fa-plus-square-o" aria-hidden="true"></i> {{prenomMessageInstantanner}} {{nomMessageInstantanner}}</button></div>
+                        <div class="pull-left"><button><i class="fa fa-plus-square-o" aria-hidden="true"></i>{{prenomMessageInstantanner}} {{nomMessageInstantanner}}</button></div>
                         <div class="pull-right">
                             <div class="dropdown">
                                 {{nbListeMessageInstantannerTab}} messages
@@ -211,7 +301,13 @@ m.directive('affichemessageinstantanner', function(){
                         </ul>
                     </div>
                     <!--chat_area-->
-                    <div class="message_write">
+                    <div class="message_write" ng-if="buttonActiveMessageInstantanner.booleanDemande == 'true'">
+                        <button class="btn btn-success col-sm-12" id="{{idMessageInstantanner}}" ng-click="envoieDemandeMessageInstantanner(idMessageInstantanner)" >Demande de conversation</button></div>
+                    </div>
+                    <div class="message_write" ng-if="buttonActiveMessageInstantanner.booleanDemande == 'false' && buttonActiveMessageInstantanner.booleanReponse == 'true'">
+                        <button class="btn btn-success col-sm-12" id="{{idMessageInstantanner}}" ng-click="envoieReponseDemandeMessageInstantanner(idMessageInstantanner)" >Accepter la demande</button></div>
+                    </div>
+                    <div class="message_write" ng-if="buttonActiveMessageInstantanner.booleanDemande == 'false' && buttonActiveMessageInstantanner.booleanReponse == 'false'">
                         <textarea ng-model="msg.messageInstantanner" class="form-control" placeholder="Message..."></textarea>
                         <div class="clearfix"></div>
                         <div class="chat_bottom"><a href="#" class="pull-left upload_btn"><i class="fa fa-cloud-upload" aria-hidden="true"></i>Add Files</a>

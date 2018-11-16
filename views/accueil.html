@@ -1,16 +1,19 @@
 <html>
 <body>
 	<div class="container">
-		<div class="row resizeDivTitre">
-			<div class="thumbnail center well well-md text-center">
-			<h2>Actualité</h2>  
-			nombre de membres en ligne ({{nbUtilisateurConnecter}})
-			nombre de publications ({{nbpublicationaccueil}})
-			
+		<div class="container">
+			<div class="row resizeDivTitre">
+				<div class="thumbnail center well well-md text-center">
+				<h2>Actualité</h2>  
+				nombre de membres en ligne ({{nbUtilisateurConnecter}})
+				nombre de publications ({{nbpublicationaccueil}})
+				
+				</div>
 			</div>
+			<div class="resizeDivProfilAccueil col-sm-3 offset-md-4"><accueilprofil></accueilprofil></div>
+			
 		</div>
 
-		<accueilprofil></accueilprofil>
 
 		<!-- PUBLICATION -->
 		<div class="well" ng-repeat-start="item in itemListePublication">

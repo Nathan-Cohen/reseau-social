@@ -854,6 +854,79 @@ app.post('/supprimecommentaire', function(req, res) {
 
 
 ////////////// MESSAGE Instantanner ///////////////
+app.post('/envoiedemandemessageinstantanner', function(req, res) {
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+      // ajoute la demande dans le document de l'ami
+      collection.updateOne({'_id': ObjectID(req.body.idAmi)}, {$push: {messageInstantanner: {idAmi: req.body.idEnCour, demande: req.body.demandeMessage, prenom: req.body.prenomMessageInstantanner, nom: req.body.nomMessageInstantanner}}}, function(err, o) {
+        if(err){
+          console.log('Echec de connexion a la collection', err.message);
+        }else{
+          if(o){
+            console.log('demande message Instantanner envoyer');
+            res.send({message: 'ok'});
+            client.close();
+
+          }
+          else{
+            res.send({message: 'Erreur'});
+            client.close();
+
+          }
+
+        }
+      })
+  
+    }
+  });
+  
+});
+
+
+
+app.post('/envoiereponsedemandemessageinstantanner', function(req, res) {
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+      // ajoute la demande dans le document de l'ami
+      collection.updateOne({'_id': ObjectID(req.body.idAmi)}, {$set: {messageInstantanner: {idAmi: req.body.idEnCour, demande: req.body.demandeMessage, prenom: req.body.prenomMessageInstantanner, nom: req.body.nomMessageInstantanner}}}, function(err, o) {
+        if(err){
+          console.log('Echec de connexion a la collection', err.message);
+        }else{
+          if(o){
+            console.log('demande message Instantanner envoyer');
+            res.send({message: 'ok'});
+            client.close();
+
+          }
+          else{
+            res.send({message: 'Erreur'});
+            client.close();
+
+          }
+
+        }
+      })
+  
+    }
+  });
+  
+});
+
+
+
+
 app.post('/envoiemessageinstantanner', function(req, res) {
   //////////////// CONNEXION A LA BASE ///////////////////
   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
@@ -915,12 +988,17 @@ app.post('/affichemessageinstantanner', function(req, res) {
             if(o[0].messageInstantanner){
               collection.updateOne({'_id': ObjectID(req.body.idEnCour), 'messageInstantanner.idAmi': req.body.idAmi}, {$set: {'messageInstantanner.$[].vu': 'vrais'}})
               // boucle sur le tableau des messages Instantanner pour trouver les messages correspondant au deux ami et les mettre dans le tableau avant l'envoie
-              o[0].messageInstantanner.forEach(function(elem){
-                if(elem.idAmi == req.body.idEnCour){
-                  tabListeMessageInstantanner.push(elem)
-                }
+              console.log('tessssssssssst', o[0].messageInstantanner)
+              if(Array.isArray(o[0].messageInstantanner)){
+                o[0].messageInstantanner.forEach(function(elem){
+                  if(elem.idAmi == req.body.idEnCour){
+                    tabListeMessageInstantanner.push(elem)
+                  }
+                  
+                })
                 
-              })
+              }
+              
               // envoie la liste des message Instantanner
               res.send({listeMessageInstantanner: tabListeMessageInstantanner});
 

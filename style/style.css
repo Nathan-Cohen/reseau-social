@@ -1,14 +1,19 @@
 /* ///////////////MENU//////////////// */
+@media (min-width: 768px){
+  .resizeDivProfilAccueil{
+      margin-left: 2px
+  }
+
+}
+
+
+
+
 #deconnexion{
   float: right;
   margin-top: -35px;
   margin-right: 15px;
   display: none;
-}
-
-.titreActualite{
-  margin-right: 5px;
-
 }
 
 
