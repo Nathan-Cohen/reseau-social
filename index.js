@@ -869,6 +869,9 @@ app.post('/envoiedemandemessageinstantanner', function(req, res) {
           console.log('Echec de connexion a la collection', err.message);
         }else{
           if(o){
+            // ajoute la demande de message dans le document de l'utilisateur en cours
+            collection.updateOne({'_id': ObjectID(req.body.idEnCour)}, {$push: {messageInstantanner: {idAmi: req.body.idAmi, demande: "demandeur"}}})
+
             console.log('demande message Instantanner envoyer');
             res.send({message: 'ok'});
             client.close();
@@ -900,7 +903,7 @@ app.post('/envoiereponsedemandemessageinstantanner', function(req, res) {
     else{
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
       // ajoute la demande dans le document de l'ami
-      collection.updateOne({'_id': ObjectID(req.body.idAmi)}, {$set: {messageInstantanner: {idAmi: req.body.idEnCour, demande: req.body.demandeMessage, prenom: req.body.prenomMessageInstantanner, nom: req.body.nomMessageInstantanner}}}, function(err, o) {
+      collection.updateOne({'_id': ObjectID(req.body.idAmi), "messageInstantanner.idAmi": req.body.idEnCour, "messageInstantanner.demande": 'demandeur'}, {$set: {"messageInstantanner.$.demande": {idAmi: req.body.idEnCour, demande: 'accepter'}}}, function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
@@ -981,26 +984,27 @@ app.post('/affichemessageinstantanner', function(req, res) {
       // console.log('recherche liste message Instantanner idAmi', req.body.idAmi)
       // console.log('recherche liste message Instantanner idEnCour', req.body.idEnCour)
       // cherche les messages Instantanner
-      collection.find({'_id': ObjectID(req.body.idAmi)}, {'messageInstantanner.$.idAmi': req.body.idEnCour}).toArray(function(err, o) {
+      collection.find({'_id': ObjectID(req.body.idEnCour)}, {'messageInstantanner.$.idAmi': req.body.idAmi}).toArray(function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
-            if(o[0].messageInstantanner){
-              collection.updateOne({'_id': ObjectID(req.body.idEnCour), 'messageInstantanner.idAmi': req.body.idAmi}, {$set: {'messageInstantanner.$[].vu': 'vrais'}})
-              // boucle sur le tableau des messages Instantanner pour trouver les messages correspondant au deux ami et les mettre dans le tableau avant l'envoie
-              console.log('tessssssssssst', o[0].messageInstantanner)
-              if(Array.isArray(o[0].messageInstantanner)){
+            if(o[0]){
+              if(o[0].messageInstantanner){
+                collection.updateOne({'_id': ObjectID(req.body.idEnCour), 'messageInstantanner.idAmi': req.body.idAmi}, {$set: {'messageInstantanner.$[].vu': 'vrais'}})
+                // boucle sur le tableau des messages Instantanner pour trouver les messages correspondant au deux ami et les mettre dans le tableau avant l'envoie
+                // console.log('tessssssssssst', o[0].messageInstantanner)
                 o[0].messageInstantanner.forEach(function(elem){
-                  if(elem.idAmi == req.body.idEnCour){
-                    tabListeMessageInstantanner.push(elem)
-                  }
-                  
-                })
+                    if(elem.idAmi == req.body.idAmi){
+                      tabListeMessageInstantanner.push(elem)
+                    }
+                    
+                  })
+  
                 
+                // envoie la liste des message Instantanner
+                res.send({listeMessageInstantanner: tabListeMessageInstantanner});
+
               }
-              
-              // envoie la liste des message Instantanner
-              res.send({listeMessageInstantanner: tabListeMessageInstantanner});
 
             }
             else{

@@ -3,7 +3,7 @@ m.directive('affichemessageinstantanner', function(){
         controller: function($scope, $http){
             // si l'utilisateur est connecter
             if(sessionStorage.id){
-                $scope.buttonActiveMessageInstantanner = {booleanDemande: 'true', booleanReponse: 'true'};
+                $scope.buttonActiveMessageInstantanner = {booleanDemande: 'true', booleanReponse: 'true', booleanDemandeur: 'true'};
 
                 $scope.prenomEnCours = sessionStorage.prenom
                 $scope.prenomMessageInstantanner = ''
@@ -66,10 +66,18 @@ m.directive('affichemessageinstantanner', function(){
                                 $scope.buttonActiveMessageInstantanner.booleanReponse = 'true';
                                 console.log('liste des messages', httpResponse.data.listeMessageInstantanner[0].demande)
                             }
+                            else if(httpResponse.data.listeMessageInstantanner[0].demande == "demandeur"){
+                                console.log('testtttttt3', httpResponse.data.listeMessageInstantanner)
+                                $scope.buttonActiveMessageInstantanner.booleanDemande = 'false';
+                                $scope.buttonActiveMessageInstantanner.booleanReponse = 'false';
+                                $scope.buttonActiveMessageInstantanner.booleanDemandeur = 'true';
+                                
+                            }
                             // sinon on affiche les messages
                             else if(httpResponse.data.listeMessageInstantanner[0].demande == "accepter"){
-                                buttonActiveMessageInstantanner.booleanReponse = "true"
+                                $scope.buttonActiveMessageInstantanner.booleanReponse = "true"
                                 $scope.buttonActiveMessageInstantanner.booleanDemande = 'false';
+                                $scope.buttonActiveMessageInstantanner.booleanDemandeur == 'false'
                                 $scope.ListeMessageInstantannerTab = httpResponse.data.listeMessageInstantanner
                                 $scope.nbListeMessageInstantannerTab = httpResponse.data.listeMessageInstantanner.length
                             }
@@ -304,10 +312,13 @@ m.directive('affichemessageinstantanner', function(){
                     <div class="message_write" ng-if="buttonActiveMessageInstantanner.booleanDemande == 'true'">
                         <button class="btn btn-success col-sm-12" id="{{idMessageInstantanner}}" ng-click="envoieDemandeMessageInstantanner(idMessageInstantanner)" >Demande de conversation</button></div>
                     </div>
+                    <div class="message_write" ng-if="buttonActiveMessageInstantanner.booleanDemande == 'false' && buttonActiveMessageInstantanner.booleanReponse == 'false' && buttonActiveMessageInstantanner.booleanDemandeur == 'true'">
+                        <button class="btn col-sm-12" id="{{idMessageInstantanner}}" >En attente de la reponse</button></div>
+                    </div>
                     <div class="message_write" ng-if="buttonActiveMessageInstantanner.booleanDemande == 'false' && buttonActiveMessageInstantanner.booleanReponse == 'true'">
                         <button class="btn btn-success col-sm-12" id="{{idMessageInstantanner}}" ng-click="envoieReponseDemandeMessageInstantanner(idMessageInstantanner)" >Accepter la demande</button></div>
                     </div>
-                    <div class="message_write" ng-if="buttonActiveMessageInstantanner.booleanDemande == 'false' && buttonActiveMessageInstantanner.booleanReponse == 'false'">
+                    <div class="message_write" ng-if="buttonActiveMessageInstantanner.booleanDemande == 'false' && buttonActiveMessageInstantanner.booleanReponse == 'false' && buttonActiveMessageInstantanner.booleanDemandeur == 'false'">
                         <textarea ng-model="msg.messageInstantanner" class="form-control" placeholder="Message..."></textarea>
                         <div class="clearfix"></div>
                         <div class="chat_bottom"><a href="#" class="pull-left upload_btn"><i class="fa fa-cloud-upload" aria-hidden="true"></i>Add Files</a>
