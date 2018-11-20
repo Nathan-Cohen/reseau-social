@@ -991,6 +991,7 @@ app.post('/affichemessageinstantanner', function(req, res) {
           console.log('Echec de connexion a la collection', err.message);
         }else{
             if(o[0]){
+              // si il y a deja eu des message
               if(o[0].messageInstantanner){
                 collection.updateOne({'_id': ObjectID(req.body.idEnCour), 'messageInstantanner.idAmi': req.body.idAmi}, {$set: {'messageInstantanner.$[].vu': 'vrais'}})
                 // boucle sur le tableau des messages Instantanner pour trouver les messages correspondant au deux ami et les mettre dans le tableau avant l'envoie
@@ -1009,6 +1010,11 @@ app.post('/affichemessageinstantanner', function(req, res) {
                 else{
                   res.send({message: 'pas de message'});
                 }
+                
+              }
+              // sinon il n'y a eu encore aucun message
+              else{
+                res.send({message: 'pas de message'});
 
               }
               

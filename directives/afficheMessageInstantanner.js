@@ -55,7 +55,7 @@ m.directive('affichemessageinstantanner', function(){
                             $scope.buttonActiveMessageInstantanner.booleanReponse = "false"
                             // cache le bouton En attente de la reponse
                             $scope.buttonActiveMessageInstantanner.booleanDemandeur = 'false'
-
+                            console.log('test')
                             setTimeout(function(){
                                 $scope.itemReload.messageReload = "true"
                                 $scope.choixAmiMessageInstantanner($scope.itemReload)
@@ -311,7 +311,7 @@ m.directive('affichemessageinstantanner', function(){
                                 </div>
                             </li>
 
-                            <li class="left clearfix admin_chat" ng-repeat-end="itemMessageInstantanner in ListeMessageInstantannerTab" ng-if="itemMessageInstantanner.prenom != prenomEnCours && !itemMessageInstantanner.demande">
+                            <li class="left clearfix admin_chat" ng-repeat-end="itemMessageInstantanner in ListeMessageInstantannerTab" ng-if="itemMessageInstantanner.prenom != prenomEnCours">
                                 <span class="chat-img1 pull-right">
                                     <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="User Avatar" class="img-circle">
                                 </span>
