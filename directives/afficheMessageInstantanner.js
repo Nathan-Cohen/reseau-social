@@ -49,11 +49,17 @@ m.directive('affichemessageinstantanner', function(){
                     }).then(function (httpResponse) {             
                         // si il n'y a pas de message
                         if(httpResponse.data.message == 'pas de message'){
+                            // affiche le bouton demande de conversation
+                            $scope.buttonActiveMessageInstantanner.booleanDemande = 'true';
+                            // cache le bouton accepter la conversation
+                            $scope.buttonActiveMessageInstantanner.booleanReponse = "false"
+                            // cache le bouton En attente de la reponse
+                            $scope.buttonActiveMessageInstantanner.booleanDemandeur = 'false'
+
                             setTimeout(function(){
                                 $scope.itemReload.messageReload = "true"
                                 $scope.choixAmiMessageInstantanner($scope.itemReload)
                             }, 5000)
-                            $scope.buttonActiveMessageInstantanner.booleanDemande = 'true';
                         }
                         // si un message d'erreur est envoyer par le serveur
                         else if(httpResponse.data.message && httpResponse.data.message != 'pas de message'){
@@ -62,23 +68,34 @@ m.directive('affichemessageinstantanner', function(){
                         else{
                             // si la demande de conversation est en cours
                             if(httpResponse.data.listeMessageInstantanner[0].demande == "en cours"){
+                                // cache le bouton demande de conversation
                                 $scope.buttonActiveMessageInstantanner.booleanDemande = 'false';
+                                // affiche le bouton accepter la conversation
                                 $scope.buttonActiveMessageInstantanner.booleanReponse = 'true';
-                                console.log('liste des messages', httpResponse.data.listeMessageInstantanner[0].demande)
+                                // cache le bouton En attente de la reponse
+                                $scope.buttonActiveMessageInstantanner.booleanDemandeur = 'false';
                             }
                             else if(httpResponse.data.listeMessageInstantanner[0].demande == "demandeur"){
-                                console.log('testtttttt3', httpResponse.data.listeMessageInstantanner)
+                                // cache le bouton demande de conversation
                                 $scope.buttonActiveMessageInstantanner.booleanDemande = 'false';
+                                // cache le bouton accepter la conversation
                                 $scope.buttonActiveMessageInstantanner.booleanReponse = 'false';
+                                // affiche le bouton En attente de la reponse
                                 $scope.buttonActiveMessageInstantanner.booleanDemandeur = 'true';
                                 
                             }
                             // sinon on affiche les messages
                             else if(httpResponse.data.listeMessageInstantanner[0].demande == "accepter"){
-                                $scope.buttonActiveMessageInstantanner.booleanReponse = "true"
+                                // cache le bouton demande de conversation
                                 $scope.buttonActiveMessageInstantanner.booleanDemande = 'false';
-                                $scope.buttonActiveMessageInstantanner.booleanDemandeur == 'false'
+                                // cache le bouton accepter la conversation
+                                $scope.buttonActiveMessageInstantanner.booleanReponse = "false"
+                                // cache le bouton En attente de la reponse
+                                $scope.buttonActiveMessageInstantanner.booleanDemandeur = 'false'
+
+                                // envoie la liste des message dans le tableau
                                 $scope.ListeMessageInstantannerTab = httpResponse.data.listeMessageInstantanner
+                                // envoie le nombre de message dans le tableau
                                 $scope.nbListeMessageInstantannerTab = httpResponse.data.listeMessageInstantanner.length
                             }
                             // recharge la listes des messages
@@ -278,7 +295,7 @@ m.directive('affichemessageinstantanner', function(){
                             </div>
                         </div>
                     </div>
-                    <!--new_message_head-->
+                    <!--Liste des messages-->
 
                     <div class="chat_area">
                         <ul class="list-unstyled">
@@ -294,7 +311,7 @@ m.directive('affichemessageinstantanner', function(){
                                 </div>
                             </li>
 
-                            <li class="left clearfix admin_chat" ng-repeat-end="itemMessageInstantanner in ListeMessageInstantannerTab" ng-if="itemMessageInstantanner.prenom != prenomEnCours">
+                            <li class="left clearfix admin_chat" ng-repeat-end="itemMessageInstantanner in ListeMessageInstantannerTab" ng-if="itemMessageInstantanner.prenom != prenomEnCours && !itemMessageInstantanner.demande">
                                 <span class="chat-img1 pull-right">
                                     <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="User Avatar" class="img-circle">
                                 </span>
@@ -308,16 +325,19 @@ m.directive('affichemessageinstantanner', function(){
 
                         </ul>
                     </div>
-                    <!--chat_area-->
-                    <div class="message_write" ng-if="buttonActiveMessageInstantanner.booleanDemande == 'true'">
-                        <button class="btn btn-success col-sm-12" id="{{idMessageInstantanner}}" ng-click="envoieDemandeMessageInstantanner(idMessageInstantanner)" >Demande de conversation</button></div>
+                    <!--Demande de conversation-->
+                    <div class="message_write" ng-if="buttonActiveMessageInstantanner.booleanDemande == 'true' && buttonActiveMessageInstantanner.booleanReponse == 'false' && buttonActiveMessageInstantanner.booleanDemandeur == 'false'">
+                        <button class="btn btn-success col-sm-12" id="{{idMessageInstantanner}}" ng-click="envoieDemandeMessageInstantanner(idMessageInstantanner)" >Demande de conversation</button>
                     </div>
+                    <!--En attente de la reponse-->
                     <div class="message_write" ng-if="buttonActiveMessageInstantanner.booleanDemande == 'false' && buttonActiveMessageInstantanner.booleanReponse == 'false' && buttonActiveMessageInstantanner.booleanDemandeur == 'true'">
-                        <button class="btn col-sm-12" id="{{idMessageInstantanner}}" >En attente de la reponse</button></div>
+                        <button class="btn col-sm-12" id="{{idMessageInstantanner}}" >En attente de la reponse</button>
                     </div>
-                    <div class="message_write" ng-if="buttonActiveMessageInstantanner.booleanDemande == 'false' && buttonActiveMessageInstantanner.booleanReponse == 'true'">
-                        <button class="btn btn-success col-sm-12" id="{{idMessageInstantanner}}" ng-click="envoieReponseDemandeMessageInstantanner(idMessageInstantanner)" >Accepter la demande</button></div>
+                    <!--Accepter la demande-->
+                    <div class="message_write" ng-if="buttonActiveMessageInstantanner.booleanDemande == 'false' && buttonActiveMessageInstantanner.booleanReponse == 'true' && buttonActiveMessageInstantanner.booleanDemandeur == 'false'">
+                        <button class="btn btn-success col-sm-12" id="{{idMessageInstantanner}}" ng-click="envoieReponseDemandeMessageInstantanner(idMessageInstantanner)" >Accepter la demande</button>
                     </div>
+                    <!--Ecrire un message-->
                     <div class="message_write" ng-if="buttonActiveMessageInstantanner.booleanDemande == 'false' && buttonActiveMessageInstantanner.booleanReponse == 'false' && buttonActiveMessageInstantanner.booleanDemandeur == 'false'">
                         <textarea ng-model="msg.messageInstantanner" class="form-control" placeholder="Message..."></textarea>
                         <div class="clearfix"></div>

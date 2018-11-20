@@ -902,12 +902,14 @@ app.post('/envoiereponsedemandemessageinstantanner', function(req, res) {
     }
     else{
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
-      // ajoute la demande dans le document de l'ami
-      collection.updateOne({'_id': ObjectID(req.body.idAmi), "messageInstantanner.idAmi": req.body.idEnCour, "messageInstantanner.demande": 'demandeur'}, {$set: {"messageInstantanner.$.demande": {idAmi: req.body.idEnCour, demande: 'accepter'}}}, function(err, o) {
+      // ajoute la mention 'accepter' dans le document de l'ami
+      collection.updateOne({'_id': ObjectID(req.body.idAmi), "messageInstantanner.idAmi": req.body.idEnCour, "messageInstantanner.demande": 'demandeur'}, {$set: {"messageInstantanner.$.demande": 'accepter'}}, function(err, o) {
         if(err){
           console.log('Echec de connexion a la collection', err.message);
         }else{
           if(o){
+            // ajoute la mention 'accepter' dans le document de l'utilisateur
+            collection.updateOne({'_id': ObjectID(req.body.idEnCour), "messageInstantanner.idAmi": req.body.idAmi, "messageInstantanner.demande": 'en cours'}, {$set: {"messageInstantanner.$.demande": 'accepter'}})
             console.log('demande message Instantanner envoyer');
             res.send({message: 'ok'});
             client.close();
@@ -992,20 +994,24 @@ app.post('/affichemessageinstantanner', function(req, res) {
               if(o[0].messageInstantanner){
                 collection.updateOne({'_id': ObjectID(req.body.idEnCour), 'messageInstantanner.idAmi': req.body.idAmi}, {$set: {'messageInstantanner.$[].vu': 'vrais'}})
                 // boucle sur le tableau des messages Instantanner pour trouver les messages correspondant au deux ami et les mettre dans le tableau avant l'envoie
-                // console.log('tessssssssssst', o[0].messageInstantanner)
                 o[0].messageInstantanner.forEach(function(elem){
                     if(elem.idAmi == req.body.idAmi){
                       tabListeMessageInstantanner.push(elem)
                     }
                     
                   })
-  
-                
-                // envoie la liste des message Instantanner
-                res.send({listeMessageInstantanner: tabListeMessageInstantanner});
+                // si il y a des messages on envoie la liste
+                if(tabListeMessageInstantanner.length > 0){
+                  // envoie la liste des message Instantanner
+                  res.send({listeMessageInstantanner: tabListeMessageInstantanner});
+                }
+                // sinon on envoie un message
+                else{
+                  res.send({message: 'pas de message'});
+                }
 
               }
-
+              
             }
             else{
               res.send({message: 'pas de message'});
