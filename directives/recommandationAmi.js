@@ -55,6 +55,65 @@ m.directive('recommandationami', function(){
                 // recupere l'id du membre 
                 $scope.itemIdSelectionner = $(item.target).attr("id")
 
+                // recupere la liste d'ami du membre
+                paramRoute = {
+                    id: $scope.itemIdSelectionner
+                }
+                var routeJsonData = angular.toJson(paramRoute, true);
+                // url
+                var urlEnLigne = "/listeami"
+                // envoie des donnees en POST pour recuperer le nombre de demande d'ami
+                $http({
+                    url: urlEnLigne,
+                    method: 'POST',
+                    data: routeJsonData
+                }).then(function (httpResponse) {
+                     
+                    // si un message d'erreur est envoyer par le serveur
+                    if(httpResponse.data.message == 'Erreur'){
+                        console.log('Echec de la recuperation du nombre de demande ami')
+                    }
+                    else if(httpResponse.data.message == '0'){
+                        console.log('pas dami')
+                        // ajoute le nombre de demande d'ami dans l'onglet
+                        $scope.previewItemListeAmiTest = 0
+                        // envoie dans le tableau
+                        $scope.itemListeAmi = [];
+    
+                        // setTimeout(function(){
+                        //     $scope.rechercheListe();
+                        // }, 5000)
+                    }
+                    else{
+                        // console.log('liste ami', httpResponse.data.listeAmi)
+                            tabTest = []
+                            // ajoute le nombre de demande d'ami dans l'onglet
+                            $scope.previewItemListeAmiTest = httpResponse.data.listeAmi.length
+                            // envoie dans le tableau
+                            $scope.itemListeAmiTest = httpResponse.data.listeAmi;
+                            console.log('$scope.itemListeAmiTest', $scope.itemListeAmiTest)
+
+                            for(var i=0; i<$scope.itemListeAmi.length; i++){
+                                if($scope.itemListeAmiTest[i]){
+                                    if($scope.itemListeAmi[i]._id == $scope.itemListeAmiTest[i]._id){
+                                        // console.log('$scope.itemListeAmi[i] 1', $scope.itemListeAmi[i])
+                                    }
+                                    else{
+                                        tabTest.push($scope.itemListeAmiTest[i])
+                                        
+                                    }
+                                    
+                                }
+                                
+                            }
+                            console.log('tabTest3', tabTest)
+                            
+                            // setTimeout(function(){
+                            //     $scope.rechercheListe();
+                            // }, 5000)
+                    }
+                })
+
                 console.log($scope.itemIdSelectionner)
             }
 
@@ -96,7 +155,7 @@ m.directive('recommandationami', function(){
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">A qui recommander cette ami ?</h5>
+                            <h4 class="modal-title" id="exampleModalLabel">À qui recommander cet ami ?</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
@@ -121,7 +180,7 @@ m.directive('recommandationami', function(){
                                         </td>
                                         <td>{{item.mail}}</td>
                                         <td class="text-center">
-                                            <a id="{{item._id}}" class="btn btn-info btn-xs" ng-click="recommandation($event)" data-toggle="modal" data-target="#recommandationModal">Recommander un ami</a>
+                                            <a id="{{item._id}}" class="btn btn-info btn-xs" ng-click="recommandation($event)" data-toggle="modal" data-target="#recommandationModal">Recommander</a>
                                         </td>
                                     </tr>
                                 </table>
