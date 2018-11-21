@@ -656,8 +656,14 @@ app.post('/supprimeami', function(req, res) {
 });
 
 
+/////////////RECOMMANDATION AMI/////////////////
 
-///////VERIFIE SI L'UTILISATEUR PEUT PUBLIER ////////
+
+
+
+
+
+///////////VERIFIE SI L'UTILISATEUR PEUT PUBLIER///////////
 // recupere les donnees de la connection pour verifier dans la BDD
 app.post('/publicationbar', function(req, res) {
   //////////////// CONNEXION A LA BASE ///////////////////
