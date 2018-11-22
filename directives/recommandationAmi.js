@@ -50,8 +50,14 @@ m.directive('recommandationami', function(){
             }
             $scope.rechercheListe()
 
-            // au clique sur le bouton recommandation
+            // au clique sur le bouton recommandation on affiche les membres que l'on peut recommander
             $scope.recommandation = function(item){
+                if($scope.itemListeAmiCopie){
+                    if($scope.itemListeAmiCopie.length > 0){
+                        $scope.itemListeAmiCopie = []
+                    }
+
+                }
                 // recupere l'id du membre 
                 $scope.itemIdSelectionner = $(item.target).attr("id")
 
@@ -80,43 +86,64 @@ m.directive('recommandationami', function(){
                         // envoie dans le tableau
                         $scope.itemListeAmi = [];
     
-                        // setTimeout(function(){
-                        //     $scope.rechercheListe();
-                        // }, 5000)
                     }
                     else{
                         // console.log('liste ami', httpResponse.data.listeAmi)
-                            tabTest = []
-                            // ajoute le nombre de demande d'ami dans l'onglet
-                            $scope.previewItemListeAmiTest = httpResponse.data.listeAmi.length
+                            $scope.itemListeAmiCopie = []
                             // envoie dans le tableau
                             $scope.itemListeAmiTest = httpResponse.data.listeAmi;
-                            console.log('$scope.itemListeAmiTest', $scope.itemListeAmiTest)
 
-                            for(var i=0; i<$scope.itemListeAmi.length; i++){
-                                if($scope.itemListeAmiTest[i]){
-                                    if($scope.itemListeAmi[i]._id == $scope.itemListeAmiTest[i]._id){
-                                        // console.log('$scope.itemListeAmi[i] 1', $scope.itemListeAmi[i])
-                                    }
-                                    else{
-                                        tabTest.push($scope.itemListeAmiTest[i])
-                                        
-                                    }
-                                    
+                            $scope.itemListeAmi.forEach(element => {
+                                $scope.itemListeAmiCopie.push(element)
+                            });
+
+                            for(var i=0; i<$scope.itemListeAmiTest.length; i++){
+                                function findFirstLargeNumber(element) {
+                                    return element._id == $scope.itemListeAmiTest[i]._id;
+                                }
+                                index = $scope.itemListeAmiCopie.findIndex(findFirstLargeNumber);
+                                if(index >= 0){
+                                    $scope.itemListeAmiCopie.splice(index, 1);
                                 }
                                 
                             }
-                            console.log('tabTest3', tabTest)
                             
-                            // setTimeout(function(){
-                            //     $scope.rechercheListe();
-                            // }, 5000)
                     }
                 })
 
-                console.log($scope.itemIdSelectionner)
             }
 
+            // recommande au membre precedement selectionner
+            $scope.recommander = function(item){
+                // recupere l'id du membre 
+                $scope.itemARecommander = $(item.target).attr("id")
+
+                // recupere la liste d'ami du membre
+                paramRoute = {
+                    idEnCour: sessionStorage.id,
+                    idRecommanderSelectionner: $scope.itemIdSelectionner,
+                    idRecommander: $scope.itemARecommander
+                }
+                console.log('paramRoute', paramRoute)
+                var routeJsonData = angular.toJson(paramRoute, true);
+                // url
+                var urlEnLigne = "/recommandationami"
+                // envoie des donnees en POST pour recuperer le nombre de demande d'ami
+                $http({
+                    url: urlEnLigne,
+                    method: 'POST',
+                    data: routeJsonData
+                }).then(function (httpResponse) {
+                    // si un message d'erreur est envoyer par le serveur
+                    if(httpResponse.data.message == 'Erreur'){
+                        console.log('Echec de la recuperation du nombre de demande ami')
+                    }
+                    else{
+                        console.log('recommandation reussi', httpResponse.data)
+                    }
+                })
+
+            }
             
           }
 
@@ -171,7 +198,7 @@ m.directive('recommandationami', function(){
                                             <th scope="col" class="text-center">Action</th>
                                         </tr>
                                     </thead>
-                                    <tr id="item{{item._id}}" ng-repeat="item in itemListeAmi" ng-if="item._id != itemIdSelectionner">
+                                    <tr id="item{{item._id}}" ng-repeat="item in itemListeAmiCopie" ng-if="item._id != itemIdSelectionner">
                                         <td>
                                             <a href="#!/profil/recherche/{{item._id}}">{{item.prenom}}</a>
                                         </td>
@@ -180,7 +207,7 @@ m.directive('recommandationami', function(){
                                         </td>
                                         <td>{{item.mail}}</td>
                                         <td class="text-center">
-                                            <a id="{{item._id}}" class="btn btn-info btn-xs" ng-click="recommandation($event)" data-toggle="modal" data-target="#recommandationModal">Recommander</a>
+                                            <a id="{{item._id}}" class="btn btn-info btn-xs" ng-click="recommander($event)" data-toggle="modal" data-target="#recommandationModal">Recommander</a>
                                         </td>
                                     </tr>
                                 </table>
