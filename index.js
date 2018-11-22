@@ -668,24 +668,24 @@ app.post('/recommandationami', function(req, res) {
     else{
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
         // supprime l'ami de l'utilisateur en cour
-        collection.updateOne({'_id': ObjectID(req.body.id)}, {$push: {ami: req.body.idAmi}}, function(err, o) {
-          if(err){
-            console.log('Echec de connexion a la collection', err.message);
-          }else{
-            if(o){
-              // supprime l'utilisateur de l'ami en cour
-              collection.updateOne({'_id': ObjectID(req.body.idAmi)}, {$push: {ami: req.body.id}})
-              res.send({message: 'suppression'});
+        // collection.updateOne({'_id': ObjectID(req.body.id)}, {$push: {ami: req.body.idAmi}}, function(err, o) {
+        //   if(err){
+        //     console.log('Echec de connexion a la collection', err.message);
+        //   }else{
+        //     if(o){
+        //       // supprime l'utilisateur de l'ami en cour
+        //       collection.updateOne({'_id': ObjectID(req.body.idAmi)}, {$push: {ami: req.body.id}})
+        //       res.send({message: 'suppression'});
   
-            }
-            else{
-              console.log('Erreur de connexion au ajouterAmi');
-              res.send({message: 'Erreur de connexion ajouterAmi'});
-            }
+        //     }
+        //     else{
+        //       console.log('Erreur de connexion au ajouterAmi');
+        //       res.send({message: 'Erreur de connexion ajouterAmi'});
+        //     }
   
-          }
+        //   }
   
-        });
+        // });
           
     }
   });
