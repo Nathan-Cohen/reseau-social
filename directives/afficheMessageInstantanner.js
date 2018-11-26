@@ -267,7 +267,7 @@ m.directive('affichemessageinstantanner', function(){
                         <ul class="list-unstyled">
                             <li class="left clearfix" ng-repeat="item in itemListeAmi">
                                 <span class="chat-img pull-left">
-                                    <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="User Avatar" class="img-circle">
+                                    <img src="../images/avatar_defaut.png" alt="User Avatar" class="img-circle">
                                 </span>
                                 <div ng-click="choixAmiMessageInstantanner(item)" class="chat-body clearfix">
                                     <div class="header_sec">
@@ -302,7 +302,7 @@ m.directive('affichemessageinstantanner', function(){
                         
                             <li class="left clearfix" ng-repeat-start="itemMessageInstantanner in ListeMessageInstantannerTab" ng-if="itemMessageInstantanner.prenom == prenomEnCours">
                                 <span class="chat-img1 pull-left">
-                                    <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="User Avatar" class="img-circle">
+                                    <img src="../images/avatar_defaut.png" alt="User Avatar" class="img-circle">
                                 </span>
                                 <span class="nomMessageInstantanner pull-left">{{itemMessageInstantanner.prenom}} {{itemMessageInstantanner.nom}}</span>
                                 <div class="chat-body1 clearfix">
@@ -313,7 +313,7 @@ m.directive('affichemessageinstantanner', function(){
 
                             <li class="left clearfix admin_chat" ng-repeat-end="itemMessageInstantanner in ListeMessageInstantannerTab" ng-if="itemMessageInstantanner.prenom != prenomEnCours">
                                 <span class="chat-img1 pull-right">
-                                    <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="User Avatar" class="img-circle">
+                                    <img src="../images/avatar_defaut.png" alt="User Avatar" class="img-circle">
                                 </span>
                                 <span class="nomMessageInstantanner pull-right">{{itemMessageInstantanner.prenom}} {{itemMessageInstantanner.nom}}</span>
                                 <div class="chat-body1 clearfix">

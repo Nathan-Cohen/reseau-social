@@ -135,7 +135,7 @@ m.directive('listepublication', function(){
                     <ul class="commentaires">
                         <li class="left clearfix" ng-repeat="itemCommentaire in item.idCommentateur">
                             <span class="chat-img pull-left">
-                                <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+                                <img src="../images/avatar_defaut.png" alt="User Avatar" class="img-circle" />
                             </span>
                             <div class="commentaires-body clearfix">
                                 <div class="header">

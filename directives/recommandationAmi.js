@@ -3,52 +3,46 @@ m.directive('recommandationami', function(){
         controller: function($scope, $http){
           // si l'utilisateur est deja connecter on inserer le mail dans la variable mailUtilisateur
           if(sessionStorage.id){
-              $scope.rechercheListe = function(){                  
-                // recupere le parametre dans la route (id)
-                paramRoute = {
-                    id: sessionStorage.id
-                }
-                var routeJsonData = angular.toJson(paramRoute, true);
-                // url
-                var urlEnLigne = "/listeami"
-                // envoie des donnees en POST pour recuperer le nombre de demande d'ami
-                $http({
-                    url: urlEnLigne,
-                    method: 'POST',
-                    data: routeJsonData
-                }).then(function (httpResponse) {
+            //   $scope.rechercheListe = function(){                  
+            //     // recupere le parametre dans la route (id)
+            //     paramRoute = {
+            //         id: sessionStorage.id
+            //     }
+            //     var routeJsonData = angular.toJson(paramRoute, true);
+            //     // url
+            //     var urlEnLigne = "/listeami"
+            //     // envoie des donnees en POST pour recuperer le nombre de demande d'ami
+            //     $http({
+            //         url: urlEnLigne,
+            //         method: 'POST',
+            //         data: routeJsonData
+            //     }).then(function (httpResponse) {
                      
-                    // si un message d'erreur est envoyer par le serveur
-                    if(httpResponse.data.message == 'Erreur'){
-                        console.log('Echec de la recuperation du nombre de demande ami')
-                    }
-                    else if(httpResponse.data.message == '0'){
-                        console.log('pas dami')
-                        // ajoute le nombre de demande d'ami dans l'onglet
-                        $scope.previewItemListeAmi = 0
-                        // envoie dans le tableau
-                        $scope.itemListeAmi = [];
+            //         // si un message d'erreur est envoyer par le serveur
+            //         if(httpResponse.data.message == 'Erreur'){
+            //             console.log('Echec de la recuperation du nombre de demande ami')
+            //         }
+            //         else if(httpResponse.data.message == '0'){
+            //             console.log('pas dami')
+            //             // ajoute le nombre de demande d'ami dans l'onglet
+            //             $scope.previewItemListeAmi = 0
+            //             // envoie dans le tableau
+            //             $scope.itemListeAmi = [];
     
-                        setTimeout(function(){
-                            $scope.rechercheListe();
-                        }, 5000)
-                    }
-                    else{
-                        // console.log('liste ami', httpResponse.data.listeAmi)
+            //         }
+            //         else{
+            //             // console.log('liste ami', httpResponse.data.listeAmi)
                         
-                            // ajoute le nombre de demande d'ami dans l'onglet
-                            $scope.previewItemListeAmi = httpResponse.data.listeAmi.length
-                            // envoie dans le tableau
-                            $scope.itemListeAmi = httpResponse.data.listeAmi;
+            //                 // ajoute le nombre de demande d'ami dans l'onglet
+            //                 $scope.previewItemListeAmi = httpResponse.data.listeAmi.length
+            //                 // envoie dans le tableau
+            //                 $scope.itemListeAmi = httpResponse.data.listeAmi;
         
-                            setTimeout(function(){
-                                $scope.rechercheListe();
-                            }, 5000)
-                    }
-                })
+            //         }
+            //     })
 
-            }
-            $scope.rechercheListe()
+            // }
+            // $scope.rechercheListe()
 
             // au clique sur le bouton recommandation on affiche les membres que l'on peut recommander
             $scope.recommandation = function(item){

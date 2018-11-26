@@ -487,7 +487,7 @@ app.post('/choixajouteami', function(req, res) {
 // LISTE AMI
 // recupere les donnees de la connection pour verifier dans la BDD
 app.post('/listeami', function(req, res) {
-  var tabListeDeAmis = []
+  var tabListeDeAmisNonTrier = []
   //////////////// CONNEXION A LA BASE ///////////////////
   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
   mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
@@ -517,11 +517,17 @@ app.post('/listeami', function(req, res) {
                     if(err){
                       console.log('Echec de connexion a la collection', err.message);
                     }else{
-                        tabListeDeAmis.push(o)
+                        tabListeDeAmisNonTrier.push(o)
                     }
                       // si le tableau a bien ete construit on envoie les données
                       compteurAmi--
                       if(!compteurAmi){
+                        // function pour trier le resultat par nom
+                        function tri(a,b){
+                          return (a.nom > b.nom)?1:-1;
+                        }
+                        tabListeDeAmis = tabListeDeAmisNonTrier.sort(tri);
+                        // envoie le resultat trier
                         res.send({listeAmi: tabListeDeAmis}); 
 
                       }

@@ -16,7 +16,7 @@ m.directive('chatbox', function(){
                             <ul class="chat" id="containerChat">
                                 <li ng-repeat="itemMessage in tabDesMessages" class="left clearfix chatBoxMessageListe">
                                     <span class="chat-img pull-left">
-                                        <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+                                        <img src="../images/avatar_defaut.png" alt="User Avatar" class="img-circle" />
                                     </span>
                                     <div class="chat-body clearfix">
                                         <div class="header">

@@ -16,7 +16,7 @@ m.directive('accueilprofil', function(){
                     <div>
                         <a href="#!/profil/{{idUtilisateur}}"><i class="far fa-user-circle"></i> {{prenomUtilisateur}}</a>
                         <!-- <img class="media-object img-circle" width="80px" src="" alt="Image"> -->
-                        <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" width="70px" class="avatar img-circle img-thumbnail" alt="avatar">
+                        <img src="../images/avatar_defaut.png" width="70px" class="avatar img-circle img-thumbnail" alt="avatar">
                     </div>
                 </div>
             </div>

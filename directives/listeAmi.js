@@ -40,7 +40,7 @@ m.directive('listeami', function(){
                             $scope.previewItemListeAmi = httpResponse.data.listeAmi.length
                             // envoie dans le tableau
                             $scope.itemListeAmi = httpResponse.data.listeAmi;
-        
+                            console.log('itemListeAmi', $scope.itemListeAmi)
                             setTimeout(function(){
                                 $scope.rechercheListe();
                             }, 5000)

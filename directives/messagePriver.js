@@ -23,7 +23,7 @@ m.directive('messagepriver', function(){
                                 <ul class="list-unstyled">
                                     <li class="left clearfix">
                                         <span class="chat-img pull-left">
-                                            <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="User Avatar" class="img-circle">
+                                            <img src="../images/avatar_defaut.png" alt="User Avatar" class="img-circle">
                                         </span>
                                         <div class="chat-body clearfix">
                                             <div class="header_sec">
@@ -58,7 +58,7 @@ m.directive('messagepriver', function(){
                                 <ul class="list-unstyled">
                                     <li class="left clearfix">
                                         <span class="chat-img1 pull-left">
-                                            <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="User Avatar" class="img-circle">
+                                            <img src="../images/avatar_defaut.png" alt="User Avatar" class="img-circle">
                                         </span>
                                         <div class="chat-body1 clearfix">
                                             <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia.</p>
@@ -67,7 +67,7 @@ m.directive('messagepriver', function(){
                                     </li>
                                     <li class="left clearfix admin_chat">
                                         <span class="chat-img1 pull-right">
-                                            <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="User Avatar" class="img-circle">
+                                            <img src="../images/avatar_defaut.png" alt="User Avatar" class="img-circle">
                                         </span>
                                         <div class="chat-body1 clearfix">
                                             <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia.</p>
