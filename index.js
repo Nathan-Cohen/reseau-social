@@ -673,25 +673,24 @@ app.post('/recommandationami', function(req, res) {
     }
     else{
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
-        // supprime l'ami de l'utilisateur en cour
-        // collection.updateOne({'_id': ObjectID(req.body.id)}, {$push: {ami: req.body.idAmi}}, function(err, o) {
-        //   if(err){
-        //     console.log('Echec de connexion a la collection', err.message);
-        //   }else{
-        //     if(o){
-        //       // supprime l'utilisateur de l'ami en cour
-        //       collection.updateOne({'_id': ObjectID(req.body.idAmi)}, {$push: {ami: req.body.id}})
-        //       res.send({message: 'suppression'});
+      console.log('recommandation', req.body)
+        //  ajouter comme recommandation d'ami
+        collection.updateOne({'_id': ObjectID(req.body.idRecommanderSelectionner)}, {$push: {recommandationAmi: {idQuiARecommander: req.body.idEnCour, nomQuiARecommander: req.body.nomEnCour, prenomQuiARecommander: req.body.prenomEnCour, idRecommander: req.body.idRecommander, nomRecommander: req.body.nomRecommander, prenomRecommander: req.body.prenomRecommander, mailRecommander: req.body.mailRecommander}}}, function(err, o) {
+          if(err){
+            console.log('Echec de connexion a la collection', err.message);
+          }else{
+            if(o){
+              console.log('recommandation reussi');              
+              res.send({message: 'recommandation reussi'});
   
-        //     }
-        //     else{
-        //       console.log('Erreur de connexion au ajouterAmi');
-        //       res.send({message: 'Erreur de connexion ajouterAmi'});
-        //     }
+            }
+            else{
+              res.send({message: 'Erreur'});
+            }
   
-        //   }
+          }
   
-        // });
+        });
           
     }
   });
@@ -699,6 +698,60 @@ app.post('/recommandationami', function(req, res) {
 });
 
 
+// liste des recommandations d'amis
+// recupere les donnees de la connection pour verifier dans la BDD
+app.post('/listerecommandationami', function(req, res) {
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+      // cherche si l'utilisateur existe
+      collection.find({'_id': ObjectID(req.body.idEnCour)}).toArray(function(err, o) {
+        if(err){
+          console.log('Echec de connexion a la collection', err.message);
+        }else{
+          res.send({listeDesRecommandationsAmis: o[0].recommandationAmi});
+        }
+
+      });
+  
+    }
+  });
+  
+});
+
+
+
+// liste des recommandations d'amis
+// recupere les donnees de la connection pour verifier dans la BDD
+app.post('/supprimerecommandation', function(req, res) {
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+      console.log('suppression de la recommandation', req.body)
+      // cherche si l'utilisateur existe
+      // collection.find({'_id': ObjectID(req.body.idEnCour)}).toArray(function(err, o) {
+      //   if(err){
+      //     console.log('Echec de connexion a la collection', err.message);
+      //   }else{
+      //     res.send({listeDesRecommandationsAmis: o[0].recommandationAmi});
+      //   }
+
+      // });
+  
+    }
+  });
+  
+});
 
 
 

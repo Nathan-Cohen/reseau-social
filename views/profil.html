@@ -62,7 +62,7 @@
                 <a data-toggle="tab" href="profil/#notificationAmi">Demandes amis (<span ng-bind="previewItemDemandeAmi"></span>)</a>
             </li>
             <li>
-                <a data-toggle="tab" href="profil/#recommandationAmi">Recommandation d'amis</a>
+                <a data-toggle="tab" href="profil/#recommandationAmi">Recommandation d'amis (<span ng-bind="viewListeDesRecommandationsAmis"></span>)</a>
             </li>
             <li>
                 <a data-toggle="tab" href="profil/#listeami">Liste d'amis (<span ng-bind="previewItemListeAmi"></span>)</a>
@@ -222,6 +222,9 @@
 
             <!-- RECOMMANDATION D'AMIS -->
             <div class="tab-pane" id="recommandationAmi">
+                <hr>
+                    Liste des recommandations d'amis
+                    <listerecommandationami></listerecommandationami>
                 <hr>
                     Recommandation d'amis
                     <recommandationami></recommandationami>

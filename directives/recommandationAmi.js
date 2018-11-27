@@ -3,47 +3,6 @@ m.directive('recommandationami', function(){
         controller: function($scope, $http){
           // si l'utilisateur est deja connecter on inserer le mail dans la variable mailUtilisateur
           if(sessionStorage.id){
-            //   $scope.rechercheListe = function(){                  
-            //     // recupere le parametre dans la route (id)
-            //     paramRoute = {
-            //         id: sessionStorage.id
-            //     }
-            //     var routeJsonData = angular.toJson(paramRoute, true);
-            //     // url
-            //     var urlEnLigne = "/listeami"
-            //     // envoie des donnees en POST pour recuperer le nombre de demande d'ami
-            //     $http({
-            //         url: urlEnLigne,
-            //         method: 'POST',
-            //         data: routeJsonData
-            //     }).then(function (httpResponse) {
-                     
-            //         // si un message d'erreur est envoyer par le serveur
-            //         if(httpResponse.data.message == 'Erreur'){
-            //             console.log('Echec de la recuperation du nombre de demande ami')
-            //         }
-            //         else if(httpResponse.data.message == '0'){
-            //             console.log('pas dami')
-            //             // ajoute le nombre de demande d'ami dans l'onglet
-            //             $scope.previewItemListeAmi = 0
-            //             // envoie dans le tableau
-            //             $scope.itemListeAmi = [];
-    
-            //         }
-            //         else{
-            //             // console.log('liste ami', httpResponse.data.listeAmi)
-                        
-            //                 // ajoute le nombre de demande d'ami dans l'onglet
-            //                 $scope.previewItemListeAmi = httpResponse.data.listeAmi.length
-            //                 // envoie dans le tableau
-            //                 $scope.itemListeAmi = httpResponse.data.listeAmi;
-        
-            //         }
-            //     })
-
-            // }
-            // $scope.rechercheListe()
-
             // au clique sur le bouton recommandation on affiche les membres que l'on peut recommander
             $scope.recommandation = function(item){
                 if($scope.itemListeAmiCopie){
@@ -108,25 +67,29 @@ m.directive('recommandationami', function(){
             }
 
             // recommande au membre precedement selectionner
-            $scope.recommander = function(item){
+            $scope.recommander = function(item, nom, prenom, mail){
                 // recupere l'id du membre 
                 $scope.itemARecommander = $(item.target).attr("id")
 
                 // recupere la liste d'ami du membre
-                paramRoute = {
+                recommandationObj = {
                     idEnCour: sessionStorage.id,
+                    nomEnCour: sessionStorage.nom,
+                    prenomEnCour: sessionStorage.prenom,
                     idRecommanderSelectionner: $scope.itemIdSelectionner,
-                    idRecommander: $scope.itemARecommander
+                    idRecommander: $scope.itemARecommander,
+                    nomRecommander: nom,
+                    prenomRecommander: prenom,
+                    mailRecommander: mail
                 }
-                console.log('paramRoute', paramRoute)
-                var routeJsonData = angular.toJson(paramRoute, true);
+                var recommandationJson = angular.toJson(recommandationObj, true);
                 // url
                 var urlEnLigne = "/recommandationami"
                 // envoie des donnees en POST pour recuperer le nombre de demande d'ami
                 $http({
                     url: urlEnLigne,
                     method: 'POST',
-                    data: routeJsonData
+                    data: recommandationJson
                 }).then(function (httpResponse) {
                     // si un message d'erreur est envoyer par le serveur
                     if(httpResponse.data.message == 'Erreur'){
@@ -201,7 +164,7 @@ m.directive('recommandationami', function(){
                                         </td>
                                         <td>{{item.mail}}</td>
                                         <td class="text-center">
-                                            <a id="{{item._id}}" class="btn btn-info btn-xs" ng-click="recommander($event)" data-toggle="modal" data-target="#recommandationModal">Recommander</a>
+                                            <a id="{{item._id}}" class="btn btn-info btn-xs" ng-click="recommander($event, item.nom, item.prenom, item.mail)" data-toggle="modal" data-target="#recommandationModal">Recommander</a>
                                         </td>
                                     </tr>
                                 </table>
