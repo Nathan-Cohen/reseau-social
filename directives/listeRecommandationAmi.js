@@ -13,7 +13,7 @@ m.directive('listerecommandationami', function(){
                 }
                 var routeJsonData = angular.toJson(paramRoute, true);
 
-                console.log('ajouter ami recommandation', routeJsonData)
+                console.log('liste des recommandations d\'amis')
                 // url
                 var urlEnLigne = "/listerecommandationami"
                 // envoie des donnees en POST pour recuperer le nombre de demande d'ami
@@ -27,15 +27,21 @@ m.directive('listerecommandationami', function(){
                         console.log('Echec de la recuperation du nombre de demande ami')
                     }
                     else{
-                        console.log('recuperation de la liste des recommandations reussi', httpResponse.data.listeDesRecommandationsAmis)
                         if(httpResponse.data.listeDesRecommandationsAmis){
+                            console.log('recuperation de la liste des recommandations reussi')
                             // recupere le tableau des recommandations
                             $scope.listeDesRecommandationsAmis = httpResponse.data.listeDesRecommandationsAmis
                             // affiche le nombre de recommandation dans l'onglet
                             $scope.viewListeDesRecommandationsAmis = httpResponse.data.listeDesRecommandationsAmis.length
+                            setTimeout(function(){
+                                $scope.ListeRecommandationAmi();
+                            }, 5000)
                         }
                         else{
                             $scope.viewListeDesRecommandationsAmis = 0
+                            setTimeout(function(){
+                                $scope.ListeRecommandationAmi();
+                            }, 5000)
                         }
                             
                             

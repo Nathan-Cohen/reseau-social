@@ -34,16 +34,15 @@ m.directive('listeami', function(){
                         }, 5000)
                     }
                     else{
-                        // console.log('liste ami', httpResponse.data.listeAmi)
+                        console.log('recuperation de la liste d\'ami reussi')
+                        // ajoute le nombre de demande d'ami dans l'onglet
+                        $scope.previewItemListeAmi = httpResponse.data.listeAmi.length
+                        // envoie dans le tableau
+                        $scope.itemListeAmi = httpResponse.data.listeAmi;
                         
-                            // ajoute le nombre de demande d'ami dans l'onglet
-                            $scope.previewItemListeAmi = httpResponse.data.listeAmi.length
-                            // envoie dans le tableau
-                            $scope.itemListeAmi = httpResponse.data.listeAmi;
-                            
-                            setTimeout(function(){
-                                $scope.rechercheListe();
-                            }, 5000)
+                        setTimeout(function(){
+                            $scope.rechercheListe();
+                        }, 5000)
                     }
                 })
 

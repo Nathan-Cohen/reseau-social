@@ -96,13 +96,18 @@ m.directive('affichemessageinstantanner', function(){
                                 // envoie la liste des message dans le tableau
                                 $scope.ListeMessageInstantannerTab = httpResponse.data.listeMessageInstantanner
                                 // envoie le nombre de message dans le tableau
-                                $scope.nbListeMessageInstantannerTab = httpResponse.data.listeMessageInstantanner.length
+                                if(httpResponse.data.listeMessageInstantanner.length != 0){
+                                    $scope.nbListeMessageInstantannerTab = httpResponse.data.listeMessageInstantanner.length - 1
+                                }
+                                else{
+                                    $scope.nbListeMessageInstantannerTab = httpResponse.data.listeMessageInstantanner.length
+                                }
                             }
                             // recharge la listes des messages
-                            setTimeout(function(){
-                                $scope.itemReload.messageReload = "true"
-                                $scope.choixAmiMessageInstantanner($scope.itemReload)
-                            }, 5000)
+                            // setTimeout(function(){
+                            //     $scope.itemReload.messageReload = "true"
+                            //     $scope.choixAmiMessageInstantanner($scope.itemReload)
+                            // }, 5000)
                             
 
                         }
@@ -232,21 +237,25 @@ m.directive('affichemessageinstantanner', function(){
                      }).then(function (httpResponse) {             
                          // si un message d'erreur est envoyer par le serveur
                          if(httpResponse.data.message == 'pas de message'){
-                             
-                         }
-                         else if(httpResponse.data.message && httpResponse.data.message != 'pas de message'){
+                             $scope.previewMessageInstantanner = 0;
+                            }
+                            else if(httpResponse.data.message && httpResponse.data.message != 'pas de message'){
                              console.log('Echec de la recuperation du nombre de message', httpResponse.data.message)
-                         }
-                         else{
-                             if(httpResponse.data.listeMessageInstantanner){
-                                 for(var i=0; i<httpResponse.data.listeMessageInstantanner.length; i++){
-                                     if(httpResponse.data.listeMessageInstantanner[i].vu == 'faux'){
-                                         $scope.tabNotifMessageInstantanner.push(httpResponse.data.listeMessageInstantanner[i])
+                            }
+                            else{
+                                if(httpResponse.data.listeMessageInstantanner){
+                                    for(var i=0; i<httpResponse.data.listeMessageInstantanner.length; i++){
+                                        if(httpResponse.data.listeMessageInstantanner[i].vu == 'faux'){
+                                            $scope.tabNotifMessageInstantanner.push(httpResponse.data.listeMessageInstantanner[i])
                                      }
-                                 }
+                                    }
                                  $scope.previewMessageInstantanner = $scope.tabNotifMessageInstantanner.length
 
-                             }
+                                }
+                                else{
+                                    $scope.previewMessageInstantanner = 0;
+
+                                }
                             setTimeout(function(){
                                 $scope.notifMessageInstantanner()
                             }, 5000)
@@ -303,21 +312,23 @@ m.directive('affichemessageinstantanner', function(){
                             <li class="left clearfix" ng-repeat-start="itemMessageInstantanner in ListeMessageInstantannerTab" ng-if="itemMessageInstantanner.prenom == prenomEnCours">
                                 <span class="chat-img1 pull-left">
                                     <img src="../images/avatar_defaut.png" alt="User Avatar" class="img-circle">
+                                    <span class="nomMessageInstantanner"><a href="#!/profil/recherche/{{idMessageInstantanner}}">{{itemMessageInstantanner.prenom}} {{itemMessageInstantanner.nom}}</a></span>
                                 </span>
-                                <span class="nomMessageInstantanner pull-left">{{itemMessageInstantanner.prenom}} {{itemMessageInstantanner.nom}}</span>
+                                </br>
                                 <div class="chat-body1 clearfix">
-                                    <p>{{itemMessageInstantanner.messageInstantanner}}</p>
+                                    <p class="testmessageinstantanner">{{itemMessageInstantanner.messageInstantanner}}</p>
                                     <div class="chat_time pull-right">{{itemMessageInstantanner.date}}</div>
                                 </div>
                             </li>
 
-                            <li class="left clearfix admin_chat" ng-repeat-end="itemMessageInstantanner in ListeMessageInstantannerTab" ng-if="itemMessageInstantanner.prenom != prenomEnCours">
+                            <li class="left clearfix admin_chat" ng-repeat-end="itemMessageInstantanner in ListeMessageInstantannerTab" ng-if="itemMessageInstantanner.prenom != prenomEnCours && !itemMessageInstantanner.demande">
                                 <span class="chat-img1 pull-right">
+                                    <span class="nomMessageInstantanner"><a href="#!/profil/recherche/{{idMessageInstantanner}}">{{itemMessageInstantanner.prenom}} {{itemMessageInstantanner.nom}}</a></span>
                                     <img src="../images/avatar_defaut.png" alt="User Avatar" class="img-circle">
                                 </span>
-                                <span class="nomMessageInstantanner pull-right">{{itemMessageInstantanner.prenom}} {{itemMessageInstantanner.nom}}</span>
+                                </br>
                                 <div class="chat-body1 clearfix">
-                                    <p>{{itemMessageInstantanner.messageInstantanner}}</p>
+                                    <p class="testmessageinstantanner">{{itemMessageInstantanner.messageInstantanner}}</p>
                                     <div class="chat_time pull-left">{{itemMessageInstantanner.date}}</div>
                                 </div>
                             </li>

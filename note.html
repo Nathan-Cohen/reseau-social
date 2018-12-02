@@ -59,9 +59,20 @@ Mettre socket.io en place : https://scotch.io/@gitedy/simple-socketio-using-node
 
 
 
+///////////////INSTALLATION D'UN CHATBOX////////////
+ajouter dans les controllers le script suivant : 
+    <script src="controllers/chatBoxCtrl.js"></script>
+
+ajouter dans les directives le script suivant : 
+    <script src="directives/chatBox.js"></script>
 
 
+Dans la parti Socket.io ajouter : 
 
+  socket.on('chatBox', function(data){
+    socket.emit('chatBoxRetourMoi', data)
+    socket.broadcast.emit('chatBoxRetour', data)
+  })
 
 
 

@@ -19,7 +19,7 @@ m.directive('notificationami', function(){
                         data: routeJsonData
                         // data: utilisateurJsonData
                     }).then(function (httpResponse) { 
-                        // console.log('test notif ami')                 
+                        console.log('test notif ami')                 
                         // si un message d'erreur est envoyer par le serveur
                         if(httpResponse.data.message == '0'){
                             // ajoute le nombre de demande d'ami dans l'onglet
