@@ -1166,6 +1166,13 @@ app.post('/affichenotifmessageinstantanner', function(req, res) {
 });
 
 
+/////////////////MESSAGE PRIVER//////////////
+
+
+
+
+
+
 
 
 //////////////// SOCKET IO /////////////
