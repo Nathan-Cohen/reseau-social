@@ -5,6 +5,21 @@ var bodyParser = require('body-parser')
 var md5 = require('md5')
 var ObjectID = require('mongodb').ObjectID
 
+//////////ENVOIE MAIL//////////
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey('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');
+// console.log('tessssssssssssssssst', process.env.SENDGRID_API_KEY)
+var envoiDuMail = function(mail, sujet, text, html){
+  const msg = {
+    to: mail,
+    from: 'manathane.co@gmail.com',
+    subject: sujet,
+    text: text,
+    html: html,
+  };
+  sgMail.send(msg);
+}
+
 // IMPORTER LE MODULE MONGODB
 // var mongoUtil = require( './db' );
 // mongoUtil.connectDB();
@@ -59,7 +74,14 @@ app.post('/enregistrement', function(req, res) {
             else{
               console.log("Nouvel utilisateur : ", o.ops[0].prenom);
               res.send({id: o.ops[0]._id, mail: req.body.mail, nom: req.body.nom, prenom: req.body.prenom, mdp: o.ops[0].password});  
-              client.close();                        
+              client.close(); 
+              
+              //////////ENVOIE MAIL//////////
+              var sujet = 'Bienvenue ' + req.body.prenom;
+              var text = 'Vous êtes inscrit sur Socialead';
+              var html = '<strong>Vous êtes inscrit sur Socialead</strong>';
+              envoiDuMail(req.body.mail, sujet, text, html)
+              //////////FIN ENVOIE MAIL//////////
 
             }
           });

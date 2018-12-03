@@ -104,10 +104,10 @@ m.directive('affichemessageinstantanner', function(){
                                 }
                             }
                             // recharge la listes des messages
-                            // setTimeout(function(){
-                            //     $scope.itemReload.messageReload = "true"
-                            //     $scope.choixAmiMessageInstantanner($scope.itemReload)
-                            // }, 5000)
+                            setTimeout(function(){
+                                $scope.itemReload.messageReload = "true"
+                                $scope.choixAmiMessageInstantanner($scope.itemReload)
+                            }, 5000)
                             
 
                         }
