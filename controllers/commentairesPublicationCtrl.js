@@ -33,6 +33,14 @@ m.controller('commentairesPublicationCtrl', function($scope, $http, $routeParams
                     $scope.messagecommentaire = ""
                     $scope.rechercheListePublication();
                     
+                    /////////NOTIFICATION///////
+                    document.getElementById('notifications').innerHTML = "<div id='notifSuccess' class='notif alert alert-success' role='alert'>Le commentaire a bien été publier !</div>"
+                    // affiche la notification de succes d'ajout d'ami
+                    // fait disparaitre la div 
+                    $("#notifSuccess").fadeOut( 8000, function() {
+                        $('#notifSuccess').css('display', 'none');
+                    });
+                    
                 }
                 // si un message d'erreur est envoyer par le serveur
                 else{

@@ -57,6 +57,8 @@ m.directive('ajouterami', function(){
                     console.log('Echec de l\'ajout d\'ami')
                 }
                 else{
+                    /////////NOTIFICATION///////
+                    document.getElementById('notifications').innerHTML = "<div id='notifSuccessAmi' class='alert alert-success' role='alert'>Votre demande d'ami a bien été envoyer !</div>"
                     // affiche la notification de succes d'ajout d'ami
                     $('#notifSuccessAmi').css('display', 'block')
                     // fait disparaitre la div 

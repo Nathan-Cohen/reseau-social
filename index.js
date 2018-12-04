@@ -4,9 +4,9 @@ const path = require('path')
 var bodyParser = require('body-parser')
 var md5 = require('md5')
 var ObjectID = require('mongodb').ObjectID
-// recupere les variables d'environnement
+// recupere les variables d'environnement pour le local
 // require('dotenv').config();
-console.log('tessssssssssssssssst', process.env.SENDGRID_API_KEY)
+// console.log('test recuperation des variables environnement', process.env.NODE_ENV)
 //////////ENVOIE MAIL//////////
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);

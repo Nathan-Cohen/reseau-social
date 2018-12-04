@@ -101,6 +101,14 @@ m.directive('recommandationami', function(){
                     }
                     else{
                         console.log('recommandation reussi', httpResponse.data)
+                        
+                        /////////NOTIFICATION///////
+                        document.getElementById('notifications').innerHTML = "<div id='notifSuccess' class='notif alert alert-success' role='alert'>Votre recommandation d\'ami a bien été envoyer !</div>"
+                        // affiche la notification de succes d'ajout d'ami
+                        // fait disparaitre la div 
+                        $("#notifSuccess").fadeOut( 8000, function() {
+                            $('#notifSuccess').css('display', 'none');
+                        });
                     }
                 })
 

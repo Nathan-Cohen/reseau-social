@@ -146,6 +146,14 @@ m.directive('affichemessageinstantanner', function(){
                             // raffraichie la liste des messages envoiemessageinstantanner
                             $scope.itemReload.messageReload = "true"
                             $scope.choixAmiMessageInstantanner($scope.itemReload);
+
+                            /////////NOTIFICATION///////
+                            document.getElementById('notifications').innerHTML = "<div id='notifSuccess' class='notif alert alert-info' role='alert'>Votre demande de conversation a bien été envoyer !</div>"
+                            // affiche la notification de succes d'ajout d'ami
+                            // fait disparaitre la div 
+                            $("#notifSuccess").fadeOut( 8000, function() {
+                                $('#notifSuccess').css('display', 'none');
+                            });
                         }
                     })
 
@@ -180,6 +188,14 @@ m.directive('affichemessageinstantanner', function(){
                             // raffraichie la liste des messages envoiemessageinstantanner
                             $scope.itemReload.messageReload = "true"
                             $scope.choixAmiMessageInstantanner($scope.itemReload);
+
+                            /////////NOTIFICATION///////
+                            document.getElementById('notifications').innerHTML = "<div id='notifSuccess' class='notif alert alert-success' role='alert'>Vous avez accepter la demande de conversation !</div>"
+                            // affiche la notification de succes d'ajout d'ami
+                            // fait disparaitre la div 
+                            $("#notifSuccess").fadeOut( 8000, function() {
+                                $('#notifSuccess').css('display', 'none');
+                            });
                         }
                     })
 

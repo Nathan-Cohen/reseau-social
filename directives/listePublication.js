@@ -37,8 +37,6 @@ m.directive('listepublication', function(){
 
                           $scope.date = new Date()
 
-                        //   console.log('httpResponse.data.listePublication.idCommentateur', httpResponse.data.listePublication[0].idCommentateur)
-
                             $scope.timeout_rechercherlistepublie = setTimeout(function(){
                                 $scope.rechercheListePublication();
                             }, 5000)
@@ -64,6 +62,13 @@ m.directive('listepublication', function(){
                             console.log('Echec de la recuperation du nombre de publication')
                         }
                         else{
+                            /////////NOTIFICATION///////
+                            document.getElementById('notifications').innerHTML = "<div id='notifSuccess' class='notif alert alert-danger' role='alert'>La publication a bien été supprimer !</div>"
+                            // affiche la notification de succes d'ajout d'ami
+                            // fait disparaitre la div 
+                            $("#notifSuccess").fadeOut( 8000, function() {
+                                $('#notifSuccess').css('display', 'none');
+                            });
                             console.log('suppression reussi')
                         }
                     })
@@ -99,6 +104,13 @@ m.directive('listepublication', function(){
                             console.log('Echec de la recuperation du nombre de publication')
                         }
                         else{
+                            /////////NOTIFICATION///////
+                            document.getElementById('notifications').innerHTML = "<div id='notifSuccess' class='notif alert alert-danger' role='alert'>Le commentaire a bien été supprimer !</div>"
+                            // affiche la notification de succes d'ajout d'ami
+                            // fait disparaitre la div 
+                            $("#notifSuccess").fadeOut( 8000, function() {
+                                $('#notifSuccess').css('display', 'none');
+                            });
                             console.log('suppression reussi')
                         }
                     })

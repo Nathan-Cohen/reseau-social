@@ -26,6 +26,13 @@ m.controller('publicationBarCtrl', function($scope, $routeParams, $http, SocketS
                 // supprime la valeur du champ de publication
                 $scope.messagepublication = ""
                 
+                /////////NOTIFICATION///////
+                document.getElementById('notifications').innerHTML = "<div id='notifSuccess' class='notif alert alert-success' role='alert'>La publication a bien été publier !</div>"
+                // affiche la notification de succes d'ajout d'ami
+                // fait disparaitre la div 
+                $("#notifSuccess").fadeOut( 8000, function() {
+                    $('#notifSuccess').css('display', 'none');
+                });
             }
 
         })
