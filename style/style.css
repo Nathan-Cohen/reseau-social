@@ -516,3 +516,41 @@ p.testmessageinstantanner{
   color: #fff;
   cursor:pointer;
 }
+
+
+/*/////////MESSAGE PRIVER///////*/
+#containerConversationPriver{
+  display: flex;
+}
+
+
+.themeBtnConversationPriver {
+  background: rgba(0, 140, 255, 0.733);
+  color: #ffffff !important;
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 500;
+  height: 50px;
+  line-height: 0.8;
+  padding: 18px 30px;
+  text-transform: capitalize;
+  border-radius: 1px;
+  letter-spacing: 0.5px;
+border:0px !important;
+cursor:pointer;
+border-radius:100px;
+
+}
+.themeBtnConversationPriver:hover {
+  background: rgb(0, 140, 255);
+  color: #ffffff;
+  box-shadow: 0 10px 25px -2px rgb(1, 105, 190);
+}
+
+
+.nomDesParticipantConversationPriver{
+  font-size: 12px;
+  float: left;
+  margin-right: 5px;
+  
+}

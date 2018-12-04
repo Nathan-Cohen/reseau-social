@@ -1271,12 +1271,12 @@ app.post('/afficheConversationPriver', function(req, res) {
         }else{
             if(o[0]){
               // envoie la liste des conversations priver
-              console.log('tessssssssssst', o[0])
-              // res.send({listeMessageInstantanner: o[0].messageInstantanner});
+              // console.log('tessssssssssst', o[0])
+              res.send({listeConversationPriver: o});
+              
 
             }
             else{
-              console.log('tessssssssssst rater')
               res.send({message: 'pas de message'});
             }
         }
@@ -1287,6 +1287,45 @@ app.post('/afficheConversationPriver', function(req, res) {
   });
   
 });
+
+
+
+app.post('/envoieMessagePriver', function(req, res) {
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      console.log('req.body', req.body)
+      const collection = client.db('heroku_g9jk10c8').collection('conversationpriver');
+      // ajoute la demande dans le document de l'ami
+      collection.updateOne({'_id': ObjectID(req.body.idConversationPriver)}, {$push: {messagePriver: {idExpediteur: req.body.idEnCour, prenom: req.body.prenomMessagePriver, nom: req.body.nomMessagePriver, messagePriver: req.body.messagePriver}}}, function(err, o) {
+        if(err){
+          console.log('Echec de la publication de message Priver', err.message);
+        }else{
+          if(o){
+            console.log('demande message Priver envoyer');
+            res.send({message: 'ok'});
+            client.close();
+
+          }
+          else{
+            res.send({message: 'Erreur'});
+            client.close();
+
+          }
+
+        }
+      })
+  
+    }
+  });
+  
+});
+
+
 
 
 //////////////// SOCKET IO /////////////

@@ -3,6 +3,8 @@ m.directive('messagepriver', function(){
         controller: function($scope, $http){
             $scope.inputSujetMessagePriver = '';
             $scope.tabDesMembresSelectionner = [];
+            $scope.msg = {messagePriver: ''}
+            $scope.ListeMessagePriverTab = []
 
             if(sessionStorage.id){
 
@@ -26,7 +28,21 @@ m.directive('messagepriver', function(){
                         }
                         else{     
                             
-                            console.log('httpResponse.datahttpResponse.datahttpResponse.data', httpResponse.data)
+                            $scope.tableauDesConversation =  httpResponse.data.listeConversationPriver
+                            
+                            httpResponse.data.listeConversationPriver.forEach(function(elementConversation){
+                                if(elementConversation.messagePriver){
+                                    elementConversation.messagePriver.forEach(function(elementMessage){
+                                        $scope.ListeMessagePriverTab.push(elementMessage)
+
+                                    })
+
+
+                                }
+                            })
+                            // console.log('$scope.ListeMessagePriverTab', $scope.ListeMessagePriverTab)
+                            
+
                             // /////////NOTIFICATION///////
                             // document.getElementById('notifications').innerHTML = "<div id='notifSuccess' class='notif alert alert-success' role='alert'>La conversation a bien été créer !</div>"
                             // // affiche la notification de succes d'ajout d'ami
@@ -114,64 +130,76 @@ m.directive('messagepriver', function(){
                 }
 
 
+                $scope.envoieMessagePriver = function(itemId){
+                    
+                    var envoieMessagePriverObj = {
+                        idConversationPriver: itemId,
+                        idEnCour: sessionStorage.id,
+                        messagePriver: $scope.msg.messagePriver,
+                        prenomMessagePriver: sessionStorage.prenom,
+                        nomMessagePriver: sessionStorage.nom
+                    }
+
+                    var routeJsonData = angular.toJson(envoieMessagePriverObj, true);
+                    // url
+                    var urlEnLigne = "/envoieMessagePriver"
+                    // envoie des donnees en POST pour recuperer le nombre de publication
+                    $http({
+                        url: urlEnLigne,
+                        method: 'POST',
+                        data: routeJsonData
+                    }).then(function (httpResponse) {             
+                        // si un message d'erreur est envoyer par le serveur
+                        if(httpResponse.data.message == "Erreur"){
+                            console.log('Echec de la recuperation')
+                        }
+                        else{
+                            // vide le champ
+                            $scope.msg.messagePriver = "";
+                            $scope.afficheConversationPriver()
+                            console.log('envoie du message priver reussi')
+
+                        }
+                    })
+
+                }
+
+
 
 
             }
 
         },
         template: `
-                <div class="chat_container">
-                    <div class="col-sm-8 chat_sidebar">
-                        <div class="row">
-                            <div id="creationConversationPriver">
-                                <div class="input-group col-md-12">
-                                    <input type="text" ng-model="inputSujetMessagePriver" class="form-control" placeholder="Sujet de discussion" />
-                                    <button class="btn btn-info" type="button" ng-click="btnSujetMessagePriver()" data-toggle="modal" data-target="#messagepriverModal">
-                                        <span class="far fa-thumbs-up"></span> Choisir les invités
-                                    </button>
-                                </div>
+            <div class="chat_container">
+                <div class="col-sm-10 chat_sidebar">
+                    <div class="row">
+                        <div id="creationConversationPriver">
+                            <div class="input-group col-md-12">
+                                <input type="text" ng-model="inputSujetMessagePriver" class="form-control" placeholder="Sujet de discussion" />
+                                <button class="btn btn-info" type="button" ng-click="btnSujetMessagePriver()" data-toggle="modal" data-target="#messagepriverModal">
+                                    <span class="far fa-thumbs-up"></span> Choisir les invités
+                                </button>
                             </div>
                         </div>
-                    </div> 
-                </div>         
-                    
+                    </div>
+                </div> 
+            </div>         
+                
 
 
 
-            <!-- Modal -->
-            <div class="modal fade" id="messagepriverModal" tabindex="-1" role="dialog" aria-labelledby="conversaionPriverModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="exampleModalLabel">Qui invité dans la conversation ?</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                            <div>
-                                Membres selectionner :
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Prenom</th>
-                                                <th scope="col">Nom</th>
-                                                <th scope="col">Mail</th>
-                                            </tr>
-                                        </thead>
-                                        <tr id="item{{itemSelectionner._id}}" ng-repeat="itemSelectionner in tabDesMembresSelectionner">
-                                            <td>
-                                                <a href="#!/profil/recherche/{{itemSelectionner._id}}">{{itemSelectionner.prenom}}</a>
-                                            </td>
-                                            <td>
-                                                <a href="#!/profil/recherche/{{itemSelectionner._id}}">{{itemSelectionner.nom}}</a>
-                                            </td>
-                                            <td>{{itemSelectionner.mail}}</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-body">
+        <!-- Modal -->
+        <div class="modal fade" id="messagepriverModal" tabindex="-1" role="dialog" aria-labelledby="conversaionPriverModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="exampleModalLabel">Qui invité dans la conversation ?</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div>
+                            Membres selectionner :
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
@@ -179,31 +207,127 @@ m.directive('messagepriver', function(){
                                             <th scope="col">Prenom</th>
                                             <th scope="col">Nom</th>
                                             <th scope="col">Mail</th>
-                                            <th scope="col" class="text-center">Action</th>
                                         </tr>
                                     </thead>
-                                    <tr id="item{{item._id}}" ng-repeat="item in itemListeAmi">
+                                    <tr id="item{{itemSelectionner._id}}" ng-repeat="itemSelectionner in tabDesMembresSelectionner">
                                         <td>
-                                            <a href="#!/profil/recherche/{{item._id}}">{{item.prenom}}</a>
+                                            <a href="#!/profil/recherche/{{itemSelectionner._id}}">{{itemSelectionner.prenom}}</a>
                                         </td>
                                         <td>
-                                            <a href="#!/profil/recherche/{{item._id}}">{{item.nom}}</a>
+                                            <a href="#!/profil/recherche/{{itemSelectionner._id}}">{{itemSelectionner.nom}}</a>
                                         </td>
-                                        <td>{{item.mail}}</td>
-                                        <td class="text-center">
-                                            <a id="{{item._id}}" class="btn btn-info btn-xs" ng-click="ajouterConversationPriver($event, item.nom, item.prenom, item.mail)">Ajouter</a>
-                                        </td>
+                                        <td>{{itemSelectionner.mail}}</td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-success" ng-click="creerConversationPriver()" data-dismiss="modal">Créer</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Prenom</th>
+                                        <th scope="col">Nom</th>
+                                        <th scope="col">Mail</th>
+                                        <th scope="col" class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tr id="item{{item._id}}" ng-repeat="item in itemListeAmi">
+                                    <td>
+                                        <a href="#!/profil/recherche/{{item._id}}">{{item.prenom}}</a>
+                                    </td>
+                                    <td>
+                                        <a href="#!/profil/recherche/{{item._id}}">{{item.nom}}</a>
+                                    </td>
+                                    <td>{{item.mail}}</td>
+                                    <td class="text-center">
+                                        <a id="{{item._id}}" class="btn btn-info btn-xs" ng-click="ajouterConversationPriver($event, item.nom, item.prenom, item.mail)">Ajouter</a>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" ng-click="creerConversationPriver()" data-dismiss="modal">Créer</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
+        </div>
+
+
+
+        
+        <!-- affichage des conversation priver -->
+        <p class="col-sm-2" ng-repeat="itemConversationPriver in tableauDesConversation" style="margin: 10px 0px 20px 5px;">
+            <button class="themeBtnConversationPriver" type="button" data-toggle="collapse" data-target="#{{itemConversationPriver.sujet}}" aria-expanded="false" aria-controls="collapseExample">
+                {{itemConversationPriver.sujet}}
+            </button>
+        </p>
+        
+        <div id="containerConversationPriver" class="col-sm-12">
+            <div ng-repeat="itemConversationPriver in tableauDesConversation" class="collapse" id="{{itemConversationPriver.sujet}}">
+                <div class="card card-body">
+                    <div class="col-sm-12 message_section" id="bodyMessagePriver">
+                            <div class="row">
+                                <div class="new_message_head">
+                                    <div class="pull-left">{{itemConversationPriver.sujet}}</div>
+                                    <div class="pull-right">
+                                        <div class="dropdown nomDesParticipantConversationPriver" ng-repeat="itemNomDesMembreConversationPriver in itemConversationPriver.tableauDesMembres">
+                                        | {{itemNomDesMembreConversationPriver.prenom}} {{itemNomDesMembreConversationPriver.nom}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Liste des messages-->
+            
+                                <div class="chat_area">
+                                    <ul class="list-unstyled">
+                                    
+                                        <li class="left clearfix" ng-repeat-start="itemMessagePriver in ListeMessagePriverTab" ng-if="itemMessagePriver.prenom == prenomEnCours">
+                                            <span class="chat-img1 pull-left">
+                                                <img src="../images/avatar_defaut.png" alt="User Avatar" class="img-circle">
+                                                <span class="nommessagePriver"><a href="#!/profil/recherche/{{idMessagePriver}}">{{itemMessagePriver.prenom}} {{itemMessagePriver.nom}}</a></span>
+                                            </span>
+                                            </br>
+                                            <div class="chat-body1 clearfix">
+                                                <p class="testmessagePriver">{{itemMessagePriver.messagePriver}}</p>
+                                                <div class="chat_time pull-right">{{itemMessagePriver.date}}</div>
+                                            </div>
+                                        </li>
+            
+                                        <li class="left clearfix admin_chat" ng-repeat-end="itemMessagePriver in ListeMessagePriverTab" ng-if="itemMessagePriver.prenom != prenomEnCours && !itemMessagePriver.demande">
+                                            <span class="chat-img1 pull-right">
+                                                <span class="nommessagePriver"><a href="#!/profil/recherche/{{idMessagePriver}}">{{itemMessagePriver.prenom}} {{itemMessagePriver.nom}}</a></span>
+                                                <img src="../images/avatar_defaut.png" alt="User Avatar" class="img-circle">
+                                            </span>
+                                            </br>
+                                            <div class="chat-body1 clearfix">
+                                                <p class="testmessagePriver">{{itemMessagePriver.messagePriver}}</p>
+                                                <div class="chat_time pull-left">{{itemMessagePriver.date}}</div>
+                                            </div>
+                                        </li>
+            
+            
+                                    </ul>
+                                </div>
+                                <!--Ecrire un message-->
+                                <div class="message_write">
+                                    <textarea ng-model="msg.messagePriver" class="form-control" placeholder="Message..."></textarea>
+                                    <div class="clearfix"></div>
+                                    <div class="chat_bottom"><a href="#" class="pull-left upload_btn"><i class="fa fa-cloud-upload" aria-hidden="true"></i>Add Files</a>
+                                        <button class="pull-right btn btn-success" id="{{itemConversationPriver._id}}" ng-click="envoieMessagePriver(itemConversationPriver._id)">Envoyer</button></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--message_section-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
         `
 
     }

@@ -205,7 +205,7 @@ m.directive('affichemessageinstantanner', function(){
 
                 // envoie un message a l'ami selectionner
                 $scope.envoieMessageInstantanner = function(idAmi){
-                    envoieMessageInstantannerObj = {
+                    var envoieMessageInstantannerObj = {
                         idEnCour: sessionStorage.id,
                         idAmi: idAmi,
                         messageInstantanner: $scope.msg.messageInstantanner,
