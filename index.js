@@ -5,7 +5,7 @@ var bodyParser = require('body-parser')
 var md5 = require('md5')
 var ObjectID = require('mongodb').ObjectID
 // recupere les variables d'environnement
-require('dotenv').config();
+// require('dotenv').config();
 console.log('tessssssssssssssssst', process.env.SENDGRID_API_KEY)
 //////////ENVOIE MAIL//////////
 const sgMail = require('@sendgrid/mail');
