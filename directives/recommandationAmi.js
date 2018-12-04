@@ -4,7 +4,10 @@ m.directive('recommandationami', function(){
           // si l'utilisateur est deja connecter on inserer le mail dans la variable mailUtilisateur
           if(sessionStorage.id){
             // au clique sur le bouton recommandation on affiche les membres que l'on peut recommander
-            $scope.recommandation = function(item){
+            $scope.recommandation = function(item, mail){
+                // recupere le mail a qui on fait la recommandation pour envoyer un mail
+                $scope.mailRecommanderSelectionner = mail
+
                 if($scope.itemListeAmiCopie){
                     if($scope.itemListeAmiCopie.length > 0){
                         $scope.itemListeAmiCopie = []
@@ -77,6 +80,7 @@ m.directive('recommandationami', function(){
                     nomEnCour: sessionStorage.nom,
                     prenomEnCour: sessionStorage.prenom,
                     idRecommanderSelectionner: $scope.itemIdSelectionner,
+                    mailRecommanderSelectionner: $scope.mailRecommanderSelectionner,
                     idRecommander: $scope.itemARecommander,
                     nomRecommander: nom,
                     prenomRecommander: prenom,
@@ -125,7 +129,7 @@ m.directive('recommandationami', function(){
                         </td>
                         <td>{{item.mail}}</td>
                         <td class="text-center" ng-if="!booleanBouton">
-                            <a id="{{item._id}}" class="btn btn-info btn-xs" ng-click="recommandation($event)" data-toggle="modal" data-target="#recommandationModal">Recommander un ami</a>
+                            <a id="{{item._id}}" class="btn btn-info btn-xs" ng-click="recommandation($event, item.mail)" data-toggle="modal" data-target="#recommandationModal">Recommander un ami</a>
                         </td>
                     </tr>
                 </table>

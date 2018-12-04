@@ -35,12 +35,13 @@ m.directive('ajouterami', function(){
 
             })
           }
-
+          
           $scope.ajouterAmi = function(){
             // recupere le parametre dans la route (id) et l'id de la session utilisateur en cour
             paramRoute = {
                 id: $routeParams.idUtilisateur,
-                idEnCour: sessionStorage.id
+                mail: $scope.mail,
+                idEnCour: sessionStorage.id,
             }
             var routeJsonData = angular.toJson(paramRoute, true);
             // url

@@ -7,7 +7,7 @@ var ObjectID = require('mongodb').ObjectID
 
 //////////ENVOIE MAIL//////////
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey('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');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 // console.log('tessssssssssssssssst', process.env.SENDGRID_API_KEY)
 var envoiDuMail = function(mail, sujet, text, html){
   const msg = {
@@ -18,6 +18,7 @@ var envoiDuMail = function(mail, sujet, text, html){
     html: html,
   };
   sgMail.send(msg);
+  console.log('envoie du mail effectuer', mail, sujet, text, html)
 }
 
 // IMPORTER LE MODULE MONGODB
@@ -77,7 +78,7 @@ app.post('/enregistrement', function(req, res) {
               client.close(); 
               
               //////////ENVOIE MAIL//////////
-              var sujet = 'Bienvenue ' + req.body.prenom;
+              var sujet = '[Socialead] Bienvenue ' + req.body.prenom;
               var text = 'Vous êtes inscrit sur Socialead';
               var html = '<strong>Vous êtes inscrit sur Socialead</strong>';
               envoiDuMail(req.body.mail, sujet, text, html)
@@ -409,6 +410,13 @@ app.post('/ajouteami', function(req, res) {
             res.send({profilUtilisateur: o});
             client.close();
 
+            //////////ENVOIE MAIL//////////
+            var sujet = '[Socialead] Nouvel demande ami ! ';
+            var text = 'Vous avez une demande d\'ami sur Socialead';
+            var html = '<strong>Vous avez une demande d\'ami sur Socialead</strong>';
+            envoiDuMail(req.body.mail, sujet, text, html)
+            //////////FIN ENVOIE MAIL//////////
+
           }
           else{
             console.log('Erreur de connexion');
@@ -694,7 +702,7 @@ app.post('/recommandationami', function(req, res) {
     }
     else{
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
-      console.log('recommandation', req.body)
+      // console.log('recommandation', req.body)
         //  ajouter comme recommandation d'ami
         collection.updateOne({'_id': ObjectID(req.body.idRecommanderSelectionner)}, {$push: {recommandationAmi: {idQuiARecommander: req.body.idEnCour, nomQuiARecommander: req.body.nomEnCour, prenomQuiARecommander: req.body.prenomEnCour, idRecommander: req.body.idRecommander, nomRecommander: req.body.nomRecommander, prenomRecommander: req.body.prenomRecommander, mailRecommander: req.body.mailRecommander}}}, function(err, o) {
           if(err){
@@ -704,6 +712,13 @@ app.post('/recommandationami', function(req, res) {
               console.log('recommandation reussi');              
               res.send({message: 'recommandation reussi'});
   
+              //////////ENVOIE MAIL//////////
+              var mail = req.body.mailRecommanderSelectionner;
+              var sujet = '[Socialead] Nouvel recommandation d\'ami ! ';
+              var text = 'Vous avez une nouvel recommandation d\'ami sur Socialead';
+              var html = '<strong>Vous avez une nouvel recommandation d\'ami sur Socialead</strong>';
+              envoiDuMail(mail, sujet, text, html)
+              //////////FIN ENVOIE MAIL//////////
             }
             else{
               res.send({message: 'Erreur'});
@@ -816,6 +831,7 @@ app.post('/publicationbar', function(req, res) {
 
 
 ////////////// PUBLICATION ///////////////
+// quand un membre publie sur le profil d'un autre membre
 app.post('/publicationProfil', function(req, res) {
   //////////////// CONNEXION A LA BASE ///////////////////
   var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
@@ -839,6 +855,12 @@ app.post('/publicationProfil', function(req, res) {
           res.send({message: 'Publier'});
           client.close();                        
 
+          //////////ENVOIE MAIL//////////
+          var sujet = '[Socialead] Nouvel publication profil ';
+          var text = 'Une nouvel publication sur votre profil';
+          var html = '<strong>Une nouvel publication sur votre profil</strong>';
+          envoiDuMail(req.body.idEnCour, sujet, text, html)
+          //////////FIN ENVOIE MAIL//////////
         }
       });
   
@@ -1034,9 +1056,16 @@ app.post('/envoiereponsedemandemessageinstantanner', function(req, res) {
           if(o){
             // ajoute la mention 'accepter' dans le document de l'utilisateur
             collection.updateOne({'_id': ObjectID(req.body.idEnCour), "messageInstantanner.idAmi": req.body.idAmi, "messageInstantanner.demande": 'en cours'}, {$set: {"messageInstantanner.$.demande": 'accepter'}})
-            console.log('demande message Instantanner envoyer');
+            console.log('demande message Instantanner envoyer', req.body);
             res.send({message: 'ok'});
             client.close();
+
+            // //////////ENVOIE MAIL//////////
+            // var sujet = '[Socialead] Conversation instantanné';
+            // var text = 'Vous avez confirmer la conversation instantanné';
+            // var html = '<strong>Vous avez confirmer la conversation instantanné</strong>';
+            // envoiDuMail(req.body.mail, sujet, text, html)
+            // //////////FIN ENVOIE MAIL//////////
 
           }
           else{
