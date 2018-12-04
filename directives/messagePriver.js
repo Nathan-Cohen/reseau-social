@@ -2,12 +2,120 @@ m.directive('messagepriver', function(){
     var directiveDefs = {
         controller: function($scope, $http){
             $scope.inputSujetMessagePriver = '';
+            $scope.tabDesMembresSelectionner = [];
 
             if(sessionStorage.id){
+
+                $scope.afficheConversationPriver = function(){
+                    // recupere les parametres
+                    var objetParametreAfficheConversationPriver = {
+                        idEnCour: sessionStorage.id
+                    }
+                    var jsonParametreAfficheConversationPriver = angular.toJson(objetParametreAfficheConversationPriver, true);
+                    // url
+                    var urlEnLigne = "/afficheConversationPriver";
+                    // envoie des donnees en POST
+                    $http({
+                        url: urlEnLigne,
+                        method: 'POST',
+                        data: jsonParametreAfficheConversationPriver
+                    }).then(function (httpResponse) {
+                        // si un message d'erreur est envoyer par le serveur
+                        if(httpResponse.data.message == 'Erreur'){
+                            console.log('Echec de la creation de la conversation')
+                        }
+                        else{     
+                            
+                            console.log('httpResponse.datahttpResponse.datahttpResponse.data', httpResponse.data)
+                            // /////////NOTIFICATION///////
+                            // document.getElementById('notifications').innerHTML = "<div id='notifSuccess' class='notif alert alert-success' role='alert'>La conversation a bien été créer !</div>"
+                            // // affiche la notification de succes d'ajout d'ami
+                            // // fait disparaitre la div 
+                            // $("#notifSuccess").fadeOut( 8000, function() {
+                            //     $('#notifSuccess').css('display', 'none');
+                            // });
+                        }
+            
+                    })
+
+                }
+
+                $scope.afficheConversationPriver()
+
+                // au clique du bouton choisir inviter l'objet du membre en cours se creer
                 $scope.btnSujetMessagePriver = function(){
-                    console.log('$scope.inputSujetMessagePriver', $scope.inputSujetMessagePriver)
+                    // construit l'objet du membre qui créer la conversation
+                    membreEnCour = {
+                        id: sessionStorage.id,
+                        nom: sessionStorage.nom,
+                        prenom: sessionStorage.prenom,
+                        mail: sessionStorage.mail
+                    }
+                    $scope.tabDesMembresSelectionner.push(membreEnCour)
                     
                 }
+                // function pour ajouter un membre a la conversation priver
+                $scope.ajouterConversationPriver = function(item, nom, prenom, mail){
+                    // recupere l'id du membre 
+                    $scope.itemIdSelectionner = $(item.target).attr("id")
+                    for(var i=0; i<$scope.tabDesMembresSelectionner.length; i++){
+                        if($scope.itemIdSelectionner == $scope.tabDesMembresSelectionner[i].id){
+                            // supprime le membre selectionner si il existe deja dans le tableau
+                            console.log('existe deja')
+                            $scope.tabDesMembresSelectionner.splice(i, 1);
+                        }
+
+                    }
+                    // construit l'objet du membre selectionner
+                    membreSelectionner = {
+                        id: $scope.itemIdSelectionner,
+                        nom: nom,
+                        prenom: prenom,
+                        mail: mail
+                    }
+                    $scope.tabDesMembresSelectionner.push(membreSelectionner)
+                    
+                }
+                
+                
+                $scope.creerConversationPriver = function(){
+                    console.log('tableau de la conversation priver', $scope.tabDesMembresSelectionner)
+                    console.log('$scope.inputSujetMessagePriver', $scope.inputSujetMessagePriver)
+                    // recupere les parametres
+                    var objetParametreConversationPriver = {
+                        tabDesMembres: $scope.tabDesMembresSelectionner,
+                        sujet: $scope.inputSujetMessagePriver
+                    }
+                    var jsonParametreConversationPriver = angular.toJson(objetParametreConversationPriver, true);
+                    // url
+                    var urlEnLigne = "/creationConversationPriver";
+                    // envoie des donnees en POST
+                    $http({
+                        url: urlEnLigne,
+                        method: 'POST',
+                        data: jsonParametreConversationPriver
+                    }).then(function (httpResponse) {
+                        // si un message d'erreur est envoyer par le serveur
+                        if(httpResponse.data.message == 'Erreur'){
+                            console.log('Echec de la creation de la conversation')
+                        }
+                        else{                            
+                            /////////NOTIFICATION///////
+                            document.getElementById('notifications').innerHTML = "<div id='notifSuccess' class='notif alert alert-success' role='alert'>La conversation a bien été créer !</div>"
+                            // affiche la notification de succes d'ajout d'ami
+                            // fait disparaitre la div 
+                            $("#notifSuccess").fadeOut( 8000, function() {
+                                $('#notifSuccess').css('display', 'none');
+                            });
+                        }
+            
+                    })
+
+                }
+
+
+
+
             }
 
         },
@@ -39,6 +147,29 @@ m.directive('messagepriver', function(){
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
+                            <div>
+                                Membres selectionner :
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Prenom</th>
+                                                <th scope="col">Nom</th>
+                                                <th scope="col">Mail</th>
+                                            </tr>
+                                        </thead>
+                                        <tr id="item{{itemSelectionner._id}}" ng-repeat="itemSelectionner in tabDesMembresSelectionner">
+                                            <td>
+                                                <a href="#!/profil/recherche/{{itemSelectionner._id}}">{{itemSelectionner.prenom}}</a>
+                                            </td>
+                                            <td>
+                                                <a href="#!/profil/recherche/{{itemSelectionner._id}}">{{itemSelectionner.nom}}</a>
+                                            </td>
+                                            <td>{{itemSelectionner.mail}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-body">
                             <div class="table-responsive">
@@ -51,7 +182,7 @@ m.directive('messagepriver', function(){
                                             <th scope="col" class="text-center">Action</th>
                                         </tr>
                                     </thead>
-                                    <tr id="item{{item._id}}" ng-repeat="item in itemListeAmiCopie" ng-if="item._id != itemIdSelectionner">
+                                    <tr id="item{{item._id}}" ng-repeat="item in itemListeAmi">
                                         <td>
                                             <a href="#!/profil/recherche/{{item._id}}">{{item.prenom}}</a>
                                         </td>
@@ -60,13 +191,14 @@ m.directive('messagepriver', function(){
                                         </td>
                                         <td>{{item.mail}}</td>
                                         <td class="text-center">
-                                            <a id="{{item._id}}" class="btn btn-info btn-xs" ng-click="recommander($event, item.nom, item.prenom, item.mail)" data-toggle="modal" data-target="#recommandationModal">Recommander</a>
+                                            <a id="{{item._id}}" class="btn btn-info btn-xs" ng-click="ajouterConversationPriver($event, item.nom, item.prenom, item.mail)">Ajouter</a>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
                         <div class="modal-footer">
+                            <button type="button" class="btn btn-success" ng-click="creerConversationPriver()" data-dismiss="modal">Créer</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>

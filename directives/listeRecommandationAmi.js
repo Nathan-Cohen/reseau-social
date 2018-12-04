@@ -26,6 +26,12 @@ m.directive('listerecommandationami', function(){
                     if(httpResponse.data.message == 'Erreur'){
                         console.log('Echec de la recuperation du nombre de demande ami')
                     }
+                    else if(httpResponse.data.message == 'pas de recommandation'){
+                        $scope.viewListeDesRecommandationsAmis = 0
+                        setTimeout(function(){
+                            $scope.ListeRecommandationAmi();
+                        }, 5000)
+                    }
                     else{
                         if(httpResponse.data.listeDesRecommandationsAmis){
                             console.log('recuperation de la liste des recommandations reussi')

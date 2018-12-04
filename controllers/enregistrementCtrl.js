@@ -25,7 +25,8 @@ m.controller('enregistrementCtrl', function($scope, $http, $location){
             pays: $scope.pays,
             photo: $scope.photo,
             presentation: $scope.presentation,
-            website: $scope.website
+            website: $scope.website,
+            role: "membre"
         }
         // transforme en JSON
         var postData = angular.toJson(nouveauUtilisateur, true);

@@ -755,6 +755,10 @@ app.post('/listerecommandationami', function(req, res) {
             res.send({listeDesRecommandationsAmis: o[0].recommandationAmi});
 
           }
+          else{
+            res.send({message: 'pas de recommandation'});
+
+          }
         }
 
       });
@@ -1219,12 +1223,70 @@ app.post('/affichenotifmessageinstantanner', function(req, res) {
 
 
 /////////////////MESSAGE PRIVER//////////////
+app.post('/creationConversationPriver', function(req, res) {
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      // console.log('req.body.tabDesMembres ', req.body.tabDesMembres)
+      // console.log('req.body.sujet ', req.body.sujet)
+        const collection = client.db('heroku_g9jk10c8').collection('conversationpriver');
+        // creer la conversation priver
+        collection.insertOne({tableauDesMembres: req.body.tabDesMembres, sujet: req.body.sujet}, function(err, o) {
+          if(err){
+            console.log(err.message);
+            res.send({message: 'Erreur'});
+            client.close();
+          }
+          else{
+            console.log('conversation creer');
+            res.send({message: 'Conversation creer'});  
+            client.close(); 
+
+          }
+        });
+
+    }
+  });
+
+});
 
 
+app.post('/afficheConversationPriver', function(req, res) {
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('conversationpriver');
+      // cherche les conversations priver
+      collection.find({'tableauDesMembres.id': req.body.idEnCour}).toArray(function(err, o) {
+        if(err){
+          console.log('Echec de la recuperation des notifcation de messages instantanner', err.message);
+        }else{
+            if(o[0]){
+              // envoie la liste des conversations priver
+              console.log('tessssssssssst', o[0])
+              // res.send({listeMessageInstantanner: o[0].messageInstantanner});
 
+            }
+            else{
+              console.log('tessssssssssst rater')
+              res.send({message: 'pas de message'});
+            }
+        }
 
-
-
+      });
+  
+    }
+  });
+  
+});
 
 
 //////////////// SOCKET IO /////////////
