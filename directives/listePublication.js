@@ -124,7 +124,7 @@ m.directive('listepublication', function(){
             <!-- PUBLICATION -->
             <div class="well" ng-repeat-start="item in itemListePublication">
                 <div class="publications-body">
-                    <a class="pull-left" href="#">
+                    <a class="pull-left" href="">
                     [photo de l'article]
                     </a>
                     <div class="media-body">
