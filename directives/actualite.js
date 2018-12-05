@@ -1,9 +1,7 @@
 m.directive('actualite', function(){
     var directiveActuDef = {
         controller: function($scope, SocketService){
-            $scope.testfunc = function(){
-                SocketService.emit('test', {message: 'ledirectcesttropchaud'});
-            }
+            
         },
         template: `
         <div>

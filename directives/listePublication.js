@@ -48,6 +48,7 @@ m.directive('listepublication', function(){
 
                 // supprimer la publication
                 $scope.supprimerLaPublication = function(itemPublicationSupprimer){
+                    
                     $scope.supprimePublication = {idPublication: $(itemPublicationSupprimer.target).attr("id")};
                     // url
                     var urlEnLigne = "/supprimepublication"
@@ -83,7 +84,6 @@ m.directive('listepublication', function(){
 
                 // supprime le commentaire
                 $scope.supprimerLeCommentaire = function(commentaire){
-
                     $scope.commentaireSuppression = {
                         idPublication: $(commentaire.target).attr("id"),
                         idUniqueCommentaire: $(commentaire.currentTarget).attr("id"),

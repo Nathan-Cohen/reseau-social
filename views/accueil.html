@@ -14,15 +14,15 @@
 			
 		</div>
 
-
+		<hr>
 		<!-- PUBLICATION -->
 		<div class="well" ng-repeat-start="item in itemListePublication">
 			<div class="publications-body">
-				<a class="pull-left" href="#">
+				<a class="pull-left" href="">
 				[photo de l'article]
 				</a>
 				<div class="media-body">
-					<button id="{{item.idPublication}}" class="pull-right supprimePublication" ng-click="supprimerLaPublication($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button>
+					<!-- <button id="{{item.idPublication}}" class="pull-right supprimePublication" ng-click="supprimerLaPublication($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button> -->
 					<p class="text-right">{{item.date}} <span class="glyphicon glyphicon-time"></span></small></p>
 					<p class="text-left"><a href="#!/profil/recherche/{{item.idPublication}}">{{item.prenom}}{{item.prenomAuteur}} {{item.nomAuteur}}</a> :</p>
 					<p>{{item.publication}}</p>
@@ -30,12 +30,13 @@
 				
 			</div>
 		</div>
+
 		<div ng-repeat-end ng-controller="commentairesPublicationCtrl">
 			<!-- PUBLIER UN COMMENTAIRE -->
-			<div>
+			<!-- <div>
 				<input id="{{item._id}}" ng-focus="focusInput()" class="champCommentaire col-sm-9 pull-left" placeholder="Votre commentaire .." name="messagecommentaire" ng-model="messagecommentaire" >
 				<button class="btn-info col-sm-3 boutonCommentaire pull-left" ng-click="publierCommentaire(item._id)" type="button">Partager</button>
-			</div>
+			</div> -->
 			<!-- AFFICHER LES COMMENTAIRES -->
 			<div class="containerCommentaires">
 				<ul class="commentaires">
@@ -45,7 +46,7 @@
 						</span>
 						<div class="commentaires-body clearfix">
 							<div class="header">
-								<button id="{{itemCommentaire.idUniqueCommentaire}}" class="pull-right supprimePublication" ng-click="supprimerLeCommentaire($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button>
+								<!-- <button ng-if="itemCommentaire.id == idSession" id="{{itemCommentaire.idUniqueCommentaire}}" class="pull-right supprimePublication" ng-click="supprimerLeCommentaire($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button> -->
 
 								<strong class="primary-font">{{itemCommentaire.prenom}} {{itemCommentaire.nom}}</strong> <small class="pull-right text-muted">
 
@@ -60,6 +61,9 @@
 			</div>
 		</div>
 		
+		<hr>
+		</br>
+
 	</div>
 
     

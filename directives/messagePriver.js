@@ -6,7 +6,7 @@ m.directive('messagepriver', function(){
             
             if(sessionStorage.id){
                 
-                $scope.afficheConversationPriver = function(){
+                $scope.afficheConversationPriver = function(actualisation){
                     if(!$scope.ListeMessagePriverTab){
                         $scope.ListeMessagePriverTab = []
                     }
@@ -29,20 +29,23 @@ m.directive('messagepriver', function(){
                             console.log('Echec de la creation de la conversation')
                         }
                         else{     
-                            if(!$scope.tableauDesConversation){
+                            if(actualisation == "actualisation"){
                                 $scope.tableauDesConversation =  httpResponse.data.listeConversationPriver
+                                actualisation = undefined
                             }
                             $scope.ListeMessagePriverTab = []
-                            httpResponse.data.listeConversationPriver.forEach(function(elementConversation){
-                                if(elementConversation.messagePriver){
-                                    elementConversation.messagePriver.forEach(function(elementMessage){
-                                        $scope.ListeMessagePriverTab.push(elementMessage)
-                                        // console.log('$scope.ListeMessagePriverTab', $scope.ListeMessagePriverTab)
-                                    })
-
-
-                                }
-                            })
+                            // si le tableau des listes de conversation existe
+                            if(httpResponse.data.listeConversationPriver){
+                                httpResponse.data.listeConversationPriver.forEach(function(elementConversation){
+                                    if(elementConversation.messagePriver){
+                                        elementConversation.messagePriver.forEach(function(elementMessage){
+                                            $scope.ListeMessagePriverTab.push(elementMessage)
+                                            // console.log('$scope.ListeMessagePriverTab', $scope.ListeMessagePriverTab)
+                                        })
+    
+                                    }
+                                })
+                            }
                             // console.log('$scope.ListeMessagePriverTab', $scope.ListeMessagePriverTab)
                             setTimeout(function(){
                                 $scope.afficheConversationPriver()
@@ -81,7 +84,7 @@ m.directive('messagepriver', function(){
 
                     }
                     // construit l'objet du membre selectionner
-                    membreSelectionner = {
+                    var membreSelectionner = {
                         id: $scope.itemIdSelectionner,
                         nom: nom,
                         prenom: prenom,
@@ -93,8 +96,8 @@ m.directive('messagepriver', function(){
                 
                 
                 $scope.creerConversationPriver = function(){
-                    console.log('tableau de la conversation priver', $scope.tabDesMembresSelectionner)
-                    console.log('$scope.inputSujetMessagePriver', $scope.inputSujetMessagePriver)
+                    // console.log('tableau de la conversation priver', $scope.tabDesMembresSelectionner)
+                    // console.log('$scope.inputSujetMessagePriver', $scope.inputSujetMessagePriver)
                     // recupere les parametres
                     var objetParametreConversationPriver = {
                         tabDesMembres: $scope.tabDesMembresSelectionner,

@@ -42,7 +42,7 @@ m.directive('publicationbar', function(){
             <div class="row" ng-if='id && autoriserAPublier' ng-controller="publicationBarCtrl">
               <div class="well well-lg">
                 <div class="media1">
-                <a class="pull-left" href="#">
+                <a class="pull-left" href="">
                   <i class="far fa-images" style="font-size: 70px;"></i>
                   <!-- <img class="media-object img-circle" width="80px" src="" alt="Image"> -->
                 </a>

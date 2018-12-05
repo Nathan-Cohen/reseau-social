@@ -85,8 +85,6 @@
     height: 32px;
     background-color: #fff;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
-    border-radius: 25px;
-    border: 1px solid #ccc;
   }
   .search-form .form-group input.form-control {
     padding-right: 20px;
@@ -135,10 +133,10 @@
 
 /* ////////////PUBLICATIONS/////////////// */
 
-.publications-body{
+/* .publications-body{
   border-bottom: 1px inset #B3A9A9;
   margin-bottom: 15px
-}
+} */
 
 .supprimePublication{
   border: none;
@@ -176,6 +174,7 @@
   border: none;
   padding: 2px;
 }
+
 
 .champCommentaire{
   border: 1px solid #B3A9A9;
@@ -525,26 +524,23 @@ p.testmessageinstantanner{
 
 
 .themeBtnConversationPriver {
-  background: rgba(0, 140, 255, 0.733);
+  background: #d39416;
   color: #ffffff !important;
   display: inline-block;
   font-size: 15px;
   font-weight: 500;
-  height: 50px;
   line-height: 0.8;
-  padding: 18px 30px;
+  padding: 9px 15px;
   text-transform: capitalize;
-  border-radius: 1px;
   letter-spacing: 0.5px;
-border:0px !important;
-cursor:pointer;
-border-radius:100px;
+  border: 0px !important;
+  cursor: pointer;
 
 }
 .themeBtnConversationPriver:hover {
-  background: rgb(0, 140, 255);
+  background: #d1992a;
   color: #ffffff;
-  box-shadow: 0 10px 25px -2px rgb(1, 105, 190);
+  box-shadow: 0 10px 25px -2px #eec36e;
 }
 
 
@@ -553,4 +549,54 @@ border-radius:100px;
   float: left;
   margin-right: 5px;
   
+}
+
+
+/*////////// DESIGN //////////*/
+
+.navbar .navbar-nav>li>a {
+  color: #000;
+}
+
+.navbar .navbar-brand {
+  color: #000;
+}
+
+.navbar{
+  background-color: #d39416;
+  background-image: none;
+  border-radius: 0px;
+}
+
+a{
+  color: #b46b00;
+}
+
+a:focus, a:hover {
+  color: #9b5e03;
+  text-decoration: none;
+}
+
+.well{
+  background-color: #b4b4b4;
+  background-image: none;
+  border: none;
+  border-radius: 0px;
+}
+
+.btn-info{
+  background-color: #d39416;
+  background-image: none;
+  border: none;
+  border-radius: 0px;
+}
+
+.btn-info:focus, .btn-info:hover {
+  background-color: #ba810f;
+  background-position: 0 -15px;
+}
+
+.panel-default>.panel-heading{
+  background-color: #d39416;
+  background-image: none;
 }

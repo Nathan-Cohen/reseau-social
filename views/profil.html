@@ -12,8 +12,8 @@
 
             <div class="text-center">
                 <img src="../images/avatar_defaut.png" class="avatar img-circle img-thumbnail" alt="avatar">
-                <h6>Changer de photo de profil</h6>
-                <input type="file" class="text-center center-block file-upload">
+                <!-- <h6>Changer de photo de profil</h6>
+                <input type="file" class="text-center center-block file-upload"> -->
             </div>
             </hr>
             <br>
@@ -29,8 +29,8 @@
             <ul class="list-group">
                 <li class="list-group-item text-muted">Activiter <i class="fa fa-dashboard fa-1x"></i>
                 </li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Partages</strong></span> 0</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>J'aimes</strong></span> 0</li>
+                <!-- <li class="list-group-item text-right"><span class="pull-left"><strong>Partages</strong></span> 0</li> -->
+                <!-- <li class="list-group-item text-right"><span class="pull-left"><strong>J'aimes</strong></span> 0</li> -->
                 <li class="list-group-item text-right"><span class="pull-left"><strong>Postes</strong></span> 0</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong>Amis</strong></span> {{previewItemListeAmi}}</li>
             </ul>
@@ -58,7 +58,7 @@
                 <a data-toggle="tab" href="profil/#messagesInstantanner">Messages instantannés (<span ng-bind="previewMessageInstantanner"></span>)</a>
             </li>
             <li>
-                <a data-toggle="tab" href="profil/#messagesPriver">Messages privés </a>
+                <a data-toggle="tab" href="profil/#messagesPriver" ng-click="afficheConversationPriver('actualisation')">Messages privés </a>
             </li>
             <li>
                 <a data-toggle="tab" href="profil/#notificationAmi">Demandes amis (<span ng-bind="previewItemDemandeAmi"></span>)</a>
@@ -85,110 +85,7 @@
             <!-- INFORMATIONS -->
             <div class="tab-pane" id="informations">
                 <hr>
-                <form class="form" role="form">
-                    <div class="form-group">
-
-                        <div class="col-xs-6">
-                            <label for="prenom">
-                                <h4>Prénom</h4>
-                            </label>
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                            <input type="text" class="form-control" ng-model="prenom" name="prenom" id="prenom" placeholder="Prenom" title="prenom">
-                        </div>
-                    </div>
-                    <div class="form-group">
-
-                        <div class="col-xs-6">
-                            <label for="nom">
-                                <h4>Nom</h4>
-                            </label>
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                            <input type="text" class="form-control" ng-model="nom" name="nom" id="nom" placeholder="Nom" title="Nom">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-xs-6">
-                            <label for="genre">
-                                <h4>Genre</h4>
-                            </label>
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
-                            <select ng-model="genre" name="genre" class="form-control selectpicker" >
-                                <option value=" ">Genre</option>
-                                <option>Homme</option>
-                                <option>Femme</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-xs-6">
-                            <label for="age">
-                                <h4>Age</h4>
-                            </label>
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                            <input ng-model="age" name="age" placeholder="Age" class="form-control"  type="text"></input>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-xs-6">
-                            <label for="mail">
-                                <h4>Email</h4>
-                            </label>
-                            <span class="input-group-addon"><i class="far fa-envelope"></i></span>
-                            <input ng-model="mail" type="mail" class="form-control" name="mail" placeholder="Email" title="mail">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-xs-6">
-                            <label for="ville">
-                                <h4>Ville</h4>
-                            </label>
-                            <span class="input-group-addon"><i class="fas fa-city"></i></span>
-                            <input ng-model="ville" name="ville" placeholder="Ville" class="form-control"  type="text"></input>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-xs-6">
-                            <label for="pays">
-                                <h4>Pays</h4>
-                            </label>
-                            <span class="input-group-addon"><i class="fas fa-globe"></i></span>
-                            <input ng-model="pays" name="pays" placeholder="pays" class="form-control"  type="text"></input>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-xs-6">
-                            <label for="presentation">
-                                <h4>Site web</h4>
-                            </label>
-                            <span class="input-group-addon"><i class="fas fa-align-center"></i></span>
-                            <input ng-model="website" name="website" placeholder="Site web" class="form-control"  type="text"></input>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-xs-6">
-                            <label for="presentation">
-                                <h4>Présentation</h4>
-                            </label>
-                            <span class="input-group-addon"><i class="fas fa-align-center"></i></span>
-                            <input ng-model="presentation" name="presentation" placeholder="Presentation" class="form-control"  type="text"></input>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-xs-12">
-                            <br>
-                            <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Sauvegarder</button>
-                        </div>
-                    </div>
-                </form>
-
+                <formulaireprofil></formulaireprofil>
                 <hr>
 
             </div>

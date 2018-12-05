@@ -6,53 +6,55 @@ m.directive('listerecommandationami', function(){
 
             // au clique sur le bouton recommandation on affiche les membres que l'on peut recommander
             $scope.ListeRecommandationAmi = function(){
-
-                // recupere la liste d'ami du membre
-                paramRoute = {
-                    idEnCour: sessionStorage.id
-                }
-                var routeJsonData = angular.toJson(paramRoute, true);
-
-                console.log('liste des recommandations d\'amis')
-                // url
-                var urlEnLigne = "/listerecommandationami"
-                // envoie des donnees en POST pour recuperer le nombre de demande d'ami
-                $http({
-                    url: urlEnLigne,
-                    method: 'POST',
-                    data: routeJsonData
-                }).then(function (httpResponse) {
-                    // si un message d'erreur est envoyer par le serveur
-                    if(httpResponse.data.message == 'Erreur'){
-                        console.log('Echec de la recuperation du nombre de demande ami')
+                if(sessionStorage.id){
+                    // recupere la liste d'ami du membre
+                    paramRoute = {
+                        idEnCour: sessionStorage.id
                     }
-                    else if(httpResponse.data.message == 'pas de recommandation'){
-                        $scope.viewListeDesRecommandationsAmis = 0
-                        setTimeout(function(){
-                            $scope.ListeRecommandationAmi();
-                        }, 5000)
-                    }
-                    else{
-                        if(httpResponse.data.listeDesRecommandationsAmis){
-                            console.log('recuperation de la liste des recommandations reussi')
-                            // recupere le tableau des recommandations
-                            $scope.listeDesRecommandationsAmis = httpResponse.data.listeDesRecommandationsAmis
-                            // affiche le nombre de recommandation dans l'onglet
-                            $scope.viewListeDesRecommandationsAmis = httpResponse.data.listeDesRecommandationsAmis.length
-                            setTimeout(function(){
-                                $scope.ListeRecommandationAmi();
-                            }, 5000)
+                    var routeJsonData = angular.toJson(paramRoute, true);
+    
+                    // console.log('liste des recommandations d\'amis')
+    
+                    // url
+                    var urlEnLigne = "/listerecommandationami"
+                    // envoie des donnees en POST pour recuperer le nombre de demande d'ami
+                    $http({
+                        url: urlEnLigne,
+                        method: 'POST',
+                        data: routeJsonData
+                    }).then(function (httpResponse) {
+                        // si un message d'erreur est envoyer par le serveur
+                        if(httpResponse.data.message == 'Erreur'){
+                            console.log('Echec de la recuperation du nombre de recommandation d\'ami')
                         }
-                        else{
+                        else if(httpResponse.data.message == 'pas de recommandation'){
                             $scope.viewListeDesRecommandationsAmis = 0
                             setTimeout(function(){
                                 $scope.ListeRecommandationAmi();
                             }, 5000)
                         }
-                            
-                            
-                    }
-                })
+                        else{
+                            if(httpResponse.data.listeDesRecommandationsAmis){
+                                console.log('recuperation de la liste des recommandations reussi')
+                                // recupere le tableau des recommandations
+                                $scope.listeDesRecommandationsAmis = httpResponse.data.listeDesRecommandationsAmis
+                                // affiche le nombre de recommandation dans l'onglet
+                                $scope.viewListeDesRecommandationsAmis = httpResponse.data.listeDesRecommandationsAmis.length
+                                setTimeout(function(){
+                                    $scope.ListeRecommandationAmi();
+                                }, 5000)
+                            }
+                            else{
+                                $scope.viewListeDesRecommandationsAmis = 0
+                                setTimeout(function(){
+                                    $scope.ListeRecommandationAmi();
+                                }, 5000)
+                            }
+                                
+                        }
+                    })
+
+                }
 
             }
             $scope.ListeRecommandationAmi()

@@ -137,6 +137,39 @@ app.post('/connection', function(req, res) {
 });
 
 
+////////MISE A JOUR DU PROFIL///////
+// recupere les donnees de la connection pour verifier dans la BDD
+app.post('/miseAJourProfil', function(req, res) {
+  //////////////// CONNEXION A LA BASE ///////////////////
+  var url = 'mongodb://heroku_g9jk10c8:81fdmoe6u00km5k3mokn3k5eg9@ds223763.mlab.com:23763/heroku_g9jk10c8'
+  mongo.connect(url, {useNewUrlParser: true}, function(err, client) {
+    if(err){
+      console.log('err', err)
+    }
+    else{
+      const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
+      // si il m'existe pas on l'insert
+      collection.updateOne({'_id': ObjectID(req.body.idEnCour)}, {$set: {nom: req.body.nom, prenom: req.body.prenom, mail: req.body.mail, genre: req.body.genre, age: req.body.age, ville: req.body.ville, pays: req.body.pays, presentation: req.body.presentation, website: req.body.website}}, function(err, o) {
+        if(err){
+          console.log(err.message);
+          res.send({message: 'Erreur'});
+          client.close();
+        }
+        else{
+          // console.log("mise a jours reussi");
+          res.send({message: 'mise a jours reussi'});  
+          client.close(); 
+
+        }
+      });
+  
+    }
+  });
+  
+});
+
+
+
 
 // BAR DE RECHERCHE
 // recupere les donnees de la connection pour verifier dans la BDD
@@ -751,12 +784,15 @@ app.post('/listerecommandationami', function(req, res) {
         if(err){
           console.log('Echec de la recuperation des recommandations d\'amis', err.message);
         }else{
-          if(o[0].recommandationAmi){
-            res.send({listeDesRecommandationsAmis: o[0].recommandationAmi});
-
-          }
-          else{
-            res.send({message: 'pas de recommandation'});
+          if(o[0]){
+            if(o[0].recommandationAmi){
+              res.send({listeDesRecommandationsAmis: o[0].recommandationAmi});
+  
+            }
+            else{
+              res.send({message: 'pas de recommandation'});
+  
+            }
 
           }
         }
