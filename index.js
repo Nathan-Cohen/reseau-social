@@ -1301,7 +1301,7 @@ app.post('/envoieMessagePriver', function(req, res) {
       console.log('req.body', req.body)
       const collection = client.db('heroku_g9jk10c8').collection('conversationpriver');
       // ajoute la demande dans le document de l'ami
-      collection.updateOne({'_id': ObjectID(req.body.idConversationPriver)}, {$push: {messagePriver: {idExpediteur: req.body.idEnCour, prenom: req.body.prenomMessagePriver, nom: req.body.nomMessagePriver, messagePriver: req.body.messagePriver}}}, function(err, o) {
+      collection.updateOne({'_id': ObjectID(req.body.idConversationPriver)}, {$push: {messagePriver: {idConversationPriver: req.body.idConversationPriver, idExpediteur: req.body.idEnCour, prenom: req.body.prenomMessagePriver, nom: req.body.nomMessagePriver, messagePriver: req.body.messagePriver}}}, function(err, o) {
         if(err){
           console.log('Echec de la publication de message Priver', err.message);
         }else{

@@ -2,13 +2,15 @@ m.directive('messagepriver', function(){
     var directiveDefs = {
         controller: function($scope, $http){
             $scope.inputSujetMessagePriver = '';
-            $scope.tabDesMembresSelectionner = [];
             $scope.msg = {messagePriver: ''}
-            $scope.ListeMessagePriverTab = []
-
+            
             if(sessionStorage.id){
-
+                
                 $scope.afficheConversationPriver = function(){
+                    if(!$scope.ListeMessagePriverTab){
+                        $scope.ListeMessagePriverTab = []
+                    }
+
                     // recupere les parametres
                     var objetParametreAfficheConversationPriver = {
                         idEnCour: sessionStorage.id
@@ -27,29 +29,24 @@ m.directive('messagepriver', function(){
                             console.log('Echec de la creation de la conversation')
                         }
                         else{     
-                            
-                            $scope.tableauDesConversation =  httpResponse.data.listeConversationPriver
-                            
+                            if(!$scope.tableauDesConversation){
+                                $scope.tableauDesConversation =  httpResponse.data.listeConversationPriver
+                            }
+                            $scope.ListeMessagePriverTab = []
                             httpResponse.data.listeConversationPriver.forEach(function(elementConversation){
                                 if(elementConversation.messagePriver){
                                     elementConversation.messagePriver.forEach(function(elementMessage){
                                         $scope.ListeMessagePriverTab.push(elementMessage)
-
+                                        // console.log('$scope.ListeMessagePriverTab', $scope.ListeMessagePriverTab)
                                     })
 
 
                                 }
                             })
                             // console.log('$scope.ListeMessagePriverTab', $scope.ListeMessagePriverTab)
-                            
-
-                            // /////////NOTIFICATION///////
-                            // document.getElementById('notifications').innerHTML = "<div id='notifSuccess' class='notif alert alert-success' role='alert'>La conversation a bien été créer !</div>"
-                            // // affiche la notification de succes d'ajout d'ami
-                            // // fait disparaitre la div 
-                            // $("#notifSuccess").fadeOut( 8000, function() {
-                            //     $('#notifSuccess').css('display', 'none');
-                            // });
+                            setTimeout(function(){
+                                $scope.afficheConversationPriver()
+                            }, 5000)
                         }
             
                     })
@@ -60,6 +57,7 @@ m.directive('messagepriver', function(){
 
                 // au clique du bouton choisir inviter l'objet du membre en cours se creer
                 $scope.btnSujetMessagePriver = function(){
+                    $scope.tabDesMembresSelectionner = [];
                     // construit l'objet du membre qui créer la conversation
                     membreEnCour = {
                         id: sessionStorage.id,
@@ -175,7 +173,7 @@ m.directive('messagepriver', function(){
                 <div class="col-sm-10 chat_sidebar">
                     <div class="row">
                         <div id="creationConversationPriver">
-                            <div class="input-group col-md-12">
+                            <div class="input-group col-md-12" style="width: 100%;">
                                 <input type="text" ng-model="inputSujetMessagePriver" class="form-control" placeholder="Sujet de discussion" />
                                 <button class="btn btn-info" type="button" ng-click="btnSujetMessagePriver()" data-toggle="modal" data-target="#messagepriverModal">
                                     <span class="far fa-thumbs-up"></span> Choisir les invités
@@ -283,8 +281,7 @@ m.directive('messagepriver', function(){
             
                                 <div class="chat_area">
                                     <ul class="list-unstyled">
-                                    
-                                        <li class="left clearfix" ng-repeat-start="itemMessagePriver in ListeMessagePriverTab" ng-if="itemMessagePriver.prenom == prenomEnCours">
+                                        <li class="left clearfix" ng-repeat-start="itemMessagePriver in ListeMessagePriverTab" ng-if="itemMessagePriver.prenom == prenomEnCours && itemConversationPriver._id == itemMessagePriver.idConversationPriver">
                                             <span class="chat-img1 pull-left">
                                                 <img src="../images/avatar_defaut.png" alt="User Avatar" class="img-circle">
                                                 <span class="nommessagePriver"><a href="#!/profil/recherche/{{idMessagePriver}}">{{itemMessagePriver.prenom}} {{itemMessagePriver.nom}}</a></span>
@@ -296,7 +293,7 @@ m.directive('messagepriver', function(){
                                             </div>
                                         </li>
             
-                                        <li class="left clearfix admin_chat" ng-repeat-end="itemMessagePriver in ListeMessagePriverTab" ng-if="itemMessagePriver.prenom != prenomEnCours && !itemMessagePriver.demande">
+                                        <li class="left clearfix admin_chat" ng-repeat-end="itemMessagePriver in ListeMessagePriverTab" ng-if="itemMessagePriver.prenom != prenomEnCours && itemConversationPriver._id == itemMessagePriver.idConversationPriver">
                                             <span class="chat-img1 pull-right">
                                                 <span class="nommessagePriver"><a href="#!/profil/recherche/{{idMessagePriver}}">{{itemMessagePriver.prenom}} {{itemMessagePriver.nom}}</a></span>
                                                 <img src="../images/avatar_defaut.png" alt="User Avatar" class="img-circle">
@@ -307,10 +304,9 @@ m.directive('messagepriver', function(){
                                                 <div class="chat_time pull-left">{{itemMessagePriver.date}}</div>
                                             </div>
                                         </li>
-            
-            
                                     </ul>
                                 </div>
+
                                 <!--Ecrire un message-->
                                 <div class="message_write">
                                     <textarea ng-model="msg.messagePriver" class="form-control" placeholder="Message..."></textarea>
