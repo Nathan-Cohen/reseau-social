@@ -555,25 +555,29 @@ p.testmessageinstantanner{
 /*////////// DESIGN //////////*/
 
 .navbar .navbar-nav>li>a {
-  color: #000;
+  color: rgb(255, 255, 255);
+}
+
+.nav>li>a:focus, .nav>li>a:hover{
+  color: #176068;
 }
 
 .navbar .navbar-brand {
-  color: #000;
+  color: rgb(255, 255, 255);
 }
 
 .navbar{
-  background-color: #d39416;
+  background-color: #1e7a85;
   background-image: none;
   border-radius: 0px;
 }
 
 a{
-  color: #b46b00;
+  color: #ffffff;
 }
 
 a:focus, a:hover {
-  color: #9b5e03;
+  color: #666565;
   text-decoration: none;
 }
 
@@ -585,18 +589,18 @@ a:focus, a:hover {
 }
 
 .btn-info{
-  background-color: #d39416;
+  background-color: #1e7a85;
   background-image: none;
   border: none;
   border-radius: 0px;
 }
 
 .btn-info:focus, .btn-info:hover {
-  background-color: #ba810f;
+  background-color: #176068;
   background-position: 0 -15px;
 }
 
 .panel-default>.panel-heading{
-  background-color: #d39416;
+  background-color: #1e7a85;
   background-image: none;
 }
