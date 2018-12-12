@@ -3,7 +3,7 @@ m.directive('listepublication', function(){
         controller: function($scope, $http, $sce, $routeParams, SocketService){
             if(sessionStorage.id){
                 $scope.idSession = sessionStorage.id
-                $scope.rechercheListePublication = function(){
+                $scope.rechercheListePublication = function(actionPublication){
                   // recupere le parametre dans la route (id)
                   paramRoute = {
                         id: sessionStorage.id,
@@ -26,7 +26,7 @@ m.directive('listepublication', function(){
                       else{
                           // ajoute le nombre de publication dans l'onglet
                           $scope.previewItemListePublication = httpResponse.data.listePublication.length
-                          if($scope.previewItemListePublication != $scope.previewItemListePublicationAvant){
+                          if($scope.previewItemListePublication != $scope.previewItemListePublicationAvant || actionPublication == 'action'){
                               $scope.previewItemListePublicationAvant = httpResponse.data.listePublication.length
                               // inverse et envoie dans le tableau
                               if(httpResponse.data.listePublication.length > 0){
@@ -128,6 +128,7 @@ m.directive('listepublication', function(){
                             $("#notifSuccess").fadeOut( 8000, function() {
                                 $('#notifSuccess').css('display', 'none');
                             });
+                            $scope.rechercheListePublication('action')
                             console.log('suppression reussi')
                         }
                     })

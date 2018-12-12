@@ -40,6 +40,7 @@ m.controller('commentairesPublicationCtrl', function($scope, $http, $routeParams
                     $("#notifSuccess").fadeOut( 8000, function() {
                         $('#notifSuccess').css('display', 'none');
                     });
+                    $scope.rechercheListePublication('action')
                     
                 }
                 // si un message d'erreur est envoyer par le serveur
