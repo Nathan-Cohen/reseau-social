@@ -261,7 +261,7 @@ m.directive('messagepriver', function(){
 
         
         <!-- affichage des conversation priver -->
-        <p class="col-sm-2" ng-repeat="itemConversationPriver in tableauDesConversation" style="margin: 10px 0px 20px 5px;">
+        <p ng-repeat="itemConversationPriver in tableauDesConversation" style="margin: 10px; float: left;">
             <button class="themeBtnConversationPriver" type="button" data-toggle="collapse" data-target="#{{itemConversationPriver.sujet}}" aria-expanded="false" aria-controls="collapseExample">
                 {{itemConversationPriver.sujet}}
             </button>

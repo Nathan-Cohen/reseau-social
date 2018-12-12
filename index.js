@@ -900,7 +900,7 @@ app.post('/publicationProfil', function(req, res) {
           var sujet = '[Socialead] Nouvel publication profil ';
           var text = 'Une nouvel publication sur votre profil';
           var html = '<strong>Une nouvel publication sur votre profil</strong>';
-          envoiDuMail(req.body.idEnCour, sujet, text, html)
+          // envoiDuMail(req.body.idEnCour, sujet, text, html)
           //////////FIN ENVOIE MAIL//////////
         }
       });

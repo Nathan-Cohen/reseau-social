@@ -1,9 +1,13 @@
 m.directive('listeami', function(){
     var directiveDefsListeami = {
-        controller: function($scope, $http){
+        controller: function($scope, $http, $routeParams){
           // si l'utilisateur est deja connecter on inserer le mail dans la variable mailUtilisateur
           if(sessionStorage.id){
-              $scope.rechercheListe = function(){                  
+              $scope.rechercheListe = function(){    
+                // recupere l'id du profil en cours
+                $scope.idProfilEnCour = $routeParams.idUtilisateur 
+                // recupere l'id en cours
+                $scope.idEnCour = sessionStorage.id        
                 // recupere le parametre dans la route (id)
                 paramRoute = {
                     id: sessionStorage.id
@@ -57,9 +61,9 @@ m.directive('listeami', function(){
                 $scope.envoiSupprimer()
 
             }
+
             $scope.envoiSupprimer = function(){
                 
-
                 var urlEnLigne = "/supprimeami"
                 // envoie des donnees en POST                        
                 $http({
@@ -70,7 +74,6 @@ m.directive('listeami', function(){
                     // si un message suppression est envoyer par le serveur sinon c'est un message d'erreur
                     if(httpResponse.data.message == 'suppression'){
                         console.log('suppression reussi', httpResponse.data)
-                        console.log('supp', $scope.supprimeAmi.idAmi)
                         $('#item'+$scope.supprimeAmi.idAmi).remove()
                         $scope.previewItemListeAmi--;
                     }
@@ -92,7 +95,7 @@ m.directive('listeami', function(){
                             <th scope="col">Prenom</th>
                             <th scope="col">Nom</th>
                             <th scope="col">Mail</th>
-                            <th scope="col" class="text-center" ng-if="!booleanBouton">Action</th>
+                            <th scope="col" class="text-center" ng-if="idEnCour == idProfilEnCour">Action</th>
                         </tr>
                     </thead>
                     <tr id="item{{item._id}}" ng-repeat="item in itemListeAmi">
@@ -103,7 +106,7 @@ m.directive('listeami', function(){
                             <a href="#!/profil/recherche/{{item._id}}">{{item.nom}}</a>
                         </td>
                         <td>{{item.mail}}</td>
-                        <td class="text-center" ng-if="!booleanBouton">
+                        <td class="text-center" ng-if="idEnCour == idProfilEnCour">
                             <a id="{{item._id}}" class="btn btn-danger btn-xs" ng-click="supprimer($event)">Supprimer</a>
                         </td>
                     </tr>

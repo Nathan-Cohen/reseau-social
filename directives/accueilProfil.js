@@ -14,7 +14,7 @@ m.directive('accueilprofil', function(){
             <div class="row" ng-if="mailUtilisateur">
                 <div class="well well-lg" ng-if='mailUtilisateur'>
                     <div>
-                        <a href="#!/profil/{{idUtilisateur}}"><i class="far fa-user-circle"></i> {{prenomUtilisateur}}</a>
+                        <a id="lienAccueilProfil" href="#!/profil/{{idUtilisateur}}"><i class="far fa-user-circle"></i> {{prenomUtilisateur}}</a>
                         <!-- <img class="media-object img-circle" width="80px" src="" alt="Image"> -->
                         <img src="../images/avatar_defaut.png" width="70px" class="avatar img-circle img-thumbnail" alt="avatar">
                     </div>

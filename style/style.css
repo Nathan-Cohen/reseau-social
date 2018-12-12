@@ -6,7 +6,13 @@
 
 }
 
+#buttonEnregistrement, #buttonConnexion{
+  color: #8d8d8d;
+}
 
+#buttonEnregistrement:hover, #buttonConnexion:hover{
+  color: #575757;
+}
 
 
 #deconnexion{
@@ -16,7 +22,30 @@
   display: none;
 }
 
+#btnDeconnexion{
+  color: white
+}
+#btnDeconnexion:hover{
+  color: #dbdbdb;
+  text-decoration: none;
+}
 
+#btnValider{
+  border: none;
+  background-image: -webkit-linear-gradient(top,#24a4b4 0,#1e7a85 100%);
+  border-radius: 0px;
+}
+
+#btnValider:hover{
+  border: none;
+  background-image: -webkit-linear-gradient(top,#24a4b4 0,#1e7a85 100%);
+  border-radius: 0px;
+}
+
+.btn-success{
+  border: none;
+  border-radius: 0px;
+}
 
 /* ////////////PROFIL VISITEUR///////////// */
 #ajouterAmi{
@@ -40,6 +69,15 @@
   border-color: #17a2b8;
 }
 
+
+#lienAccueilProfil{
+  color: white;
+}
+
+#lienAccueilProfil:hover{
+  color: #dbdbdb;
+  text-decoration: none;
+}
 
 /* //////////////////Message Alert, Erreur, Succes/////////////////// */
 #reponseConnection{
@@ -567,17 +605,16 @@ p.testmessageinstantanner{
 }
 
 .navbar{
-  background-color: #1e7a85;
-  background-image: none;
+  background-image: -webkit-linear-gradient(top,#24a0b0 0,#1e7a85 100%);
   border-radius: 0px;
 }
 
-a{
+.media-body > p > a{
   color: #ffffff;
 }
 
-a:focus, a:hover {
-  color: #666565;
+.media-body > p > a:focus, .media-body > p > a:hover {
+  color: #dbdbdb;
   text-decoration: none;
 }
 
@@ -601,6 +638,7 @@ a:focus, a:hover {
 }
 
 .panel-default>.panel-heading{
-  background-color: #1e7a85;
-  background-image: none;
+  background-image: -webkit-linear-gradient(top,#24a0b0 0,#1e7a85 100%);
+  border-radius: 0px;
+  color: white;
 }

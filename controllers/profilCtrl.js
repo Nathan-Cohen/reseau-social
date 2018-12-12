@@ -1,7 +1,11 @@
-m.controller('profilCtrl', function($scope, $http, $routeParams, SocketService){
+m.controller('profilCtrl', function($scope, $http, $location, $routeParams, SocketService){
     // recupere l'adresse mail a la connexion ou a l'enregistrement
     if(sessionStorage.mail){
         $('#deconnexion').css('display', 'block')
+    }
+    else{
+        // retourne l'utilisateur a l'acceuil si il n'est pas connecter
+        $location.path('/accueil/')
     }
     $scope.rechercheProfil = ()=>{
         // construit l'objet

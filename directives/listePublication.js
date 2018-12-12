@@ -1,6 +1,6 @@
 m.directive('listepublication', function(){
     var directiveListePublicationDef = {
-        controller: function($scope, $http, $routeParams, SocketService){
+        controller: function($scope, $http, $sce, $routeParams, SocketService){
             if(sessionStorage.id){
                 $scope.idSession = sessionStorage.id
                 $scope.rechercheListePublication = function(){
@@ -26,17 +26,21 @@ m.directive('listepublication', function(){
                       else{
                           // ajoute le nombre de publication dans l'onglet
                           $scope.previewItemListePublication = httpResponse.data.listePublication.length
-                          // inverse et envoie dans le tableau
-                          if(httpResponse.data.listePublication.length > 0){
-                              $scope.itemListePublication = httpResponse.data.listePublication.reverse();
-                          }
-                          // si il y a des commentaires on inverse et on envoie dans le tableau
-                          if(httpResponse.data.listePublication[0]){
-                              $scope.itemListeCommentaire = httpResponse.data.listePublication[0].idCommentateur;
-                          }
-
-                          $scope.date = new Date()
-
+                          if($scope.previewItemListePublication != $scope.previewItemListePublicationAvant){
+                              $scope.previewItemListePublicationAvant = httpResponse.data.listePublication.length
+                              // inverse et envoie dans le tableau
+                              if(httpResponse.data.listePublication.length > 0){
+                                  $scope.itemListePublication = httpResponse.data.listePublication.reverse();
+                              }
+                              // si il y a des commentaires on inverse et on envoie dans le tableau
+                              if(httpResponse.data.listePublication[0]){
+                                  $scope.itemListeCommentaire = httpResponse.data.listePublication[0].idCommentateur;
+                              }
+    
+                              $scope.date = new Date()
+    
+                              
+                            }
                             $scope.timeout_rechercherlistepublie = setTimeout(function(){
                                 $scope.rechercheListePublication();
                             }, 5000)
@@ -45,6 +49,7 @@ m.directive('listepublication', function(){
   
                 }
                 $scope.rechercheListePublication()
+
 
                 // supprimer la publication
                 $scope.supprimerLaPublication = function(itemPublicationSupprimer){
@@ -74,6 +79,18 @@ m.directive('listepublication', function(){
                         }
                     })
                 }
+
+
+                ///RECUPERE URL DE YOUTUBE
+                $scope.trustSrc = function(src) {
+                    var src = src.match(/(?<==)[^\]]+/)
+                    if(src){
+                        urlVideoYoutube = "http://www.youtube.com/embed/" + src[0]
+                        // console.log('urlVideoYoutube', urlVideoYoutube)
+                        return $sce.trustAsResourceUrl(urlVideoYoutube);
+                    }
+                  }
+
 
                 // COMMENTAIRE
                 // si l'utilisateur commence a ecrire un commentaire on stop le settimout
@@ -131,7 +148,10 @@ m.directive('listepublication', function(){
                         <button ng-if="item.idPublication == idSession" id="{{item.idPublication}}" class="pull-right supprimePublication" ng-click="supprimerLaPublication($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button>
                         <p class="text-right">{{item.date}} <span class="glyphicon glyphicon-time"></span></small></p>
                         <p class="text-left"><a href="#!/profil/recherche/{{item.idPublication}}">{{item.prenom}}{{item.prenomAuteur}} {{item.nomAuteur}}</a> :</p>
-                        <p>{{item.publication}}</p>
+                        <p ng-init="urlVideoYoutube = trustSrc(item.publication)">
+                            <p>{{item.publication}}</p>
+                            <iframe width="460" height="215" ng-if="urlVideoYoutube" ng-src="{{urlVideoYoutube}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </p>
                     </div>
                     
                 </div>
@@ -157,8 +177,9 @@ m.directive('listepublication', function(){
 
                                     {{itemCommentaire.date}} <span class="glyphicon glyphicon-time"></span></small>
                                 </div>
-                                <p>
-                                    {{itemCommentaire.commentaire}} 
+                                <p ng-init="urlVideoYoutube = trustSrc(itemCommentaire.commentaire)">
+                                    <p>{{itemCommentaire.commentaire}}</p>
+                                    <iframe width="460" height="215" ng-if="urlVideoYoutube" ng-src="{{urlVideoYoutube}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 </p>
                             </div>
                         </li>
