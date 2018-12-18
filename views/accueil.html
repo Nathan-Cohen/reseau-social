@@ -19,13 +19,18 @@
 		<div class="well" ng-repeat-start="item in itemListePublication">
 			<div class="publications-body">
 				<a class="pull-left" href="">
-				[photo de l'article]
+				[photo de l'utilisateur]
 				</a>
+				<p class="text-right">{{item.date}} <span class="glyphicon glyphicon-time"></span></small></p>
 				<div class="media-body">
 					<!-- <button id="{{item.idPublication}}" class="pull-right supprimePublication" ng-click="supprimerLaPublication($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button> -->
-					<p class="text-right">{{item.date}} <span class="glyphicon glyphicon-time"></span></small></p>
 					<p class="text-left"><a href="#!/profil/recherche/{{item.idPublication}}">{{item.prenom}}{{item.prenomAuteur}} {{item.nomAuteur}}</a> :</p>
-					<p>{{item.publication}}</p>
+					<p ng-init="urlVideoYoutube = trustSrc(item.publication)">
+						<p>{{item.publication}}</p>
+						<div class="embed-responsive embed-responsive-16by9" ng-if="urlVideoYoutube" >
+							<iframe class="embed-responsive-item" ng-src="{{urlVideoYoutube}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+						</div>
+					</p>
 				</div>
 				
 			</div>

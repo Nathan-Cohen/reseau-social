@@ -1,4 +1,4 @@
-m.controller('accueilCtrl', function($scope, $location, $http, SocketService){
+m.controller('accueilCtrl', function($scope, $location, $sce, $http, SocketService){
     if(sessionStorage.id){
         $scope.idSession = sessionStorage.id
 
@@ -52,6 +52,15 @@ m.controller('accueilCtrl', function($scope, $location, $http, SocketService){
     }
     $scope.nbPublicationAccueil()
 
+    ///RECUPERE URL DE YOUTUBE
+    $scope.trustSrc = function(src) {
+        var src = src.match(/(?<==)[^\]]+/)
+        if(src){
+            urlVideoYoutube = "https://www.youtube.com/embed/" + src[0]
+            // console.log('urlVideoYoutube', urlVideoYoutube)
+            return $sce.trustAsResourceUrl(urlVideoYoutube);
+        }
+      }
     
     // recupere le nombre de membre connecter
     SocketService.emit('recupereNbConnecter')

@@ -85,7 +85,7 @@ m.directive('listepublication', function(){
                 $scope.trustSrc = function(src) {
                     var src = src.match(/(?<==)[^\]]+/)
                     if(src){
-                        urlVideoYoutube = "http://www.youtube.com/embed/" + src[0]
+                        urlVideoYoutube = "https://www.youtube.com/embed/" + src[0]
                         // console.log('urlVideoYoutube', urlVideoYoutube)
                         return $sce.trustAsResourceUrl(urlVideoYoutube);
                     }
@@ -142,16 +142,21 @@ m.directive('listepublication', function(){
             <!-- PUBLICATION -->
             <div class="well" ng-repeat-start="item in itemListePublication">
                 <div class="publications-body">
+                    <p class="pull-right">
+                        {{item.date}} 
+                        <span class="glyphicon glyphicon-time"></span></small>
+                        <button ng-if="item.idPublication == idSession" id="{{item.idPublication}}" class="supprimePublication" ng-click="supprimerLaPublication($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button>
+                    </p>
                     <a class="pull-left" href="">
-                    [photo de l'article]
+                    [photo de l'utilisateur]
                     </a>
                     <div class="media-body">
-                        <button ng-if="item.idPublication == idSession" id="{{item.idPublication}}" class="pull-right supprimePublication" ng-click="supprimerLaPublication($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button>
-                        <p class="text-right">{{item.date}} <span class="glyphicon glyphicon-time"></span></small></p>
                         <p class="text-left"><a href="#!/profil/recherche/{{item.idPublication}}">{{item.prenom}}{{item.prenomAuteur}} {{item.nomAuteur}}</a> :</p>
                         <p ng-init="urlVideoYoutube = trustSrc(item.publication)">
                             <p>{{item.publication}}</p>
-                            <iframe width="460" height="215" ng-if="urlVideoYoutube" ng-src="{{urlVideoYoutube}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <div class="embed-responsive embed-responsive-16by9" ng-if="urlVideoYoutube" >
+                                <iframe class="embed-responsive-item" ng-src="{{urlVideoYoutube}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
                         </p>
                     </div>
                     
