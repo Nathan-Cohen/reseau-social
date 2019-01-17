@@ -7,7 +7,39 @@
 				<h2>Actualité</h2>  
 				nombre de membres en ligne ({{nbUtilisateurConnecter}})
 				nombre de publications ({{nbpublicationaccueil}})
+				<script>
+					// request permission on page load
+					document.addEventListener('DOMContentLoaded', function () {
+					  if (!Notification) {
+						alert('Desktop notifications not available in your browser. Try Chromium.'); 
+						return;
+					  }
+					
+					  if (Notification.permission !== "granted")
+						Notification.requestPermission();
+					});
+					
+					function notifyMe() {
+					  if (Notification.permission !== "granted")
+						Notification.requestPermission();
+					  else {
+						var notification = new Notification('Notification title', {
+						  icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
+						  body: "Hey there! You've been notified!",
+						});
+					
+						notification.onclick = function () {
+						  window.open("http://stackoverflow.com/a/13328397/1269037");      
+						};
+					
+					  }
+					
+					}
 				
+				
+				</script>
+				
+				<button onclick="notifyMe()">Notify me!</button> 
 				</div>
 			</div>
 			<div class="resizeDivProfilAccueil col-sm-3 offset-md-4"><accueilprofil></accueilprofil></div>
@@ -20,10 +52,13 @@
 			<div class="publications-body">
 				<a class="pull-left" href="">
 				[photo de l'utilisateur]
-				</a>
+			</a>
+				<!-- bouton de supression de la publication -->
+				<!-- <button id="{{item.idPublication}}" class="pull-right supprimePublication" ng-click="supprimerLaPublication($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button> -->
+				<!-- date de la publication -->
 				<p class="text-right">{{item.date}} <span class="glyphicon glyphicon-time"></span></small></p>
+				
 				<div class="media-body">
-					<!-- <button id="{{item.idPublication}}" class="pull-right supprimePublication" ng-click="supprimerLaPublication($event)" type="button"><i id="{{item._id}}" class="fas fa-times-circle"></i></button> -->
 					<p class="text-left"><a href="#!/profil/recherche/{{item.idPublication}}">{{item.prenom}}{{item.prenomAuteur}} {{item.nomAuteur}}</a> :</p>
 					<p ng-init="urlVideoYoutube = trustSrc(item.publication)">
 						<p>{{item.publication}}</p>

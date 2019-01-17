@@ -22,9 +22,6 @@ var envoiDuMail = function(mail, sujet, text, html){
   console.log('envoie du mail effectuer', mail, sujet, text, html)
 }
 
-// IMPORTER LE MODULE MONGODB
-// var mongoUtil = require( './db' );
-// mongoUtil.connectDB();
 
 //////////////// CREATE SERVER //////////////
 app = express()
@@ -342,7 +339,7 @@ app.post('/profil/recherche', function(req, res) {
       // console.log("Connexion a la base reussi");
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
       // cherche si l'utilisateur existe
-      collection.find({'_id': ObjectID(req.body.id)}).toArray(function(err, o) {
+      collection.find({'_id': ObjectID(req.body.id)}, {$maxTimeMS: 100}).toArray(function(err, o) {
         if(err){
           console.log('Echec de la recuperation du profil', err.message);
         }else{
@@ -379,7 +376,7 @@ app.post('/accueilactualiter', function(req, res) {
     else{
       const collection = client.db('heroku_g9jk10c8').collection('publication');
       // cherche si l'utilisateur existe dans les publications ou dans les commentaires des publications
-      collection.find({$or:[ {"idProfil":req.body.idEnCour}, {"idPublication":req.body.idEnCour}]}).toArray(function(err, o) {
+      collection.find({$or:[ {"idProfil":req.body.idEnCour}, {"idPublication":req.body.idEnCour}]}, {$maxTimeMS: 100}).toArray(function(err, o) {
         if(err){
           console.log('Echec de la recuperation des publication', err.message);
         }else{
@@ -494,7 +491,7 @@ app.post('/choixajouteami', function(req, res) {
                 res.send({notificationAmi: tabDesDemandes});                
               }
               for(var i=0; i<o[0].demandeAjoutAmi.length; i++){
-                collection.find({'_id': ObjectID(o[0].demandeAjoutAmi[i])}).toArray(function(err, o) {
+                collection.find({'_id': ObjectID(o[0].demandeAjoutAmi[i])}, {$maxTimeMS: 100}).toArray(function(err, o) {
                   if(err){
                     console.log('Echec de la recherche d\'ajout d\'ami', err.message);
                   }else{
@@ -561,7 +558,7 @@ app.post('/listeami', function(req, res) {
     else{
       const collection = client.db('heroku_g9jk10c8').collection('utilisateur');
       // cherche si l'utilisateur existe
-      collection.find({'_id': ObjectID(req.body.id)}).toArray(function(err, o) {
+      collection.find({'_id': ObjectID(req.body.id)}, {$maxTimeMS: 100}).toArray(function(err, o) {
         if(err){
           console.log('Echec de la recuperation de la liste d\'ami', err.message);
         }else{
@@ -577,7 +574,7 @@ app.post('/listeami', function(req, res) {
                 var compteurAmi = 0
                 for(var i=0; i<o[0].ami.length; i++){
                   compteurAmi++
-                  collection.findOne({'_id': ObjectID(o[0].ami[i])}, function(err, o) {
+                  collection.findOne({'_id': ObjectID(o[0].ami[i])}, {$maxTimeMS: 100}, function(err, o) {
                     if(err){
                       console.log('Echec de la recuperation des amis', err.message);
                     }else{
@@ -1271,7 +1268,7 @@ app.post('/creationConversationPriver', function(req, res) {
       // console.log('req.body.sujet ', req.body.sujet)
         const collection = client.db('heroku_g9jk10c8').collection('conversationpriver');
         // creer la conversation priver
-        collection.insertOne({tableauDesMembres: req.body.tabDesMembres, sujet: req.body.sujet}, function(err, o) {
+        collection.insertOne({tableauDesMembres: req.body.tabDesMembres, sujet: req.body.sujet}, {$maxTimeMS: 100}, function(err, o) {
           if(err){
             console.log(err.message);
             res.send({message: 'Erreur'});
@@ -1301,7 +1298,7 @@ app.post('/afficheConversationPriver', function(req, res) {
     else{
       const collection = client.db('heroku_g9jk10c8').collection('conversationpriver');
       // cherche les conversations priver
-      collection.find({'tableauDesMembres.id': req.body.idEnCour}).toArray(function(err, o) {
+      collection.find({'tableauDesMembres.id': req.body.idEnCour}, {$maxTimeMS: 100}).toArray(function(err, o) {
         if(err){
           console.log('Echec de la recuperation des notifcation de messages instantanner', err.message);
         }else{
@@ -1337,7 +1334,7 @@ app.post('/envoieMessagePriver', function(req, res) {
       console.log('req.body', req.body)
       const collection = client.db('heroku_g9jk10c8').collection('conversationpriver');
       // ajoute la demande dans le document de l'ami
-      collection.updateOne({'_id': ObjectID(req.body.idConversationPriver)}, {$push: {messagePriver: {idConversationPriver: req.body.idConversationPriver, idExpediteur: req.body.idEnCour, prenom: req.body.prenomMessagePriver, nom: req.body.nomMessagePriver, messagePriver: req.body.messagePriver}}}, function(err, o) {
+      collection.updateOne({'_id': ObjectID(req.body.idConversationPriver)}, {$push: {messagePriver: {idConversationPriver: req.body.idConversationPriver, idExpediteur: req.body.idEnCour, prenom: req.body.prenomMessagePriver, nom: req.body.nomMessagePriver, messagePriver: req.body.messagePriver}}}, {$maxTimeMS: 100}, function(err, o) {
         if(err){
           console.log('Echec de la publication de message Priver', err.message);
         }else{
@@ -1392,4 +1389,4 @@ io.on('connection', function(socket){
 })
   
  
-server.listen(process.env.PORT || 5000);
+server.listen(process.env.PORT || 27017);
